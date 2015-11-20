@@ -1,0 +1,314 @@
+/*------registro----------*/
+.seccionForm{
+    display: block !important;
+    margin-left: 1.7px !important;
+    margin-right: 1.7px !important;
+    margin-bottom: 20px; !important;
+    padding-top: 0.35em !important;
+    padding-bottom: 0.625em !important;
+    padding-left: 1.7em !important;
+    padding-right: 1.7em !important;
+    border: 1px solid !important;
+    border-radius: 10px !important;
+    border-color: #d3d3d3 !important;
+}
+.legend{
+    padding-left: 4px;
+    border-bottom: 0 !important;
+    font-size: 14px;
+    color: #4682b4 !important;
+}
+.legendEmpresa {
+    width: 141px;
+}
+.legendDatosPago {
+    width: 102px;
+}
+.legendDatosSolicitante {
+    width: 316px;
+}
+.legendDatosCurso{
+    width: 110px;
+}
+.legendDatosParticipantes{
+    width: 178px;
+}
+.legendDatosParticipante{
+    width: 155px;
+}
+.legendGrupos{
+    width: 170px;
+}
+table{
+    table-layout: auto;
+}
+td:first-child {
+    /*width: 100%;*/
+    white-space: nowrap !important;
+}
+.padni{
+    width: 140px !important;
+}
+.vcenter {
+    display: inline-block !important;
+    vertical-align: middle !important;
+    float: none !important;
+}
+.modal .modal-dialog{
+    border-radius: 50px !important;
+}
+.close{
+    opacity: 0.4 !important;
+    font-size: 20px !important;
+    font-weight: bold !important;
+}
+
+input[type="text"][disabled] {
+    color: dimgray !important;
+}
+.soles-span{
+    color: #a9a9a9;
+}
+/*------end-registro----------*/
+
+/*-----intranet-----------*/
+.loginSection{
+    /*position: relative;*/
+    margin-top: 8%;
+}
+.bordered-field{
+    border-radius: 0px 5px 5px 0 !important;
+}
+.logo{
+    text-align:center;
+    margin-bottom: 15px;
+}
+.img-logo{
+    max-width: 50%;
+    height: auto;
+}
+.validation-error {color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.5);border-radius:4px;font-size:12px;font-weight:bold;line-height:1.4em;text-align:center;text-align:left;padding:5px;background:#cf2424;border:1px solid #831919;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 3px 7px rgba(0,0,0,.4);}
+
+.navbar-inverse {
+    background-color: #33332C !important;
+    border-color: #33332C !important;
+}
+
+.margin:before{
+    margin-bottom:15px;
+    content: "\00a0 ";
+}
+.calendarSection{
+    margin-top: 8%;
+}
+.consultaPersonalSection{
+    margin-top: 4%;
+}
+.consultaHeader{
+    display:inline;
+    padding-left: 15px;
+}
+.mes{
+    display: inline;
+    font-weight: bold;
+}
+.dia-label{
+    font-size: 27px;
+    color: #a9a9a9;
+}
+.calendario-dia-block{
+    width: 90px;
+    height: 45px;
+    text-align: left;
+    padding-left: 15px;
+}
+.calendario-resumen-block{
+    width: 118px;
+    height: 45px;
+    text-align: center;
+    border-radius: 4px 4px 0 0;
+    padding-top: 10px;
+    border: 1px solid #cccccc;
+    text-decoration: none;
+    box-shadow: none;
+    box-sizing: border-box;
+    color: dimgrey;
+    font-size: 14px;
+    font-weight: normal;
+}
+.span-resumen{
+    color: dimgrey !important;
+}
+.calendario-dia{
+    font-size: 14px;
+    font-weight: 600;
+    color: grey;
+}
+.calendar-day-buttons-array{
+    margin-top:15px;
+}
+.button-agregar-turno{
+    margin-top: 53px;
+    height: 60px;
+    width: 65px;
+}
+.label-nuevo-turno{
+    font-size: 11px;
+    color: #a9a9a9;
+}
+.panel{
+    border-radius:  0 0 4px 4px  !important;
+    background-color: #fafafa;
+}
+.btn-group>.btn:first-child:not(:last-child):not(.dropdown-toggle){
+    border-bottom-left-radius: 0;
+}
+.panel-hora-turno {
+    position: relative;
+    /*margin: 15px 0;*/
+    padding: 39px 19px 14px;
+    background-color: #fff;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+.panel-hora-turno:after {
+    content: attr(title);
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    padding: 3px 7px;
+    font-size: 13px;
+    font-weight: bold;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    color: #9da0a4;
+    -webkit-border-radius: 4px 0 4px 0;
+    -moz-border-radius: 4px 0 4px 0;
+    border-radius: 4px 0 4px 0;
+}
+.panel-footer{
+    background-color: #fff !important;
+}
+/*------------------end-registro--------------------------*/
+/* -----------------consulta de participantes-------------*/
+.marginSection{
+    margin-top:50px;
+}
+.list-group-item:hover{
+    color: #fff !important;
+    background-color: #337ab7 !important;
+    border-color: #337ab7 !important;
+}
+.list-group-item-heading{
+    color: inherit !important;
+}
+.list-group-item-heading:hover{
+    color: inherit !important;
+}
+.icon-label{
+    position: absolute;
+    left: 5px;
+    top: 2px;
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 18px;
+}
+.inner-addon {
+    position: relative;
+}
+.inner-addon .fa  {
+    position: absolute;
+    padding: 10px;
+    pointer-events: none;
+}
+.left-addon .fa   { left:  0px;}
+.right-addon .fa  { right: 0px;}
+
+.left-addon input  { padding-left:  40px; }
+.right-addon input { padding-right: 30px; }
+
+#filtroPersonal{
+    border-radius: 40px !important;
+}
+.detallesContainer{
+    border: 1px;
+    padding:20px;
+    background-color: rgb(247, 247, 249);
+    border-radius: 10px;
+}
+.dni-header{
+    margin-top:-15px;
+}
+.name-header{
+    margin-top:45px;
+    font-size:20px;
+    font-weight: 600;
+}
+.detallesBody{
+    margin-top: 4%;
+}
+.detallesFooter{
+    margin-top: 4%;
+}
+.center{
+    text-align: center;
+}
+.turno-content-header{
+    margin-top: -2px;
+    font-size:18px;
+}
+#btnRegresar{
+    border-radius: 25px !important;
+}
+
+/*Participantes*/
+#participantesBody{
+    margin-top: 20px;
+}
+
+.paAlmacen{
+    font-size: 12px;
+    height: 30px;
+}
+
+#participantes{
+    width: 90%
+}
+.pa-table-header{
+    background-image: linear-gradient(#f6f6f6, #e6e6e6);
+    color:dimgray;
+}
+
+.panel-hora-turno:first-child {
+
+    border-top:none; !important;
+}
+
+.editableField{
+    height: 32px;
+    padding-right: 0;
+    padding-left: 0;
+    background: transparent;
+    background-color: transparent;
+    border: 0 solid transparent;
+    border-bottom: 2px solid #e1e1e1;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    -ms-border-radius: 0;
+    -o-border-radius: 0;
+    border-radius: 0 ;
+    -webkit-box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    -ms-box-shadow: none !important;
+    -o-box-shadow: none !important;
+    box-shadow: none !important;
+    -webkit-transition: .5s;
+    -moz-transition: .5s;
+    transition: .5s;
+    -webkit-transition-timing-function: cubic-bezier(0.4,0,0.5,1);
+    -moz-transition-timing-function: cubic-bezier(0.4,0,0.5,1);
+    transition-timing-function: cubic-bezier(0.4,0,0.5,1);
+}
