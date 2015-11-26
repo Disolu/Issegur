@@ -11,7 +11,7 @@
     <div id="reporteParticipantesOperador" class="container">
         <div class="row">
             <div class="col-md-12">
-                <div id="reportesdHeader" class="pull-left">
+                <div id="reportesdHeader" class="pull-left" style="margin-bottom: 30px;">
                     <h1>Reporte de Participantes por Operador</h1>
                 </div>
             </div>
