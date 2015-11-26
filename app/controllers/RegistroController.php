@@ -103,7 +103,8 @@ class RegistroController extends BaseController {
         $registroSolicitanteObj =  new RegistroSolicitante();
         $registroParticipanteObj =  new RegistroParticipante();
 
-        $registro = $_GET['registro'];
+        $data = Input::all();
+        $registro = $data['registro'];
         /*registro de grupos*/
         $grupos = $registro['grupos'];
 
@@ -214,10 +215,11 @@ class RegistroController extends BaseController {
         $registroParticipanteObj =  new RegistroParticipante;
         $participanteOperadorObj =  new ParticipanteOperadorRelacion;
 
-        $registro = $_GET['registro'];
+        $data = Input::all();
+        $registro  = $data['registro'];
 
         //obtenemos los datos que necesitamos para validar si hay vacante para realizar el registro
-        $fechaProgramacion =$registro['fechaProgramacion'];
+        $fechaProgramacion = $registro['fechaProgramacion'];
         $turnoId = $registro['turnoId'];
         //formatemos la fecha
         $fechaFormatted = DateTime::createFromFormat('d/m/Y', $fechaProgramacion)->format('Y-m-d');
@@ -226,65 +228,64 @@ class RegistroController extends BaseController {
         $validation = array();
         $vParticipante = array();
         $resultado = true;
-        
-        $existingParticipante = Participante::where('pa_dni','=',$registro['dni'])->first();
 
-        if($existingParticipante != null){
+        $existingParticipante = Participante::where('pa_dni', '=', $registro['dni'])->first();
+
+        if ($existingParticipante != null) {
             $resultado = false;
-            $limite =  new stdClass();
+            $limite = new stdClass();
             $limite->pa_dni = $registro['dni'];
 
-            array_push($vParticipante ,$limite);
+            array_push($vParticipante, $limite);
         }
 
         //preguntamos si hay vacante
-        if($participanteObj->puedeParticipanteRegistrarse($fechaFormatted, $turnoId, 1 ,"W")){
-            if($resultado){
-        
-	            /*registro de pagos*/
-	            $nroOperacion = $registro['nroOperacion'];
-	            $fechaOperacion = $registro['fechaOperacion'];
-	            //formatemos la fechade operacion
-	            $fechaOperacionFormatted = DateTime::createFromFormat('d/m/Y', $fechaOperacion)->format('Y-m-d');
-	            //$archivo = $registro['archivo'];
-	            $montoPago = $registro['montoPago'];
-	
-	            $savedRegistro = $registroObj->inicializarRegistro();
-	//          $savedDetalleOperacion = $detalleOperacionObj->inicializarDetalleNroOperacion();
-	
-	            /*registor del participante*/
-	            //creamos al participante
-	            $participante = array (
-	                "dni" =>   $registro['dni'],
-	                "nombres" =>  $registro['nombres'],
-	                "ape_paterno" => $registro['ape_paterno'],
-	                "ape_materno" => $registro['ape_materno'],
-	                "email" =>   $registro['email'],
-	                "nroOperacion" => $nroOperacion,
-	                "fechaOperacion" => $fechaOperacionFormatted,
-	                "montoPago" => $montoPago
-	            );
-	            //lo guardamos
-	            $savedParticipante = $participanteObj->guardar($participante);
-	
-	            /*registro de la persona natural*/
-	
-	            $registroParticipanteObj->guardarRegistroParticipante($savedRegistro->reg_id, $fechaFormatted,$turnoId,$savedParticipante->pa_id);
-	
-	            /*registro de los operadores*/
-	            $operadores = $registro['selectedOperadoresIds'];
-	
-	            $participanteOperadorObj->registrarParticipanteOperadorRelaction($operadores,$savedParticipante->pa_id);
+        if ($participanteObj->puedeParticipanteRegistrarse($fechaFormatted, $turnoId, 1, "W")) {
+            if ($resultado) {
+
+                /*registro de pagos*/
+                $nroOperacion = $registro['nroOperacion'];
+                $fechaOperacion = $registro['fechaOperacion'];
+                //formatemos la fechade operacion
+                $fechaOperacionFormatted = DateTime::createFromFormat('d/m/Y', $fechaOperacion)->format('Y-m-d');
+                //$archivo = $registro['archivo'];
+                $montoPago = $registro['montoPago'];
+
+                $savedRegistro = $registroObj->inicializarRegistro();
+                //          $savedDetalleOperacion = $detalleOperacionObj->inicializarDetalleNroOperacion();
+
+                /*registor del participante*/
+                //creamos al participante
+                $participante = array(
+                    "dni" => $registro['dni'],
+                    "nombres" => $registro['nombres'],
+                    "ape_paterno" => $registro['ape_paterno'],
+                    "ape_materno" => $registro['ape_materno'],
+                    "email" => $registro['email'],
+                    "nroOperacion" => $nroOperacion,
+                    "fechaOperacion" => $fechaOperacionFormatted,
+                    "montoPago" => $montoPago
+                );
+                //lo guardamos
+                $savedParticipante = $participanteObj->guardar($participante);
+
+                /*registro de la persona natural*/
+
+                $registroParticipanteObj->guardarRegistroParticipante($savedRegistro->reg_id, $fechaFormatted, $turnoId, $savedParticipante->pa_id);
+
+                /*registro de los operadores*/
+                $operadores = $registro['selectedOperadoresIds'];
+
+                $participanteOperadorObj->registrarParticipanteOperadorRelaction($operadores, $savedParticipante->pa_id);
             }
-        }
-        else{
+        } else {
             $turno = with(new Turno)->obtenerTurnoPorIdTodos($turnoId);
 
             $resultado = false;
-            $limite =  new stdClass();
+            $limite = new stdClass();
             $limite->fecha = $fechaProgramacion;
             $limite->turno = $turno;
-            array_push($validation,$limite);
+            array_push($validation, $limite);
         }
 
         return Response::json(array(

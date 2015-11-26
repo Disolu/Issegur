@@ -251,7 +251,6 @@
             var currentDate = new Date(date[2], date[1] - 1, date[0]);
             if (dateRaw != null || $.trim(dateRaw) != "") {
                 var dia = $.datepicker.formatDate('DD', currentDate);
-                console.log(dia);
                 var optionsAsString = "<option value=''>Elija su horario</option>";
 
                 $.ajax({
@@ -505,11 +504,10 @@
                     //me.uploadVoucher();
 
                     $.ajax({
-                        type: "GET",
+                        type: "POST",
                         url: path + "/api/v1/guardarRegistroNatural",
                         data: {registro: registroRaw},
                         dataType: "json",
-                        contentType: "application/json; charset=utf-8",
                         success: function (data) {
                             //mensaje de exito
                             $("#loadingClock").hide();

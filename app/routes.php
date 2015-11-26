@@ -22,6 +22,8 @@ Route::get('intranet/login','LoginController@Initialize');
 Route::get('intranet/cerrarSesion','LoginController@Logout');
 Route::get('intranet/calendario','IntranetController@InitializeCalendar');
 Route::get('intranet/participantes','IntranetController@InitializeParticipantes');
+Route::get('intranet/reportes','IntranetController@InitializeReportes');
+Route::get('intranet/reportes/participantesPorOperador','IntranetController@InitializeRepParticipantesPorOperador');
 Route::get('intranet/reprogramacion','IntranetController@ReprogramarParticipantes');
 Route::get('intranet/generarFichaExcel/{turno}/{fecha}','IntranetController@GenerarFichaExcel');
 
@@ -127,16 +129,15 @@ Route::post("uploadExamenParticipante", function(){
 });
 
 //api
-Route::group(array('prefix' => 'api/v1'),function() {
+Route::group(array('before' => 'auth','prefix' => 'api/v1'),function() {
     //Registro Público
-    Route::get('guardarRegistro', 'RegistroController@Registrar');
     Route::get('consultarTurnosPorDia', 'RegistroController@MostrarHorariosPorDia');
     Route::get('getOperadores', 'RegistroController@ObtenerOperadores');
     Route::get('consultarDNI', 'RegistroController@ConsultarDNI');
     Route::get('consultarRUC', 'RegistroController@ConsultarRUC');
     Route::get('consultarNroOperacion','RegistroController@ConsultarNroOperacion');
-    Route::get('guardarRegistroJuridica', 'RegistroController@GuardarRegistroJuridica');
-    Route::get('guardarRegistroNatural', 'RegistroController@GuardarRegistroNatural');
+    Route::post('guardarRegistroJuridica', 'RegistroController@GuardarRegistroJuridica');
+    Route::post('guardarRegistroNatural', 'RegistroController@GuardarRegistroNatural');
 
     //Intranet
     //Login
@@ -150,10 +151,11 @@ Route::group(array('prefix' => 'api/v1'),function() {
     Route::get('guardarDetalleOperacionPorRegistro', 'IntranetController@GuardarDetalleOperacionPorRegistro');
     Route::post('actualizarParticipantes', 'IntranetController@ActualizarParticipantes');
     Route::get('registarParticipanteManual','IntranetController@RegistarParticipanteManual');
+    //Reportes
+    Route::get('reporteParticipantesByOperador','ReporteController@ReporteParticipantesByOperador');
     //Reprogramacion
     Route::get('obtenerParticipantesAReprogramar','IntranetController@ObtenerParticipantesAReprogramar');
     Route::get('reprogramarParticipante','IntranetController@ReprogramarParticipante');
-
     //ConsultaPersonal
     Route::get('buscarPersonal', 'ConsultaController@BuscarPersonal');
     Route::get('getParticipanteInfoByDNI', 'ConsultaController@GetParticipanteInfoByDNI');

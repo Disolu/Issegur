@@ -28,6 +28,27 @@ class IntranetController extends BaseController{
         }
     }
 
+    public function InitializeReportes()
+    {
+        if (Auth::check())
+        {
+            return View::make('intranet.reportes.reportesLista');
+        }
+        else{
+            return View::make('intranet.auth.login');
+        }
+    }
+
+    public function InitializeRepParticipantesPorOperador(){
+        if (Auth::check())
+        {
+            return View::make('intranet.reportes.reporteParticipantesOperador');
+        }
+        else{
+            return View::make('intranet.reportes.reporteParticipantesOperador');
+        }
+    }
+
     public function ReprogramarParticipantes(){
         if (Auth::check())
         {

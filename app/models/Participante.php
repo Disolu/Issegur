@@ -26,7 +26,7 @@ class Participante extends Eloquent
             $existingParticipante->pa_nombres = $participante["nombres"];
             $existingParticipante->pa_apellido_paterno = $participante["ape_paterno"];
             $existingParticipante->pa_apellido_materno = $participante["ape_materno"];
-            $existingParticipante->pa_email = in_array("email", $participante)? $participante["email"] : null;
+            $existingParticipante->pa_email = isset($participante["email"])? $participante["email"] : null;
             $existingParticipante->detop_numero = $participante["nroOperacion"];
             $existingParticipante->detop_fecha = $participante["fechaOperacion"] != "" ? $participante["fechaOperacion"]: null;
             $existingParticipante->detop_monto = $participante["montoPago"];
@@ -201,6 +201,17 @@ class Participante extends Eloquent
         }
         $existingParticipante->save();
 
+    }
+
+    public function reporteParticipantesPorOperador($operadorId, $fechaDesde, $fechaHasta)
+    {
+        $matchingParticipantes = DB::table('ParticipantesMasterView')
+            ->where('OperadorId', $operadorId)
+            ->whereBetween('created_at', array($fechaDesde, $fechaHasta))
+            ->select('pa_dni','pa_nombres','pa_apellido_paterno','pa_apellido_materno','RazonSocial')
+            ->get();
+
+        return $matchingParticipantes;
     }
 
     public function obtenerParticipantesAReprogramar()

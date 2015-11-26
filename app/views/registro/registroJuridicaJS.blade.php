@@ -956,16 +956,13 @@
                         grupos: me.formatGrupos
                     };
 
-                    console.log(registroRaw);
-
                     //subimos primero la imagen
                     //me.uploadVoucher();
                     $.ajax({
-                        type: "GET",
+                        type: "POST",
                         url: path + "/api/v1/guardarRegistroJuridica",
                         data: {registro: registroRaw},
                         dataType: "json",
-                        contentType: "application/json; charset=utf-8",
                         success: function (data) {
                             //mensaje de exito
                             $("#loadingClock").hide();

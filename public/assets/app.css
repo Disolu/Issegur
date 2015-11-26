@@ -312,3 +312,11 @@ input[type="text"][disabled] {
     -moz-transition-timing-function: cubic-bezier(0.4,0,0.5,1);
     transition-timing-function: cubic-bezier(0.4,0,0.5,1);
 }
+/*------------------end-Participantes--------------------------*/
+/*---------------------- Reportes-----------------------------*/
+#reportesLista{
+    margin-top: 20px;
+}
+.reportTitle{
+    font-size: large;
+}

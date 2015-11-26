@@ -35,7 +35,7 @@
                     <li><a id="calendarioLink" href="{{URL::to('intranet/calendario')}}">Calendario </a></li>
                     {{--<li><a id="participantesLink" href="{{URL::to('intranet/participantes')}}">Participantes </a></li>--}}
                     <li><a href="#">Administración</a></li>
-                    <li><a href="#">Reportes</a></li>
+                    <li><a id="reportesLink" href="{{URL::to('intranet/reportes')}}">Reportes</a></li>
                     <li><a id="reprogramacionLink" href="{{URL::to('intranet/reprogramacion')}}">Reprogramar</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
@@ -83,6 +83,9 @@
         }
         else if (currentUrl.indexOf("calendario") >= 0) {
             $("#calendarioLink").closest("li").addClass("active");
+        }
+        else if (currentUrl.indexOf("reportes") >= 0) {
+            $("#reportesLink").closest("li").addClass("active");
         }
         else if (currentUrl.indexOf("reprogramacion") >= 0) {
             $("#reprogramacionLink").closest("li").addClass("active");

@@ -1229,7 +1229,6 @@
                 participantesArray.push(parObj);
             });
 
-            console.log(participantesArray);
 
             $.ajax({
                 type: "POST",

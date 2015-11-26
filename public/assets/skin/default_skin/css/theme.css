@@ -330,10 +330,14 @@ table {
 table td {
     border-width: 1px;
     padding: 5px 20px;
-    border-style: none;
+    border-style: solid;
     border-color: #CCC;
     background-color: white;
-    /*-moz-border-radius: ;*/
+}
+
+.paContainer td{
+	border-style: none;
+
 }
 
 .calendario {
