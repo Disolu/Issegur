@@ -5,9 +5,15 @@
         me.operadores = ko.observableArray([]);
         me.loadingParticipantes = ko.observable(false);
         me.participantes = ko.observableArray([]);
-        me.fechaDesde = ko.observable(null);
+        //format dates
+        me.today = new Date();
+        me.formattedStartDate = me.today.getDate() + '/' + me.today.getMonth() + '/' + me.today.getFullYear();
+        me.today.setDate(me.today.getDate() - 30);
+        me.formattedEndDate = me.today.getDate() + '/' + me.today.getMonth() + '/' + me.today.getFullYear();
+        //
+        me.fechaDesde = ko.observable(me.formattedStartDate);
         me.IsFechaDesdeSupplied = ko.computed(function(){ return $.trim(me.fechaDesde()).length > 0}, me);
-        me.fechaHasta = ko.observable(null);
+        me.fechaHasta = ko.observable(me.formattedEndDate);
         me.IsFechaHastaSupplied = ko.computed(function(){ return $.trim(me.fechaHasta()).length > 0}, me);
         me.operadorId = ko.observable(null);
         me.IsOperadorSupplied = ko.computed(function(){ return me.operadorId()? true: false}, me);
@@ -16,8 +22,8 @@
 
         me.initialize = function(){
             //datepickers setting
-            $("#inputDesdeFecha").datepicker();
-            $("#inputHastaFecha").datepicker();
+            $("#inputDesdeFecha").datepicker({ dateFormat: 'dd/mm/yy' });
+            $("#inputHastaFecha").datepicker({ dateFormat: 'dd/mm/yy' });
             //cargamos los operadores
             me.loadOperadores();
 

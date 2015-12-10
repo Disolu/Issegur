@@ -129,7 +129,8 @@ Route::post("uploadExamenParticipante", function(){
 });
 
 //api
-Route::group(array('before' => 'auth','prefix' => 'api/v1'),function() {
+//publico, sin indentificacion
+Route::group(array('prefix' => 'api/v1'), function(){
     //Registro Público
     Route::get('consultarTurnosPorDia', 'RegistroController@MostrarHorariosPorDia');
     Route::get('getOperadores', 'RegistroController@ObtenerOperadores');
@@ -139,9 +140,17 @@ Route::group(array('before' => 'auth','prefix' => 'api/v1'),function() {
     Route::post('guardarRegistroJuridica', 'RegistroController@GuardarRegistroJuridica');
     Route::post('guardarRegistroNatural', 'RegistroController@GuardarRegistroNatural');
 
-    //Intranet
-    //Login
+    //ConsultaPersonal
+    Route::get('buscarPersonal', 'ConsultaController@BuscarPersonal');
+    Route::get('getParticipanteInfoByDNI', 'ConsultaController@GetParticipanteInfoByDNI');
+
+    //Intranet Login
     Route::get('login', 'LoginController@ValidateUser');
+});
+
+//privado, requiere autentificacion
+Route::group(array('before' => 'auth','prefix' => 'api/v1'),function() {   
+    //Intranet
     //Calendario
     Route::get('obtenerParticipantesPorFechaYDia','IntranetController@ObtenerParticipantesPorFechaYDia');
     Route::get('agregarTurnoManual','IntranetController@AgregarTurnoManual');
@@ -156,7 +165,5 @@ Route::group(array('before' => 'auth','prefix' => 'api/v1'),function() {
     //Reprogramacion
     Route::get('obtenerParticipantesAReprogramar','IntranetController@ObtenerParticipantesAReprogramar');
     Route::get('reprogramarParticipante','IntranetController@ReprogramarParticipante');
-    //ConsultaPersonal
-    Route::get('buscarPersonal', 'ConsultaController@BuscarPersonal');
-    Route::get('getParticipanteInfoByDNI', 'ConsultaController@GetParticipanteInfoByDNI');
+
 });

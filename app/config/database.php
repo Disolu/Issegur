@@ -55,9 +55,10 @@ return array(
 		'mysql' => array(
 			'driver'    => 'mysql',
 			'host'      => 'localhost',
+			'port' => '8889',
 			'database'  => 'IssegurReg',
 			'username'  => 'root',
-			'password'  => 'warcraft196',
+			'password'  => 'root',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_general_ci',
 			'prefix'    => '',

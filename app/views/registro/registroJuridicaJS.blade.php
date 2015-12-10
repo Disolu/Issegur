@@ -29,6 +29,8 @@
             return clone;
         };
 
+        
+
         me.consultarDNIButton = function (data,event) {
             $button = $(event.target);
             if ($.trim(me.dni()).length > 0) {
