@@ -30,18 +30,27 @@ class RegistroController extends BaseController {
 
     public function MostrarHorariosPorDia(){
         $dia = $_GET['nombreDia'];
+        $fecha = DateTime::createFromFormat('d/m/Y', $_GET['fecha'])->format('Y-m-d');
         $turnos = with(new Turno)->consultarTurnosPorDia($dia);
         //creamos el array para guardar los resultados
         $array = array();
+        //obtenemos la hora y fecha actual para validar 
+        $currentTime = date('H', time());
+        $currentDate = date('Y-m-d');
 
         foreach($turnos as $turno){
-            $horaInicio = date("g A", strtotime($turno->turno_hora_inicio));
-            $horaFin = date("g A", strtotime($turno->turno_hora_fin));
-            $horario = $horaInicio.' a '.$horaFin;
-            $obj = new stdClass();
-            $obj->turnoId = $turno->turno_id;
-            $obj->turnoHorario = $horario;
-            array_push($array, $obj);
+            //luego obtenemos la hora en formato 24 de la hora de inicio del turno
+            $horaInicioTime =  date("H", strtotime($turno->turno_hora_inicio)); 
+            if(($fecha > $currentDate) || (($fecha == $currentDate) && ($currentTime < $horaInicioTime))) {
+                $horaInicio = date("g:i A", strtotime($turno->turno_hora_inicio));           
+                $horaFin = date("g:i A", strtotime($turno->turno_hora_fin));
+                $horario = $horaInicio.' a '.$horaFin;
+                $obj = new stdClass();
+                $obj->turnoId = $turno->turno_id;
+                $obj->turnoHorario = $horario;
+                array_push($array, $obj);
+            }         
+
         }
 
         return Response::json(array(

@@ -6,7 +6,7 @@ var GlobalParameters = new (function () {
     var me = this;
 
     me.appPath = "";
-    me.grupoIndex = 0;
+    me.grupoIndex = 0; 
 
     return {
         appPath : me.appPath,

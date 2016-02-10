@@ -43,7 +43,7 @@
                 <div class="col-md-6 col-md-offset-3" style="margin-top: 20px">
                     <div class="inner-addon left-addon">
                         <label for="filtroPersonal" class="icon-label"><i class="fa fa-search fa-1x"></i></label>
-                        <input id="filtroPersonal" class="form-control input-lg" type="text" placeholder="Ingrese un DNI, nombre o apellido">
+                        <input id="filtroPersonal" class="form-control input-lg" type="text" placeholder="Ingrese un DNI, nombre o apellido o RUC">
                     </div>
                 </div>
             </div>
@@ -75,13 +75,13 @@
                             <th class="pa-table-header center" style="width:75px;">Foto</th>
                             @endif
                             @if (Auth::user()->rol_id == 3 || Auth::user()->rol_id == 1)
-                                <th class="pa-table-header center" style="width:75px;">Examen</th>
+                                <th class="pa-table-header center" style="width:105px;">Examen</th>
                             @endif
                             </thead>
                             <tbody>
                             <!-- ko if: !loadingParticipantes() && participantes().length < 1 -->
                             <tr>
-                                <td colspan="12">
+                                <td colspan="15">
                                     No existen participantes registrados.
                                 </td>
                             </tr>
@@ -173,13 +173,14 @@
                                 @endif
                                 @if (Auth::user()->rol_id == 3 || Auth::user()->rol_id == 1)
                                 <td class="center tdExamen">
-                                    <span data-bind="visible: paInfo.pa_examen != null && paInfo.pa_examen != '', attr:{'title': paInfo.pa_examen.replace('examenes/','')}"
-                                          class="examenClip" data-toggle="tooltip" data-placement="left"  style="display: none; cursor: pointer">
-                                        <i class="fa fa-paperclip"></i>
+                                    <span data-bind="attr:{'title': paInfo.pa_examen.replace('examenes/','')}"
+                                          class="examenClip" data-toggle="tooltip" data-placement="left" style="cursor: pointer">
+                                        <i class="examenClipIcon"></i>
                                     </span>
                                     <button class="btn btn-default btn-xs paUploadExamen"><i class="fa fa-upload"></i></button>
+                                    <a data-bind="visible: paInfo.pa_examen != '', attr:{'href':  '../' + paInfo.pa_examen}" target="_blank" class="btn btn-default btn-xs paExamen"><i class="fa fa-image"></i></a>
                                     <form class="paExamenForm">
-                                        <input type="file" data-bind="attr: {'data-url' : paInfo.pa_examen}"
+                                        <input type="file" 
                                                class="uploadExamenHidden" name="examenData" style="display: none"/>
                                     </form>
                                 </td>

@@ -9,12 +9,13 @@
     <!-- Bootstrap CSS -->
     {{HTML::style('assets/bootstrap/css/bootstrap.min.css')}}
 
-    {{ HTML::style('assets/css/font-awesome.min.css') }}
+    {{HTML::style('assets/css/font-awesome.min.css') }}
 
-    {{ HTML::style('assets/app.css') }}
+    {{HTML::style('assets/app.css') }}
 
     <!--Toastr -->
-    {{HTML::style('http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')}}
+    <!--{{HTML::style('http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')}}-->
+    {{HTML::style('assets/vendor/toastr/toastr.min.css')}}
 
     <!--Bootstrap Multiselect-->
     {{HTML::style('assets/bootstrap-multiselect/css/bootstrap-multiselect.css')}}
@@ -66,7 +67,8 @@
     {{HTML::script('assets/js/JIC.js')}}
 
     <!--Toastr-->
-    {{ HTML::script('http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js') }}
+    <!--{{ HTML::script('http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js') }}-->
+    {{HTML::script('assets/vendor/toastr/toastr.min.js')}}
 
     <!--Bootstrap Multiselect-->
     {{HTML::script('assets/bootstrap-multiselect/js/bootstrap-multiselect.js')}}
@@ -78,16 +80,17 @@
         var path = GlobalParameters.appPath;
 
         var currentUrl = window.location.href;
-        if (currentUrl.indexOf("participantes") >= 0) {
+
+        if (currentUrl.indexOf("intranet/participantes") >= 0) {
             $("#calendarioLink").closest("li").addClass("active");
         }
-        else if (currentUrl.indexOf("calendario") >= 0) {
+        else if (currentUrl.indexOf("/calendario") >= 0) {
             $("#calendarioLink").closest("li").addClass("active");
         }
-        else if (currentUrl.indexOf("reportes") >= 0) {
+        else if (currentUrl.indexOf("/reportes") >= 0) {
             $("#reportesLink").closest("li").addClass("active");
         }
-        else if (currentUrl.indexOf("reprogramacion") >= 0) {
+        else if (currentUrl.indexOf("/reprogramacion") >= 0) {
             $("#reprogramacionLink").closest("li").addClass("active");
         }
         else{

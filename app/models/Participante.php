@@ -75,7 +75,8 @@ class Participante extends Eloquent
                 $query->where('pa_dni','LIKE', '%'.$searchText.'%')
                     ->OrWhere('pa_nombres','LIKE', '%'.$searchText.'%')
                     ->OrWhere('pa_apellido_paterno','LIKE', '%'.$searchText.'%')
-                    ->OrWhere('pa_apellido_materno','LIKE', '%'.$searchText.'%');
+                    ->OrWhere('pa_apellido_materno','LIKE', '%'.$searchText.'%')
+                    ->OrWhere('RUC','LIKE', '%'.$searchText.'%');
             })
             ->select('pa_id','pa_dni','pa_nombres','pa_apellido_paterno','pa_apellido_materno','RUC','RazonSocial','OperadorId','Operador','RegistroId','NroOperacionFecha','NroOperacionMonto','NroOperacion' ,'pa_foto','pa_ficha_asistencia','pa_examen','pa_asistencia','pa_nota','pa_aprobado')
             ->orderBy('created_at','asc')
@@ -130,6 +131,10 @@ class Participante extends Eloquent
             ->where('FechaProgramacion', $fecha)
             ->where('TurnoId', $turnoId)
             ->where('Modalidad', $modalidad)
+            ->Where(function ($query) {
+                $query->where('pa_asistencia',0)
+                    ->Orwhere('pa_asistencia', null);
+            })
             ->count();
 
         if($modalidad == "W"){
@@ -197,7 +202,9 @@ class Participante extends Eloquent
             $existingParticipante->pa_ficha_asistencia = $participante["ficha"];
         }
         if($participante["examen"]){
-            $existingParticipante->pa_examen = $participante["examen"];
+            if ((strlen($existingParticipante->pa_examen) == 0) || ((strlen($existingParticipante->pa_examen) > 0) && (strlen($participante["examen"]) != 0))) {
+                $existingParticipante->pa_examen = $participante["examen"];
+            }            
         }
         $existingParticipante->save();
 

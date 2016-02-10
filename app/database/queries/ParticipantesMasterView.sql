@@ -6,7 +6,7 @@ t.turno_id 'TurnoId', t.turno_dia 'Dia',t.turno_hora_inicio 'HoraInicio', CONCAT
 (case when e.emp_razon_social is null then 'N' else 'J' end) 'TipoRegistro', rs.regsoli_Nombre 'SolicitanteNombre', rs.regsoli_Apellidos 'SolicitanteApellidos', rs.regsoli_Telefono 'SolicitanteTelefono', rs.regsoli_Email 'SolicitanteEmail',
 o.op_id 'OperadorId' ,o.op_nombre 'Operador',
 pa.* from Participante pa
-left join RegistroParticipante rpa on pa.pa_id = rpa.pa_id
+join RegistroParticipante rpa on pa.pa_id = rpa.pa_id
 left join ParticipanteOperadorRelacion paop on pa.pa_id = paop.pa_id
 left join Empresa e on rpa.emp_id  = e.emp_id
 join Operador o on paop.op_id = o.op_id

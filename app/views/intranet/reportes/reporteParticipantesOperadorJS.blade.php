@@ -7,9 +7,9 @@
         me.participantes = ko.observableArray([]);
         //format dates
         me.today = new Date();
-        me.formattedStartDate = me.today.getDate() + '/' + me.today.getMonth() + '/' + me.today.getFullYear();
+        me.formattedEndDate = me.today.getDate() + '/' + (me.today.getMonth() + 1)+ '/' + me.today.getFullYear();
         me.today.setDate(me.today.getDate() - 30);
-        me.formattedEndDate = me.today.getDate() + '/' + me.today.getMonth() + '/' + me.today.getFullYear();
+        me.formattedStartDate = me.today.getDate() + '/' + (me.today.getMonth() + 1) + '/' + me.today.getFullYear();
         //
         me.fechaDesde = ko.observable(me.formattedStartDate);
         me.IsFechaDesdeSupplied = ko.computed(function(){ return $.trim(me.fechaDesde()).length > 0}, me);
@@ -94,6 +94,17 @@
             });
         };
 
+        me.setDetalleReporte = function(){
+            $.get(path + "/api/v1/reporteParticipantesByOperadorDetalles", 
+            function (data) {
+                
+            },
+            function (data) {
+                toastr.error('Hubo un error al cargar el detalle del reporte', 'Error');
+            });
+
+        };
+
         me.reporteParticipantesByOperador = function(rawParticipantes){
             if (rawParticipantes) {
                 me.participantes.removeAll();
@@ -114,7 +125,7 @@
                         me.loadingParticipantes(false);
                     },
                     error: function (data) {
-                        toastr.error('Hubo un error al recuperar los operadores','Error');
+                        toastr.error('Hubo un error al cargar los datos','Error');
                         console.log(data);
                     }
                 });

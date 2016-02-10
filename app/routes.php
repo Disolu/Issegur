@@ -93,12 +93,11 @@ Route::post("sendConfirmationMail" , function(){
 });
 //upload participante photo
 Route::post("uploadParticipanteFoto", function(){
-    //$file = Input::file("paPhotoData");
-   // $file = Input::get("photoImg");
     $file = Input::all();
-    //$originalName = Input::file("paPhotoData")->getClientOriginalName();//nombre original de la foto
-    //guardamos la imagen en public/imgs con el nombre original
-    $file['photoImg']->move("fotos",$file['photoImg']->getClientOriginalName());
+    if ($file != null) {
+        //guardamos la imagen en public/imgs con el nombre original
+        $file['photoImg']->move("fotos",$file['photoImg']->getClientOriginalName());
+    }
 
     return Response::json(array(
         'resultado' =>  true
@@ -108,8 +107,10 @@ Route::post("uploadParticipanteFoto", function(){
 //upload ficha asistencia
 Route::post("uploadFichaAsistencia", function(){
     $file = Input::all();
-    //guardamos la imagen en public/imgs con el nombre original
-    $file["fichaAsistenciaData"]->move("fichas",$file["fichaAsistenciaData"]->getClientOriginalName());
+    if ($file != null) {
+        //guardamos la imagen en public/imgs con el nombre original
+        $file["fichaAsistenciaData"]->move("fichas",$file["fichaAsistenciaData"]->getClientOriginalName());
+    }
 
     return Response::json(array(
         'resultado' =>  true
@@ -119,8 +120,10 @@ Route::post("uploadFichaAsistencia", function(){
 //upload examen participante
 Route::post("uploadExamenParticipante", function(){
     $file = Input::all();
-    //guardamos la imagen en public/imgs con el nombre original
-    $file["examenData"]->move("examenes",$file["examenData"]->getClientOriginalName());
+    if ($file["examenData"] != null) {
+        //guardamos la imagen en public/imgs con el nombre original
+        $file["examenData"]->move("examenes",$file["examenData"]->getClientOriginalName()); 
+    }
 
     return Response::json(array(
         'resultado' =>  true
@@ -162,6 +165,7 @@ Route::group(array('before' => 'auth','prefix' => 'api/v1'),function() {
     Route::get('registarParticipanteManual','IntranetController@RegistarParticipanteManual');
     //Reportes
     Route::get('reporteParticipantesByOperador','ReporteController@ReporteParticipantesByOperador');
+    Route::get('reporteParticipantesByOperadorDetalle','ReporteController@ReporteParticipantesByOperadorDetalle');
     //Reprogramacion
     Route::get('obtenerParticipantesAReprogramar','IntranetController@ObtenerParticipantesAReprogramar');
     Route::get('reprogramarParticipante','IntranetController@ReprogramarParticipante');

@@ -807,9 +807,13 @@
             if ($target[0].files[0].name) {
                 var nombreArchivoArray = $target.val().split('\\');
                 $(e.target).parents('form').siblings('.examenClip').show();
+                $(e.target).parents('form').siblings('.examenClip').children('.examenClipIcon').addClass('fa fa-paperclip');
                 $(e.target).parents('form').siblings('.examenClip').attr('title', nombreArchivoArray[2]);
-                $(e.target).parents('form').find('.uploadExamenHidden').attr('data-url', nombreArchivoArray[2]);
+                $(e.target).parents('form').find('.uploadExamenHidden').attr('data-url', "../examenes/" + nombreArchivoArray[2]);
+                $(e.target).parents('td').find('.paExamen').attr('href',"../examenes/" + nombreArchivoArray[2]);
+                //$(e.target).parents('form').find('.uploadExamenHidden').attr('data-url', nombreArchivoArray[2]);
             }
+
         };
 
         me.onUploadPhotoClick = function (e) {
@@ -1199,13 +1203,27 @@
 
                 //examen
                 var examenFile = $(this).children('.tdExamen').find('.uploadExamenHidden').attr('data-url');
-                var examenUrl = "examenes/" + examenFile;
+                console.log(examenFile);
 
-                var $examenForm = $(this).children('.tdExamen').find('.paExamenForm');
                 if (examenFile) {
-                    me.uploadExamenParticipante($examenForm);
-                }
+                    // si es que recien se estan guardando...
+                    /*if(examenFile.indexOf("examenes/") == -1){
+                        examenUrl = "examenes/" + examenFile;    
+                    }
+                    else{
+                        examenUrl = examenFile; 
+                    } */               
 
+                    var $examenForm = $(this).children('.tdExamen').find('.paExamenForm');
+
+                    me.uploadExamenParticipante($examenForm);
+
+                    //mostramos el icono de la camara y ocultamos el clip
+                    $(this).children('.tdExamen').find('.examenClip').children('.examenClipIcon').removeClass('fa fa-paperclip');
+                    $(this).children('.tdExamen').find('.paExamen').show();
+                }
+                
+                
                 var parObj = {
                     id: $(this).attr('data-id'),
                     dni: $(this).children('.tdDni').find('.paDNI').text(),
@@ -1223,7 +1241,7 @@
                     montoOperacion: $(this).children('.tdMontoOperacion').children('.paMontoOperacion').text(),
                     foto: fotoInfo? fotoInfo : null,
                     ficha: fichaAsistenciaNombre ? fichaAsistenciaUrl : null,
-                    examen: examenFile? examenUrl : null
+                    examen: examenFile? examenFile : null
                 };
 
                 participantesArray.push(parObj);
@@ -1251,62 +1269,69 @@
 
         me.uploadPhotoParticipante = function ($fotoForm) {
             var formData = new FormData($fotoForm[0]);
-            $.ajax({
-                type: "POST",
-                async: false,
-                url: path + "/uploadParticipanteFoto",
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    console.log(data);
-                },
-                error: function (data) {
-                    console.log(data);
-                    console.log("error ;(");
-                }
-            });
+            if(formData != null){
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: path + "/uploadParticipanteFoto",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        console.log("error ;(");
+                    }
+                });
+            }
+            
         };
 
         me.uploadFichaAsistencia = function ($fichaAsistenciaForm) {
             var formData = new FormData($fichaAsistenciaForm[0]);
-            $.ajax({
-                type: "POST",
-                async: false,
-                url: path + "/uploadFichaAsistencia",
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    console.log(data);
-                },
-                error: function (data) {
-                    console.log(data);
-                    console.log("error ;(");
-                }
-            });
+            if(formData != null){
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: path + "/uploadFichaAsistencia",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        console.log("error ;(");
+                    }
+                });
+            }
         };
 
         me.uploadExamenParticipante = function ($examenForm) {
             var formData = new FormData($examenForm[0]);
-            $.ajax({
-                type: "POST",
-                async: false,
-                url: path + "/uploadExamenParticipante",
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (data) {
-                    console.log(data);
-                },
-                error: function (data) {
-                    console.log(data);
-                    console.log("error ;(");
-                }
-            });
+            if(formData != null){
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: path + "/uploadExamenParticipante",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        console.log("error ;(");
+                    }
+                });
+            }
         };
 
         me.onAsistenciaClick = function (e) {

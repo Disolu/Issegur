@@ -25,4 +25,9 @@ class ReporteController extends BaseController{
         ), 200
         )->setCallback(Input::get('callback'));
     }
+
+    public function ReporteParticipantesByOperadorDetalle(){
+        
+    }
+
 }

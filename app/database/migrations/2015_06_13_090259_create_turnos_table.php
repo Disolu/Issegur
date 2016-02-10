@@ -19,6 +19,7 @@ class CreateTurnosTable extends Migration {
             $table->time('turno_hora_inicio');
             $table->time('turno_hora_fin');
             $table->date('turno_fecha_unica')->nullable();
+            $table->boolean('turno_activo')->default(true);
 			$table->timestamps();
 		});
 	}

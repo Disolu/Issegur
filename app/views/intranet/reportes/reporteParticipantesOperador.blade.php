@@ -9,10 +9,19 @@
 @stop
 @section('main')
     <div id="reporteParticipantesOperador" class="container">
+        <ul class="breadcrumb">
+            <li><a href="{{URL::to('intranet/reportes')}}">Reportes</a> </li>
+            <li class="active">Reporte de Participantes por Operador</li>
+        </ul>
         <div class="row">
-            <div class="col-md-12">
-                <div id="reportesdHeader" class="pull-left" style="margin-bottom: 30px;">
+            <div class="col-md-9">
+                <div id="reportedHeader" class="pull-left" style="margin-bottom: 30px;">
                     <h1>Reporte de Participantes por Operador</h1>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div id="reporteTotalRegistros" class="pull-right" style="margin-top: 30px;">
+                    <h5>Total de registros: <strong>20</strong></h5>
                 </div>
             </div>
         </div>

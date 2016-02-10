@@ -257,7 +257,7 @@
                     type: "GET",
                     url: path + "/api/v1/consultarTurnosPorDia",
                     async: false,
-                    data: {nombreDia: dia },
+                    data: {nombreDia: dia , fecha: dateRaw},
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {

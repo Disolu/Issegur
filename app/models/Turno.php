@@ -12,7 +12,10 @@ class Turno extends Eloquent
     protected $primaryKey = 'turno_id';
 
     public function consultarTurnosPorDia($dia){
-        $turnos = DB::table('Turno')->where('turno_dia', $dia)->get();
+        $turnos = DB::table('Turno')
+        ->where('turno_dia', $dia)
+        ->where('turno_activo', 1)
+        ->get();
 
         return $turnos;
     }
@@ -20,8 +23,8 @@ class Turno extends Eloquent
     public function obtenerTurnoPorId($turnoId){
         $turno = DB::table('Turno')->where('turno_id', $turnoId)->where('turno_fecha_unica', null)->first();
 
-        $horaInicio = date("g A", strtotime($turno->turno_hora_inicio));
-        $horaFin = date("g A", strtotime($turno->turno_hora_fin));
+        $horaInicio = date("g:i A", strtotime($turno->turno_hora_inicio));
+        $horaFin = date("g:i A", strtotime($turno->turno_hora_fin));
         $horario = $horaInicio.' - '.$horaFin;
 
         return $horario;
@@ -30,8 +33,8 @@ class Turno extends Eloquent
     public function obtenerTurnoPorIdTodos($turnoId){
         $turno = DB::table('Turno')->where('turno_id', $turnoId)->first();
 
-        $horaInicio = date("g A", strtotime($turno->turno_hora_inicio));
-        $horaFin = date("g A", strtotime($turno->turno_hora_fin));
+        $horaInicio = date("g:i A", strtotime($turno->turno_hora_inicio));
+        $horaFin = date("g:i A", strtotime($turno->turno_hora_fin));
         $horario = $horaInicio.' - '.$horaFin;
 
         return $horario;
