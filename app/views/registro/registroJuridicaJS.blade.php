@@ -165,7 +165,7 @@
         me.state = "";
 
         me.onFechaProgramacionChange = function () {
-            var dateRaw = me.fechaProgramacion();//$("#dtpFechaProgramacion").datepicker('getDate');
+            var dateRaw = me.fechaProgramacion();
             var date = dateRaw.split("/");
             var currentDate = new Date(date[2], date[1] - 1, date[0]);
             if (dateRaw != null || $.trim(dateRaw) != "") {
@@ -176,7 +176,7 @@
                     type: "GET",
                     url: path + "/api/v1/consultarTurnosPorDia",
                     async: false,
-                    data: {nombreDia: dia },
+                    data: {nombreDia: dia , fecha: dateRaw},
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {

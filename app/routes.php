@@ -166,8 +166,12 @@ Route::group(array('before' => 'auth','prefix' => 'api/v1'),function() {
     //Reportes
     Route::get('reporteParticipantesByOperador','ReporteController@ReporteParticipantesByOperador');
     Route::get('reporteParticipantesByOperadorDetalle','ReporteController@ReporteParticipantesByOperadorDetalle');
+    Route::get('getReportParticipantesPorOperadorPagerDetails', 'ReporteController@GetReportParticipantesPorOperadorPagerDetails');
     //Reprogramacion
     Route::get('obtenerParticipantesAReprogramar','IntranetController@ObtenerParticipantesAReprogramar');
     Route::get('reprogramarParticipante','IntranetController@ReprogramarParticipante');
 
 });
+
+
+

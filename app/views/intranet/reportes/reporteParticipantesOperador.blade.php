@@ -21,7 +21,7 @@
             </div>
             <div class="col-md-3">
                 <div id="reporteTotalRegistros" class="pull-right" style="margin-top: 30px;">
-                    <h5>Total de registros: <strong>20</strong></h5>
+                    <h5>Total de registros: <strong data-bind='text: totalRows'></strong></h5>
                 </div>
             </div>
         </div>
@@ -75,7 +75,25 @@
                     </div>
                 </div>
             </div>
+        </div>
 
+        <div class="row">
+            <div class="col-md-12">
+            <!-- ko if: pageNumberArray().length > 3 -->
+                <nav class="center" style="margin-bottom:-20px;">
+                    <ul id="pager" class="pagination">
+                        <!-- ko foreach: pageNumberArray -->
+                            <!-- ko if: $data == $parent.currentPageNumber() -->
+                                <li class="active"><a href="#" data-bind="html: $data, click: $parent.pageClick"></a></li>
+                            <!-- /ko -->
+                            <!-- ko ifnot: $data == $parent.currentPageNumber() -->
+                                <li><a href="#" data-bind="html: $data, click: $parent.pageClick"></a></li>
+                            <!-- /ko -->
+                        <!-- /ko -->
+                    </ul>
+                </nav>
+            <!-- /ko -->
+            </div>
         </div>
 
         <div class="row">
@@ -84,9 +102,10 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                         <th class="pa-table-header center" style="width: 70px;">N°</th>
-                        <th class="pa-table-header center" style="width: 120px">DNI</th>
-                        <th class="pa-table-header">Participante</th>
-                        <th class="pa-table-header center">Empresa</th>
+                        <th class="sortable pa-table-header center" data-sort="pa_dni"
+                        style="width: 120px;">DNI <i class="fa fa-sort"></i></th>
+                        <th class="sortable pa-table-header" data-sort="pa_apellido_paterno">Participante <i class="fa fa-sort"></i></th>
+                        <th class="sortable pa-table-header center" data-sort="RazonSocial">Empresa <i class="fa fa-sort"></i></th>
                         </thead>
                         <tbody>
                         <!-- ko if: !loadingParticipantes() && participantes().length < 1 -->
@@ -104,8 +123,8 @@
                         </tr>
                         <!-- /ko -->
                         <!--ko foreach: { data: participantes, as: 'paInfo' } -->
-                        <tr class="participante" data-bind="attr:{'data-id': paInfo.pa_id}">
-                            <td data-bind="text: $index() + 1" class="center"></td>
+                        <tr class="participante data-row" data-bind="attr:{'data-id': paInfo.pa_id}">
+                            <td data-bind="text: index" class="center"></td>
                             <td data-bind="text: paInfo.pa_dni" class="center"></td>
                             <td data-bind="text: paInfo.pa_nombres + ' ' + paInfo.pa_apellido_paterno + ' ' + paInfo.pa_apellido_materno"></td>
                             <td data-bind="text: paInfo.RazonSocial" class="center"></td>

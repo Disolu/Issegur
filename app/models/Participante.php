@@ -202,7 +202,7 @@ class Participante extends Eloquent
             $existingParticipante->pa_ficha_asistencia = $participante["ficha"];
         }
         if($participante["examen"]){
-            if ((strlen($existingParticipante->pa_examen) == 0) || ((strlen($existingParticipante->pa_examen) > 0) && (strlen($participante["examen"]) != 0))) {
+            if ((strlen($existingParticipante->pa_examen) == 0) || ((strlen($existingParticipante->pa_examen) > 0) && ($participante["examen"] != null))) {
                 $existingParticipante->pa_examen = $participante["examen"];
             }            
         }
@@ -210,13 +210,26 @@ class Participante extends Eloquent
 
     }
 
-    public function reporteParticipantesPorOperador($operadorId, $fechaDesde, $fechaHasta)
+    public function reporteParticipantesPorOperador($operadorId, $fechaDesde, $fechaHasta, $skip, $take, $sortField, $sortDirection)
     {
         $matchingParticipantes = DB::table('ParticipantesMasterView')
             ->where('OperadorId', $operadorId)
             ->whereBetween('created_at', array($fechaDesde, $fechaHasta))
             ->select('pa_dni','pa_nombres','pa_apellido_paterno','pa_apellido_materno','RazonSocial')
+            ->skip($skip)->take($take)
+            ->orderBy($sortField, $sortDirection)
             ->get();
+
+        return $matchingParticipantes;
+    }
+
+    public function reporteParticipantesPorOperadorCount($operadorId, $fechaDesde, $fechaHasta)
+    {
+        $matchingParticipantes = DB::table('ParticipantesMasterView')
+            ->where('OperadorId', $operadorId)
+            ->whereBetween('created_at', array($fechaDesde, $fechaHasta))
+            ->select('pa_dni','pa_nombres','pa_apellido_paterno','pa_apellido_materno','RazonSocial')
+            ->count();
 
         return $matchingParticipantes;
     }

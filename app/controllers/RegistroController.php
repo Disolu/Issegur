@@ -31,7 +31,7 @@ class RegistroController extends BaseController {
     public function MostrarHorariosPorDia(){
         $dia = $_GET['nombreDia'];
         $fecha = DateTime::createFromFormat('d/m/Y', $_GET['fecha'])->format('Y-m-d');
-        $turnos = with(new Turno)->consultarTurnosPorDia($dia);
+        $turnos = with(new Turno)->consultarTurnosPorDia($dia, $fecha);
         //creamos el array para guardar los resultados
         $array = array();
         //obtenemos la hora y fecha actual para validar 

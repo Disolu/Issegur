@@ -20,15 +20,119 @@
         me.isSearchValid = ko.observable(true);
         me.suppressValidationMessages = ko.observable(true);
 
+        //reportDetails
+        me.sortField = ko.observable("pa_apellido_paterno");
+        me.sortDirection = ko.observable("asc");
+        me.pageSize = ko.observable();
+        me.numberOfPages = ko.observable();
+        me.pageNumberArray = ko.observableArray([]);
+        me.totalRows = ko.observable(0);
+        //intially 1
+        me.currentPageNumber = ko.observable(1);
+
         me.initialize = function(){
             //datepickers setting
             $("#inputDesdeFecha").datepicker({ dateFormat: 'dd/mm/yy' });
             $("#inputHastaFecha").datepicker({ dateFormat: 'dd/mm/yy' });
+            //evento del sorting para la cabecera de la tabla
+            $("th.sortable").on("click", me.headerClick);
             //cargamos los operadores
             me.loadOperadores();
 
-            ko.applyBindings(reportViewModel, $("#reporteParticipantesOperador")[0])
+            ko.applyBindings(reportViewModel, $("#reporteParticipantesOperador")[0]);
         };
+
+        me.headerClick = function(e){
+            var $clickedTh = $(e.target);
+            var $clickedTh = $clickedTh.hasClass('sortable') ? $clickedTh : $clickedTh.closest('th.sortable');
+            var $icon = $clickedTh.find('i.fa');
+            var hasSortUp = $icon.hasClass("fa-sort-asc");
+            var sortField = $clickedTh.attr("data-sort");
+            var sortDirection;
+            $("i.fa").removeClass("fa-sort").removeClass("fa-sort-asc")
+                            .removeClass("fa-sort-desc").addClass("fa-sort");
+            if(hasSortUp){
+                $icon.removeClass("fa-sort").addClass("fa-sort-desc");
+                sortDirection = "desc";
+            }else{
+                $icon.removeClass("fa-sort").addClass("fa-sort-asc");
+                sortDirection = "asc";
+            }
+            me.participantes.removeAll();
+            me.loadingParticipantes(true);
+            me.sortDirection(sortDirection);
+            me.sortField(sortField);
+            var loadReport = me.reporteParticipantesByOperador(me.operadorId(), me.fechaDesde(),
+                                                                me.fechaHasta(),0, me.pageSize(), me.sortField(), 
+                                                                me.sortDirection());
+            me.currentPageNumber(1);
+            // loadReport.done(function(){
+                
+            // });
+        }
+
+        me.pageClick = function (clickedPage) {
+            var previousPage = me.currentPageNumber();
+            //variable to tell the table to slide or not
+            var animateTable = false;
+            if(previousPage != clickedPage){
+                if(clickedPage == '&laquo;'){
+                    //only want to lower it if it isn't one.
+                    if(previousPage != 1){
+                        me.currentPageNumber(previousPage - 1);
+                        animateTable = true;
+                    }
+                }else if (clickedPage == '&raquo;'){   
+                    if(previousPage < me.numberOfPages()){
+                        me.currentPageNumber(previousPage + 1);
+                        animateTable = true;
+                    }
+                }else{
+                    me.currentPageNumber(clickedPage);
+                    animateTable = true;
+                }
+                if(animateTable){
+                    $(".data-row").fadeOut('fast');
+                    //me.isLoading(true);
+                    var loadNewData = me.reporteParticipantesByOperador(me.operadorId(), me.fechaDesde(),
+                                                      me.fechaHasta(),(me.currentPageNumber() - 1) * me.pageSize(), 
+                                                      me.pageSize(), me.sortField(), me.sortDirection());
+                    loadNewData.done(function(){
+                        $(".data-row").fadeIn('fast');
+                    });
+                    
+                }
+            }
+        };
+
+        me.setReportPagerDetails = function () {
+            //this gets the values for pagesize and number of pages
+            //and sets the observables in the viewmodel            
+            $.ajax({
+                type: "GET",
+                url: path + "/api/v1/getReportParticipantesPorOperadorPagerDetails",
+                dataType: "json",
+                data: {operadorId: me.operadorId(), fechaInicio: me.fechaDesde(), fechaFin: me.fechaHasta()},
+                contentType: "application/json"
+            }).done(function (data) {
+                me.pageSize(data.pageSize);
+                me.numberOfPages(data.numberOfPages);
+                me.totalRows(data.totalRows);
+                var numArray = new Array();
+                numArray.push('&laquo;');
+                for(var i = 1; i <= me.numberOfPages(); i++){
+                    numArray.push(i);
+                }
+                numArray.push('&raquo;');
+                me.pageNumberArray(numArray);
+                //once we have the pagesize and numberofpages we load the inital data
+                me.reporteParticipantesByOperador(me.operadorId(), me.fechaDesde(),
+                                                  me.fechaHasta(),0, me.pageSize(), me.sortField(), me.sortDirection());
+            }).fail(function () {
+                //viewModel.isLoading(false);
+                console.log("Error al cargar la data");
+            });
+        }
 
         me.loadOperadores = function(rawOperadores){
             if (rawOperadores) {
@@ -73,7 +177,13 @@
         };
 
         me.validateDates = function(){
-            if((me.fechaDesde() < me.fechaHasta())){
+            var desdeRaw = me.fechaDesde().split("/");
+            var desde = new Date(desdeRaw[2], desdeRaw[1] - 1, desdeRaw[0]);
+
+            var hastaRaw = me.fechaHasta().split("/");
+            var hasta = new Date(hastaRaw[2], hastaRaw[1] - 1, hastaRaw[0]);
+
+            if((desde < hasta)){
                 me.isSearchValid(true);
                 return true;
             }
@@ -86,7 +196,8 @@
         me.onBuscarButtonClick = function(){
             me.validateSearchOptions({
                 valid: function(){
-                    me.reporteParticipantesByOperador();
+                    me.setReportPagerDetails();
+                    //me.reporteParticipantesByOperador();
                 },
                 invalid: function(){
                     //no hacemos nada
@@ -105,31 +216,38 @@
 
         };
 
-        me.reporteParticipantesByOperador = function(rawParticipantes){
-            if (rawParticipantes) {
-                me.participantes.removeAll();
-                for(var i = 0; i < rawParticipantes.length; i++){
-                    me.participantes.push(rawParticipantes[i]);
+        me.reporteParticipantesByOperador = function(operadorId, fechaDesde,fechaHasta, skip, take, sortField, sortDirection)
+                                                        
+        {
+            var deferred = $.Deferred();
+            me.loadingParticipantes(true);
+            $.ajax({
+                type: "GET",
+                url: path + "/api/v1/reporteParticipantesByOperador",
+                dataType: "json",
+                data: {operadorId: operadorId, fechaInicio: fechaDesde, fechaFin: fechaHasta,
+                        skip: skip, take: take, sortField: sortField, sortDirection: sortDirection},
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    var rawParticipantes = data.participantes;
+                    var index = skip + 1;
+                    //limpiamos el array
+                    me.participantes.removeAll();  
+                    //llenamos el array observable para bindear
+                    for(var i = 0; i < rawParticipantes.length; i++){
+                        rawParticipantes[i].index = index;
+                        me.participantes.push(rawParticipantes[i]);
+                        index++;
+                    }                    
+                    me.loadingParticipantes(false);
+                },
+                error: function (data) {
+                    toastr.error('Hubo un error al cargar los datos','Error');
+                    console.log(data);
                 }
-            }
-            else{
-                me.loadingParticipantes(true);
-                $.ajax({
-                    type: "GET",
-                    url: path + "/api/v1/reporteParticipantesByOperador",
-                    dataType: "json",
-                    data: {operadorId: me.operadorId(), fechaInicio: me.fechaDesde(), fechaFin: me.fechaHasta()},
-                    contentType: "application/json; charset=utf-8",
-                    success: function (data) {
-                        me.reporteParticipantesByOperador(data.participantes);
-                        me.loadingParticipantes(false);
-                    },
-                    error: function (data) {
-                        toastr.error('Hubo un error al cargar los datos','Error');
-                        console.log(data);
-                    }
-                });
-            }
+            }); 
+
+            return deferred.promise();           
         };
 
         return{
@@ -143,7 +261,11 @@
             operadorId: me.operadorId,
             onBuscarButtonClick: me.onBuscarButtonClick,
             isSearchValid: me.isSearchValid,
-            suppressValidationMessages: me.suppressValidationMessages
+            suppressValidationMessages: me.suppressValidationMessages,
+            pageNumberArray: me.pageNumberArray,
+            currentPageNumber: me.currentPageNumber,
+            pageClick: me.pageClick,
+            totalRows: me.totalRows
         }
     }();
 

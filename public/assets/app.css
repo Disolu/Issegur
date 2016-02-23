@@ -320,3 +320,6 @@ input[type="text"][disabled] {
 .reportTitle{
     font-size: large;
 }
+.sortable{
+    cursor: pointer;
+}

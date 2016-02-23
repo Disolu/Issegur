@@ -11,13 +11,25 @@ class Turno extends Eloquent
     protected $table = 'Turno';
     protected $primaryKey = 'turno_id';
 
-    public function consultarTurnosPorDia($dia){
+    public function consultarTurnosPorDia($dia, $fecha){
         $turnos = DB::table('Turno')
         ->where('turno_dia', $dia)
         ->where('turno_activo', 1)
         ->get();
 
-        return $turnos;
+        $turnosFormatted = array();
+
+        foreach ($turnos as $turno) {    
+            if ($turno->turno_fecha_unica == NULL ) {
+                array_push($turnosFormatted, $turno);
+            }    
+            else if ($turno->turno_fecha_unica != NULL && $turno->turno_fecha_unica == $fecha) {
+                    array_push($turnosFormatted, $turno);
+            }
+        }
+
+
+        return $turnosFormatted;
     }
 
     public function obtenerTurnoPorId($turnoId){
