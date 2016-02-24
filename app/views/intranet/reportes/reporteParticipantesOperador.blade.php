@@ -89,7 +89,7 @@
                                                                               visible: page.visible"></a></li>
                                 <!-- /ko -->
                                 <!-- ko ifnot: page.number == $parent.currentPageNumber() -->
-                                    <!-- ko if: page.number <= $parent.currentPageNumber() - 6 --> 
+                                    <!-- ko if: page.number <= $parent.currentPageNumber() - Math.floor(globalMaxVisiblePages/3) --> 
                                         <!-- ko if: numberOfPages() - page.number  < globalMaxVisiblePages -->  
                                         <li><a href="#" data-bind="html: page.number, click: $parent.pageClick, 
                                                                                 visible: true"></a></li>
@@ -99,13 +99,13 @@
                                                                                 visible: false"></a></li>
                                          <!-- /ko --> 
                                     <!-- /ko -->
-                                    <!-- ko if: page.number > $parent.currentPageNumber() + 14-->  
+                                    <!-- ko if: page.number > $parent.currentPageNumber() + (globalMaxVisiblePages - (Math.floor(globalMaxVisiblePages/3)))-->  
                                         <!-- ko if: page.number  <= globalMaxVisiblePages -->  
                                         <li><a href="#" data-bind="html: page.number, click: $parent.pageClick, 
                                                                                 visible: true"></a></li>  
                                         <!-- /ko -->                                        
                                     <!-- /ko -->
-                                    <!-- ko ifnot: (page.number > $parent.currentPageNumber() + 14) || (page.number <= $parent.currentPageNumber() - 6 )-->  
+                                    <!-- ko ifnot: (page.number > $parent.currentPageNumber() + (globalMaxVisiblePages - (Math.floor(globalMaxVisiblePages/3)))) || (page.number <= $parent.currentPageNumber() - Math.floor(globalMaxVisiblePages/3) )-->  
                                     <li><a href="#" data-bind="html: page.number, click: $parent.pageClick, 
                                                                             visible: page.visible"></a></li>  
                                     <!-- /ko -->
