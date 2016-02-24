@@ -136,6 +136,7 @@ Route::post("uploadExamenParticipante", function(){
 Route::group(array('prefix' => 'api/v1'), function(){
     //Registro Público
     Route::get('consultarTurnosPorDia', 'RegistroController@MostrarHorariosPorDia');
+    Route::get('consultarTurnosPorDiaSinReestriccion','RegistroController@MostrarHorariosPorDiaSinReestriccion');
     Route::get('getOperadores', 'RegistroController@ObtenerOperadores');
     Route::get('consultarDNI', 'RegistroController@ConsultarDNI');
     Route::get('consultarRUC', 'RegistroController@ConsultarRUC');

@@ -75,7 +75,7 @@
                             <th class="pa-table-header center" style="width:75px;">Foto</th>
                             @endif
                             @if (Auth::user()->rol_id == 3 || Auth::user()->rol_id == 1)
-                                <th class="pa-table-header center" style="width:105px;">Examen</th>
+                                <th class="pa-table-header center" style="width:75px;">Examen</th>
                             @endif
                             </thead>
                             <tbody>
@@ -206,10 +206,20 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <button class="btn btn-success" id="btnGenerarFicha"><i class="fa fa-file-excel-o"></i> Generar Ficha</button>
                     <br/>
                     <br/>
+                </div>
+                <div class="col-md-6">
+                    <div class="pull-right">
+                        <!--ko if: guardardandoParticipantes()-->
+                        <button class="btn btn-primary" disabled><i class="fa fa-spinner"></i> Cargando...</button>
+                        <!--/ko-->
+                        <!--ko ifnot: guardardandoParticipantes()-->
+                        <button id="btnGuardarParticipantesBottom" class="btn btn-primary"><i class="fa fa-floppy-o"></i> Guardar</button>
+                        <!--/ko-->
+                    </div>
                 </div>
             </div>
         </div>

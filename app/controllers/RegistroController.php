@@ -59,6 +59,29 @@ class RegistroController extends BaseController {
         )->setCallback(Input::get('callback'));
     }
 
+    public function MostrarHorariosPorDiaSinReestriccion(){
+        $dia = $_GET['nombreDia'];
+        $fecha = DateTime::createFromFormat('d/m/Y', $_GET['fecha'])->format('Y-m-d');
+        $turnos = with(new Turno)->consultarTurnosPorDia($dia, $fecha);
+        //creamos el array para guardar los resultados
+        $array = array();
+
+        foreach($turnos as $turno){    
+            $horaInicio = date("g:i A", strtotime($turno->turno_hora_inicio));           
+            $horaFin = date("g:i A", strtotime($turno->turno_hora_fin));
+            $horario = $horaInicio.' a '.$horaFin;
+            $obj = new stdClass();
+            $obj->turnoId = $turno->turno_id;
+            $obj->turnoHorario = $horario;
+            array_push($array, $obj);                
+        }
+
+        return Response::json(array(
+            'turnos' =>  $array
+        ), 200
+        )->setCallback(Input::get('callback'));
+    }
+
     public function ObtenerOperadores()
     {
         $operadores = with(new Operador)->obtenerOperadores();

@@ -1,4 +1,4 @@
-<script>
+    <script>
     var ObservableRegistroParticipante = new (function () {
         var me = this;
 
@@ -699,6 +699,7 @@
             $(document.body).on("keydown", ".paMontoOperacionTextbox", me.onUpdateMontoOperacionClick);
 
             $(document.body).on("click", "#btnGuardarParticipantes", me.onGuardarParticipantesClick);
+            $(document.body).on("click", "#btnGuardarParticipantesBottom", me.onGuardarParticipantesClick);            
             $(document.body).on("click", "#btnRegresarACalendario", me.onRegresarClick);
             $(document.body).on("click", "#btnGenerarFicha", me.onGenerarFichaButtonClick);
             $(document.body).on("click", "#btnAgregarParticipantes", me.onAgregarParticipantesClick);

@@ -39,6 +39,7 @@ class ReporteController extends BaseController{
         $operadorId = $_GET['operadorId'];
         $fechaInicio = $_GET['fechaInicio'];
         $fechaFin = $_GET['fechaFin'];
+        $pageSize = $_GET['pageSize'];
 
         //format dates
         $fechaInicioFormatted = DateTime::createFromFormat('d/m/Y', $fechaInicio)->format('Y-m-d');
@@ -46,12 +47,10 @@ class ReporteController extends BaseController{
 
         $participante = new Participante();
         $totalRows = $participante->reporteParticipantesPorOperadorCount($operadorId, $fechaInicioFormatted, $fechaFinFormatted);
-        $pageSize = 20;
-        $numberOfPages = round($totalRows/ $pageSize);
+        $numberOfPages = floor($totalRows/ $pageSize) + 1;
 
         return Response::json(array(
             'numberOfPages' => $numberOfPages,
-            'pageSize' => $pageSize,
             'totalRows' => $totalRows
         ), 200
         )->setCallback(Input::get('callback'));   

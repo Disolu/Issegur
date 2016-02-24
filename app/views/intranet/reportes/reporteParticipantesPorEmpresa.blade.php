@@ -11,7 +11,7 @@
     <div id="reporteParticipantesOperador" class="container">
         <ul class="breadcrumb">
             <li><a href="{{URL::to('intranet/reportes')}}">Reportes</a> </li>
-            <li class="active">Reporte de Participantes por Operador</li>
+            <li class="active">Reporte de Participantes por Empresa</li>
         </ul>
         <div class="row">
             <div class="col-md-9">

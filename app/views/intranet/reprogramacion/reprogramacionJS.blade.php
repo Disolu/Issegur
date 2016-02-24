@@ -18,7 +18,7 @@
 
                 $("#nuevaFechaProgramacion").datepicker({
                     dateFormat: 'dd/mm/yy',
-                    minDate: new Date()
+                    //minDate: new Date()
                 });
                 me.hasBeenInitialized = true;
             }
@@ -83,15 +83,16 @@
 
         me.onFechaProgramacionChange = function () {
             var currentDate = $("#nuevaFechaProgramacion").datepicker("getDate");
+            var dateRaw = $("#nuevaFechaProgramacion").val();
             if (currentDate != null || $.trim(currentDate) != "") {
                 var dia = $.datepicker.formatDate('DD', currentDate);
                 var optionsAsString = "<option value=''>Elija su horario</option>";
-
+                console.log(dateRaw);
                 $.ajax({
                     type: "GET",
-                    url: path + "/api/v1/consultarTurnosPorDia",
+                    url: path + "/api/v1/consultarTurnosPorDiaSinReestriccion",
                     async: false,
-                    data: {nombreDia: dia },
+                    data: {nombreDia: dia , fecha: dateRaw},
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {

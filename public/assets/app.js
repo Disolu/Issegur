@@ -7,10 +7,14 @@ var GlobalParameters = new (function () {
 
     me.appPath = "";
     me.grupoIndex = 0; 
+    me.pageSize = 25;
+    me.maxVisiblePages = 20;
 
     return {
         appPath : me.appPath,
-        grupoIndex: me.grupoIndex
+        grupoIndex: me.grupoIndex,
+        globalPageSize: me.pageSize,
+        globalMaxVisiblePages: me.maxVisiblePages
     };
 
 });

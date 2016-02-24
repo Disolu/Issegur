@@ -78,6 +78,8 @@
     <!-- Page Javascript -->
     <script type="text/javascript">
         var path = GlobalParameters.appPath;
+        var globalPageSize = GlobalParameters.globalPageSize;
+        var globalMaxVisiblePages = GlobalParameters.globalMaxVisiblePages;
 
         var currentUrl = window.location.href;
 

@@ -27,6 +27,7 @@
         me.numberOfPages = ko.observable();
         me.pageNumberArray = ko.observableArray([]);
         me.totalRows = ko.observable(0);
+        me.maxVisiblePages = ko.observable(globalMaxVisiblePages);
         //intially 1
         me.currentPageNumber = ko.observable(1);
 
@@ -66,29 +67,28 @@
                                                                 me.fechaHasta(),0, me.pageSize(), me.sortField(), 
                                                                 me.sortDirection());
             me.currentPageNumber(1);
-            // loadReport.done(function(){
-                
-            // });
         }
 
         me.pageClick = function (clickedPage) {
             var previousPage = me.currentPageNumber();
             //variable to tell the table to slide or not
             var animateTable = false;
-            if(previousPage != clickedPage){
-                if(clickedPage == '&laquo;'){
+            if(previousPage != clickedPage.number){
+                if(clickedPage.number == '&laquo;'){
                     //only want to lower it if it isn't one.
                     if(previousPage != 1){
                         me.currentPageNumber(previousPage - 1);
                         animateTable = true;
                     }
-                }else if (clickedPage == '&raquo;'){   
+                }
+                else if (clickedPage.number == '&raquo;'){   
                     if(previousPage < me.numberOfPages()){
                         me.currentPageNumber(previousPage + 1);
                         animateTable = true;
                     }
-                }else{
-                    me.currentPageNumber(clickedPage);
+                }
+                else{
+                    me.currentPageNumber(clickedPage.number);
                     animateTable = true;
                 }
                 if(animateTable){
@@ -112,19 +112,26 @@
                 type: "GET",
                 url: path + "/api/v1/getReportParticipantesPorOperadorPagerDetails",
                 dataType: "json",
-                data: {operadorId: me.operadorId(), fechaInicio: me.fechaDesde(), fechaFin: me.fechaHasta()},
+                data: {operadorId: me.operadorId(), fechaInicio: me.fechaDesde(), 
+                                                    fechaFin: me.fechaHasta(), pageSize: globalPageSize },
                 contentType: "application/json"
             }).done(function (data) {
-                me.pageSize(data.pageSize);
+                me.pageSize(globalPageSize);
                 me.numberOfPages(data.numberOfPages);
                 me.totalRows(data.totalRows);
                 var numArray = new Array();
-                numArray.push('&laquo;');
+                numArray.push({number :'&laquo;', visible: true});
                 for(var i = 1; i <= me.numberOfPages(); i++){
-                    numArray.push(i);
+                    //llenamos la paginacion maximo hasta 20
+                    var page = {
+                        number : i,
+                        visible : true
+                    }
+                    numArray.push(page);                                        
                 }
-                numArray.push('&raquo;');
+                numArray.push({number :'&raquo;', visible: true});
                 me.pageNumberArray(numArray);
+                me.currentPageNumber(1);
                 //once we have the pagesize and numberofpages we load the inital data
                 me.reporteParticipantesByOperador(me.operadorId(), me.fechaDesde(),
                                                   me.fechaHasta(),0, me.pageSize(), me.sortField(), me.sortDirection());
@@ -265,7 +272,9 @@
             pageNumberArray: me.pageNumberArray,
             currentPageNumber: me.currentPageNumber,
             pageClick: me.pageClick,
-            totalRows: me.totalRows
+            totalRows: me.totalRows,
+            numberOfPages: me.numberOfPages,
+            globalMaxVisiblePages: me.globalMaxVisiblePages
         }
     }();
 
