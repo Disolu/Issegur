@@ -56,8 +56,31 @@ class ReporteController extends BaseController{
         )->setCallback(Input::get('callback'));   
     }
 
-    public function ReporteParticipantesByOperadorDetalle(){
-        
+    public function ObtenerEmpresasNombresAutocomplete(){
+        $empresa =  new Empresa();
+        $empresas = $empresa->obtenerNombresParaAutocomplete();
+
+        return Response::json(array(
+            'empresasAutocomplete' => $empresas
+        ), 200
+        )->setCallback(Input::get('callback'));  
     }
 
+    public function ObtenerEmoresaPorRazonSocial(){
+        //obtenemos la razon social
+        $razonSocial = $_GET['razonSocial'];
+
+        $empresaObj = new Empresa();
+        $solicitanteObj =  new RegistroSolicitante();
+        $matchingEmpresa = $empresaObj->getEmpresabyRazonSocial($razonSocial);
+        $solicitantes = $solicitanteObj->obtenerSolicitantesPorEmpresa($matchingEmpresa->emp_id);
+
+        return Response::json(array(
+            'matchingEmpresa' => $matchingEmpresa,
+            'solicitantes' => $solicitantes
+        ), 200
+        )->setCallback(Input::get('callback'));  
+
+    }
 }
+

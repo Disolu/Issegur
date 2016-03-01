@@ -1236,7 +1236,7 @@
                     operador: operadorSelectedId,
                     asistencia: asistenciaInfo,
                     nota: $(this).children('.tdNota').children('.paNota').val()? $(this).children('.tdNota').children('.paNota').val() : null,
-//                  registroId: $(this).children('.tdNroOperacion').attr('data-id'),
+                    registroId: $(this).attr('data-reg-id'),
                     nroOperacion: $(this).children('.tdNroOperacion').children('.paNroOperacion').text(),
                     fechaOperacion: $(this).children('.tdFechaOperacion').children('.paFechaOperacion').text(),
                     montoOperacion: $(this).children('.tdMontoOperacion').children('.paMontoOperacion').text(),

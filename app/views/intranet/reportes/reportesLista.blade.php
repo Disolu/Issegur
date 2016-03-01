@@ -24,7 +24,7 @@
                         <a role="button" class="list-group-item" href="{{URL::to('intranet/reportes/participantesPorOperador')}}">
                            <p class="reportTitle list-group-item-heading"> Reporte de Participantes Por Operador</p>
                         </a>
-                        <a role="button" class="list-group-item">
+                        <a role="button" class="list-group-item" href="{{URL::to('intranet/reportes/participantesPorEmpresa')}}">
                             <p class="reportTitle list-group-item-heading"> Reporte de Participantes Por Empresa</p>
                         </a>
                     </div>

@@ -94,7 +94,8 @@
                             </tr>
                             <!-- /ko -->
                             <!--ko foreach: { data: participantes, as: 'paInfo' } -->
-                            <tr class="participante" data-bind="attr:{'data-id': paInfo.pa_id, 'data-ruc': paInfo.RUC}">
+                            <tr class="participante" 
+                                data-bind="attr:{'data-id': paInfo.pa_id, 'data-ruc': paInfo.RUC, 'data-reg-id': paInfo.RegistroId}">
                                 <td data-bind="text: $index() + 1"></td>
                                 <td class="tdDni center">
                                     <span class="paDNI" style="cursor:pointer;"><!--ko text: paInfo.pa_dni--><!--/ko--></span>

@@ -174,7 +174,10 @@ class Participante extends Eloquent
 
         if($participante["operador"]){
             $paId = $participante["id"];
-            $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $paId)->first();
+            $registroId = $participante["registroId"];
+            $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $paId)
+                                                                        ->where('reg_id','=', $registroId)
+                                                                        ->first();
             $existingParticipanteOperador->op_id = $participante["operador"];
             $existingParticipanteOperador->save();
         }
@@ -264,4 +267,39 @@ class Participante extends Eloquent
         return $matchingParticipantes;
     }
 
+    public function puedeRegistrarseNuevoTurno($dni){
+        $participante = Participante::where('pa_dni', '=', $dni)
+                                      ->first();
+        //obtenemos primero el id del participante
+        if ($participante) {
+            $participanteId = $participante->pa_id;
+
+            $participanteRaw = DB::table('RegistroParticipante')
+                    ->select('fecha_programacion')
+                    ->where('pa_id','=',$participanteId)
+                    ->orderBy('reg_id','desc')
+                    ->first();
+
+            if ($participanteRaw) {
+                log::info($participanteRaw->fecha_programacion);
+                log::info(date("Y-m-d"));
+                log::info($participanteRaw->fecha_programacion < date("Y-m-d"));
+                if (strtotime($participanteRaw->fecha_programacion) < strtotime(date("Y-m-d"))) {
+                    return true;  
+                }  
+                else{
+                    return false;
+                }
+            }
+            else{
+                return true;
+            }
+
+        }
+
+    }
+
 }
+
+
+

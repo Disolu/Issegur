@@ -24,6 +24,7 @@ Route::get('intranet/calendario','IntranetController@InitializeCalendar');
 Route::get('intranet/participantes','IntranetController@InitializeParticipantes');
 Route::get('intranet/reportes','IntranetController@InitializeReportes');
 Route::get('intranet/reportes/participantesPorOperador','IntranetController@InitializeRepParticipantesPorOperador');
+Route::get('intranet/reportes/participantesPorEmpresa','IntranetController@InitializeRepParticipantesPorEmpresa');
 Route::get('intranet/reprogramacion','IntranetController@ReprogramarParticipantes');
 Route::get('intranet/generarFichaExcel/{turno}/{fecha}','IntranetController@GenerarFichaExcel');
 
@@ -167,7 +168,10 @@ Route::group(array('before' => 'auth','prefix' => 'api/v1'),function() {
     //Reportes
     Route::get('reporteParticipantesByOperador','ReporteController@ReporteParticipantesByOperador');
     Route::get('reporteParticipantesByOperadorDetalle','ReporteController@ReporteParticipantesByOperadorDetalle');
-    Route::get('getReportParticipantesPorOperadorPagerDetails', 'ReporteController@GetReportParticipantesPorOperadorPagerDetails');
+    Route::get('getReportParticipantesPorOperadorPagerDetails', 'ReporteController@GetReportParticipantesPorOperadorPagerDetails');    
+
+    Route::get('obtenerEmpresasNombresAutocomplete','ReporteController@ObtenerEmpresasNombresAutocomplete');    
+    Route::get('obtenerEmpresasPorRazonSocial','ReporteController@ObtenerEmoresaPorRazonSocial');
     //Reprogramacion
     Route::get('obtenerParticipantesAReprogramar','IntranetController@ObtenerParticipantesAReprogramar');
     Route::get('reprogramarParticipante','IntranetController@ReprogramarParticipante');

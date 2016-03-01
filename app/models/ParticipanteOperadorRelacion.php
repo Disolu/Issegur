@@ -12,12 +12,13 @@ class ParticipanteOperadorRelacion extends Eloquent
     public $timestamps = false;
     protected $primaryKey = 'pa_id';
 
-    public function registrarParticipanteOperadorRelaction($operadores, $participanteId){
+    public function registrarParticipanteOperadorRelacion($operadores, $participanteId, $registroId){
         if(is_array($operadores)){
             foreach($operadores as $operador){
             $newRegParOp =  new ParticipanteOperadorRelacion();
             $newRegParOp->pa_id = $participanteId;
             $newRegParOp->op_id = $operador;
+            $newRegParOp->reg_id = $registroId;
             $newRegParOp->save();
             }
         }
@@ -25,15 +26,10 @@ class ParticipanteOperadorRelacion extends Eloquent
             $newRegParOp =  new ParticipanteOperadorRelacion();
             $newRegParOp->pa_id = $participanteId;
             $newRegParOp->op_id = $operadores;
+            $newRegParOp->reg_id = $registroId;
             $newRegParOp->save();
         }
 
-    }
-
-    public function actualizarOperador($regnat_id, $op_id){
-        $detalleNaturalOperador =  RegistroPersonaNaturalOperadorRelacion::where('regnat_id','=', $regnat_id)->first();
-        $detalleNaturalOperador->op_id = $op_id;
-        $detalleNaturalOperador->save();
     }
 
 }

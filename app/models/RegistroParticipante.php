@@ -51,7 +51,7 @@ class RegistroParticipante extends Eloquent
 
                 $newRegistroParticipante->save();
 
-                with(new ParticipanteOperadorRelacion)->registrarParticipanteOperadorRelaction($operadores,$savedParticipante->pa_id);
+                with(new ParticipanteOperadorRelacion)->registrarParticipanteOperadorRelaction($operadores,$savedParticipante->pa_id, $savedRegistroId);
             }
         }
     }

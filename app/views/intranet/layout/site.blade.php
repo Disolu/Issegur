@@ -17,9 +17,6 @@
     <!--{{HTML::style('http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css')}}-->
     {{HTML::style('assets/vendor/toastr/toastr.min.css')}}
 
-    <!--Bootstrap Multiselect-->
-    {{HTML::style('assets/bootstrap-multiselect/css/bootstrap-multiselect.css')}}
-
     @yield('stylesSection')
 </head>
 <body>
@@ -70,8 +67,8 @@
     <!--{{ HTML::script('http://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js') }}-->
     {{HTML::script('assets/vendor/toastr/toastr.min.js')}}
 
-    <!--Bootstrap Multiselect-->
-    {{HTML::script('assets/bootstrap-multiselect/js/bootstrap-multiselect.js')}}
+    <!--Bootstrap TypeAhead-->
+    {{HTML::script('assets/bootstrap-typeahead/bootstrap3-typeahead.min.js')}}
 
     {{HTML::script('assets/app.js')}}
 

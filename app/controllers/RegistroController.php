@@ -157,14 +157,13 @@ class RegistroController extends BaseController {
                 $participantesARegistrar = $grupo['participantes'];
                 
                 foreach($participantesARegistrar as $par){
-                	$existingParticipante = Participante::where('pa_dni','=',$par['dni'])->first();
-                	if($existingParticipante != null){
+                	$participantePuedeRegistrarseTurno = $participanteObj->puedeRegistrarseNuevoTurno($par['dni']);
+                	if(!$participantePuedeRegistrarseTurno){
                 	    $resultado = false;
                 	    $limite =  new stdClass();
-			    $limite->pa_dni = $par['dni'];
-				
-			    array_push($vParticipante ,$limite);  
-			}			              	
+        			    $limite->pa_dni = $par['dni'];        				
+        			    array_push($vParticipante ,$limite);  
+        			}			              	
                 }
 
                 if (!$participanteObj->puedeParticipanteRegistrarse($fechaFormatted, $turnoId, count($participantesARegistrar), "W")) {
@@ -261,9 +260,9 @@ class RegistroController extends BaseController {
         $vParticipante = array();
         $resultado = true;
 
-        $existingParticipante = Participante::where('pa_dni', '=', $registro['dni'])->first();
+        $participantePuedeRegistrarseTurno = $participanteObj->puedeRegistrarseNuevoTurno($registro['dni']);
 
-        if ($existingParticipante != null) {
+        if (!$participantePuedeRegistrarseTurno) {
             $resultado = false;
             $limite = new stdClass();
             $limite->pa_dni = $registro['dni'];
@@ -308,7 +307,7 @@ class RegistroController extends BaseController {
                 /*registro de los operadores*/
                 $operadores = $registro['selectedOperadoresIds'];
 
-                $participanteOperadorObj->registrarParticipanteOperadorRelaction($operadores, $savedParticipante->pa_id);
+                $participanteOperadorObj->registrarParticipanteOperadorRelacion($operadores, $savedParticipante->pa_id, $savedRegistro->reg_id);
             }
         } else {
             $turno = with(new Turno)->obtenerTurnoPorIdTodos($turnoId);

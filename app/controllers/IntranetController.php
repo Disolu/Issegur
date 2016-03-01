@@ -45,7 +45,17 @@ class IntranetController extends BaseController{
             return View::make('intranet.reportes.reporteParticipantesOperador');
         }
         else{
-            return View::make('intranet.reportes.reporteParticipantesOperador');
+            return View::make('intranet.auth.login');
+        }
+    }
+
+    public function InitializeRepParticipantesPorEmpresa(){
+        if (Auth::check())
+        {
+            return View::make('intranet.reportes.reporteParticipantesEmpresa');
+        }
+        else{
+            return View::make('intranet.auth.login');
         }
     }
 
@@ -225,7 +235,7 @@ class IntranetController extends BaseController{
                 /*registro de los operadores*/
                 $operador = $participante['almacen'];
 
-                $participanteOperadorObj->registrarParticipanteOperadorRelaction($operador,$savedParticipante->pa_id);
+                $participanteOperadorObj->registrarParticipanteOperadorRelaction($operador,$savedParticipante->pa_id, $savedRegistro->reg_id);
             }
             else{
                 /*registro de pagos*/
@@ -254,7 +264,7 @@ class IntranetController extends BaseController{
                 /*registro de los operadores*/
                 $operador = $participante['almacen'];
 
-                $participanteOperadorObj->registrarParticipanteOperadorRelaction($operador,$savedParticipante->pa_id);
+                $participanteOperadorObj->registrarParticipanteOperadorRelaction($operador,$savedParticipante->pa_id, $savedRegistro->reg_id);
             }
         }
         else{

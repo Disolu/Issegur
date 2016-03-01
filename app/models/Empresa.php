@@ -18,6 +18,12 @@ class Empresa extends Eloquent
         return $empresa;
     }
 
+    public function getEmpresabyRazonSocial($razonSocial){
+        $empresa = DB::table('Empresa')->where('emp_razon_social', $razonSocial)->first();
+
+        return $empresa;
+    }
+
     public function registrarEmpresa($ruc, $razonSocial){
         $existingEmpresa = Empresa::where('emp_ruc','=', $ruc)->first();
 
@@ -29,6 +35,12 @@ class Empresa extends Eloquent
         $existingEmpresa->save();
 
         return $existingEmpresa;
+    }
+
+    public function obtenerNombresParaAutocomplete(){
+        $empresas = DB::table('Empresa')->select('emp_id as id', 'emp_razon_social as name')->get();
+
+        return $empresas;
     }
 
 }
