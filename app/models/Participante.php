@@ -40,9 +40,11 @@ class Participante extends Eloquent
         $participantesView = DB::table('Turno')
             ->where('turno_dia', $dia)
             ->select(DB::raw("turno_id 'TurnoId', turno_fecha_unica 'FechaUnica', CONCAT(DATE_FORMAT(turno_hora_inicio, '%l:%i %p') ,' - ' , DATE_FORMAT(turno_hora_fin, '%l:%i %p')) 'Turno',
-                            (select count(pa_dni) from ParticipantesMasterView pmv where pmv.FechaProgramacion = '" . $fecha . "' and pmv.TurnoId = turno_Id) 'Participantes'"))
+                            (select count(distinct pa_dni) from ParticipantesMasterView pmv where pmv.FechaProgramacion = '" . $fecha . "' and pmv.TurnoId = turno_Id) 'Participantes'"))
             ->orderBy('turno_hora_inicio', 'asc')
             ->get();
+
+            log::info($participantesView);
 
         return $participantesView;
     }
@@ -51,6 +53,7 @@ class Participante extends Eloquent
         $participantesView = DB::table('ParticipantesMasterView')
             ->where('FechaProgramacion', $fecha)
             ->where('TurnoId', $turnoId)
+            ->groupBy('pa_id')
             ->count();
 
         return $participantesView;
@@ -58,31 +61,73 @@ class Participante extends Eloquent
 
     public function obtenerParticipantesPorFechayTurno($fecha ,$turno){
         $participantesView = DB::table('ParticipantesMasterView')
+            /*->leftjoin('ParticipanteOperadorRelacion', function($join){
+                $join->on('ParticipantesMasterView.pa_id','=','ParticipanteOperadorRelacion.pa_id')->orOn('ParticipantesMasterView.RegistroId','=','ParticipanteOperadorRelacion.reg_id');
+            })
+            ->leftjoin('Operador','ParticipanteOperadorRelacion.op_id','=','Operador.op_id')*/
             ->where('FechaProgramacion', $fecha)
             ->where('Turno', $turno)
-            ->select('pa_id','pa_dni','pa_nombres','pa_apellido_paterno','pa_apellido_materno','RUC','RazonSocial','OperadorId','Operador','RegistroId','NroOperacionFecha','NroOperacionMonto','NroOperacion' ,'pa_foto','pa_ficha_asistencia','pa_examen','pa_asistencia','pa_nota','pa_aprobado')
+            /*->select('pa_id','pa_dni','pa_nombres','pa_apellido_paterno','pa_apellido_materno','RUC','RazonSocial','OperadorId','Operador','RegistroId','NroOperacionFecha','NroOperacionMonto','NroOperacion' ,'pa_foto','pa_ficha_asistencia','pa_examen','pa_asistencia','pa_nota','pa_aprobado')*/
+            //->select(DB::raw("ParticipantesMasterView.*"))
+            //, Operador.op_id 'OperadorId' , Operador.op_nombre 'Operador'
+            ->groupBy('pa_id')
             ->orderBy('created_at','asc')
             ->get();
 
-        return $participantesView;
+            $participantesView = $this->agregarOperadoresParticipantesView($participantesView);
+
+        return  $participantesView;
     }
 
     public function obtenerParticipantesPorFechayTurnoYSearchText($fecha ,$turno, $searchText){
         $participantesView = DB::table('ParticipantesMasterView')
-            ->where('FechaProgramacion', $fecha)
-            ->where('Turno', $turno)
+            /*->leftjoin('ParticipanteOperadorRelacion','ParticipantesMasterView.RegistroId','=','ParticipanteOperadorRelacion.reg_id')
+            ->leftjoin('Operador','ParticipanteOperadorRelacion.op_id','=','Operador.op_id')*/
+            ->where('ParticipantesMasterView.FechaProgramacion', $fecha)
+            ->where('ParticipantesMasterView.Turno', $turno)
             ->Where(function ($query) use($searchText){
-                $query->where('pa_dni','LIKE', '%'.$searchText.'%')
-                    ->OrWhere('pa_nombres','LIKE', '%'.$searchText.'%')
-                    ->OrWhere('pa_apellido_paterno','LIKE', '%'.$searchText.'%')
-                    ->OrWhere('pa_apellido_materno','LIKE', '%'.$searchText.'%')
-                    ->OrWhere('RUC','LIKE', '%'.$searchText.'%');
+                $query->where('ParticipantesMasterView.pa_dni','LIKE', '%'.$searchText.'%')
+                    ->OrWhere('ParticipantesMasterView.pa_nombres','LIKE', '%'.$searchText.'%')
+                    ->OrWhere('ParticipantesMasterView.pa_apellido_paterno','LIKE', '%'.$searchText.'%')
+                    ->OrWhere('ParticipantesMasterView.pa_apellido_materno','LIKE', '%'.$searchText.'%')
+                    ->OrWhere('ParticipantesMasterView.RUC','LIKE', '%'.$searchText.'%');
             })
-            ->select('pa_id','pa_dni','pa_nombres','pa_apellido_paterno','pa_apellido_materno','RUC','RazonSocial','OperadorId','Operador','RegistroId','NroOperacionFecha','NroOperacionMonto','NroOperacion' ,'pa_foto','pa_ficha_asistencia','pa_examen','pa_asistencia','pa_nota','pa_aprobado')
-            ->orderBy('created_at','asc')
+            /*->select('pa_id','pa_dni','pa_nombres','pa_apellido_paterno','pa_apellido_materno','RUC','RazonSocial','OperadorId','Operador','RegistroId','NroOperacionFecha','NroOperacionMonto','NroOperacion' ,'pa_foto','pa_ficha_asistencia','pa_examen','pa_asistencia','pa_nota','pa_aprobado')*/
+            //->select(DB::raw("ParticipantesMasterView.*"))
+            ->groupBy('ParticipantesMasterView.pa_id')
+            ->orderBy('ParticipantesMasterView.created_at','asc')
             ->get();
 
+            $participantesView = $this->agregarOperadoresParticipantesView($participantesView);
+
         return $participantesView;
+    }
+
+    public function agregarOperadoresParticipantesView($participantesView){
+
+            $operadorObj = new Operador();
+
+            foreach ($participantesView as $par) {
+                $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $par->pa_id)
+                                                                        ->where('reg_id','=', $par->RegistroId)
+                                                                        ->first();
+
+                if ($existingParticipanteOperador) {
+                    $par->OperadorId = $existingParticipanteOperador->op_id;
+                    $par->Operador = $operadorObj->obtenerNombrePorId($par->OperadorId);
+                }
+                else{
+                    $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $par->pa_id)
+                                                                        ->where('reg_id','=', 0)
+                                                                        ->first();
+
+                    $par->OperadorId = $existingParticipanteOperador->op_id;
+                    $par->Operador = $operadorObj->obtenerNombrePorId($par->OperadorId);
+                }
+               
+            }
+
+            return $participantesView;
     }
 
     public function obtenerPorDniNombreOApellido($searchText){
@@ -101,6 +146,7 @@ class Participante extends Eloquent
         return $matchingParticipantes;
     }
 
+    /*
     public function obtenerNumeroDeParticipantesPorRegistroId($registroId){
         $matchingParticipantes = DB::table('ParticipantesMasterView')
             ->where('RegistroId', $registroId)
@@ -116,14 +162,18 @@ class Participante extends Eloquent
 
         return $matchingParticipantes;
     }
+    */
 
     public function obtenerInfoPorDNI($dni){
         $matchingParticipanteInfo = DB::table('ParticipantesMasterView')
             ->where('pa_dni',$dni)
             ->get();
 
+        $matchingParticipanteInfo = $this->agregarOperadoresParticipantesView($matchingParticipanteInfo);
+
         return $matchingParticipanteInfo;
     }
+    
 
     public function puedeParticipanteRegistrarse($fecha, $turnoId, $nroParticipantes, $modalidad){
         $puedeRegistrarse = true;
@@ -167,7 +217,10 @@ class Participante extends Eloquent
             }
             $existingEmpresa->save();
 
-            $registroParticipante = RegistroParticipante::where('pa_id','=', $participante["id"])->orderBy('reg_id', 'desc')->first();
+            $registroId = $participante["registroId"];
+            $registroParticipante = RegistroParticipante::where('pa_id','=', $participante["id"])
+                                                ->where('reg_id','=',$registroId)
+                                                ->orderBy('reg_id', 'desc')->first();
             $registroParticipante->emp_id = $existingEmpresa->emp_id;
             $registroParticipante->save();
         }
@@ -178,8 +231,20 @@ class Participante extends Eloquent
             $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $paId)
                                                                         ->where('reg_id','=', $registroId)
                                                                         ->first();
-            $existingParticipanteOperador->op_id = $participante["operador"];
-            $existingParticipanteOperador->save();
+            //si no existe ninguno, quiere decir q tiene reg_id = 0
+            if($existingParticipanteOperador){
+                $existingParticipanteOperador->op_id = $participante["operador"];
+                $existingParticipanteOperador->save();
+            } 
+            else{
+                $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $paId)
+                                                                        ->where('reg_id','=', 0)
+                                                                        ->first(); 
+
+                $existingParticipanteOperador->op_id = $participante["operador"];
+                $existingParticipanteOperador->save();
+            }                                                                       
+            
         }
 
         $existingParticipante->pa_dni = $participante["dni"];
@@ -187,6 +252,7 @@ class Participante extends Eloquent
         $existingParticipante->pa_apellido_paterno = $participante["apePaterno"];
         $existingParticipante->pa_apellido_materno = $participante["apeMaterno"];
         $existingParticipante->pa_asistencia = $participante["asistencia"] == ""? null : $participante["asistencia"];
+        
         if($participante["nota"]){
             $existingParticipante->pa_nota = $participante["nota"]?(float) $participante["nota"] : null;
         }
@@ -281,9 +347,6 @@ class Participante extends Eloquent
                     ->first();
 
             if ($participanteRaw) {
-                log::info($participanteRaw->fecha_programacion);
-                log::info(date("Y-m-d"));
-                log::info($participanteRaw->fecha_programacion < date("Y-m-d"));
                 if (strtotime($participanteRaw->fecha_programacion) < strtotime(date("Y-m-d"))) {
                     return true;  
                 }  

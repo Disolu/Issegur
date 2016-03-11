@@ -27,16 +27,29 @@
         <div class="row" id="detallesSection" style="display:none;">
             <div class="col-md-6 col-md-offset-3 marginSection ">
                 <div class="detallesContainer">
+                    <div class="barra_azul">
+                        <img style="padding-left: 10px; padding-top: 10px; width: 78px;" src="http://institutodeseguridad.edu.pe/anuncios/logo_issegur.png">
+                        <span class="titulo_fotocheck">INSTITUTO SUPERIOR DE SEGURIDAD</span>
+                    </div>
                     <div class="row detallesHeader">
-                        <div class="col-md-6">
-                            <div class="pull-right">
-                                <img id="paPhoto" data-bind="attr: {'src': fotoUrl()}" height="130px" width="125px"/>
+                        <div class="col-md-9">
+                            <div class="cont_datos">
+ 
+                                <span class="n_s">NOMBRES</span><br />
+                                <span class="T_n" data-bind="text: nombre"></span><br />
+                                <span class="n_s">APELLIDOS</span><br>
+                                <span class="T_n" data-bind="text: apellidoPaterno() + ' ' + apellidoMaterno()"></span><br />
+                                <span class="n_s">DNI</span><br />
+                                <span class="T_n" data-bind="text: dni()"></span><br />
+                                <span class="n_s">EMPRESA</span><br />
+                                <span class="T_e" data-bind="text: aditionalInfoArray()[aditionalInfoArray().length - 1].empresa"></span>
+                                <!--p class="name-header" data-bind="text: nombre() + ' ' + apellidoPaterno() + ' ' + apellidoMaterno()"></p>
+                                <h2 class="dni-header"><small data-bind="text: dni()"></small></h2-->
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="pull-left">
-                                <p class="name-header" data-bind="text: nombre() + ' ' + apellidoPaterno() + ' ' + apellidoMaterno()"></p>
-                                <h2 class="dni-header"><small data-bind="text: dni()"></small></h2>
+                        <div class="col-md-3">
+                        <div class="pic_fotocheck">
+                                <img id="paPhoto" data-bind="attr: {'src': fotoUrl()}" height="180px" width="140px"/>
                             </div>
                         </div>
                     </div>
@@ -88,7 +101,7 @@
     <script>
         var DetalleParticipanteViewModel = new (function () {
            var me = this;
-
+ 
             me.nombre = ko.observable(null);
             me.apellidoPaterno = ko.observable(null);
             me.apellidoMaterno = ko.observable(null);
@@ -96,14 +109,14 @@
             me.fotoUrl = ko.observable(null);
             me.aditionalInfoArray = ko.observableArray([]);
             me.hasBeenInitialized = false;
-
+ 
             me.initialize = function () {
                 if (!me.hasBeenInitialized) {
                     ko.applyBindings(DetalleParticipanteViewModel, $("#detallesSection")[0]);
                     me.hasBeenInitialized = true;
                 }
             };
-
+ 
             me.setSelectedParticipanteInfo = function (participante) {
                 me.nombre(participante.nombre);
                 me.apellidoPaterno(participante.apellidoPaterno);
@@ -112,7 +125,7 @@
                 me.fotoUrl(participante.fotoUrl);
                 me.aditionalInfoArray(participante.aditionalInfoDetails.slice(0));
             };
-
+ 
             return{
                 nombre: me.nombre,
                 apellidoPaterno: me.apellidoPaterno,
@@ -126,18 +139,18 @@
         });
         var ConsultaParticipantesViewModel = function () {
             var me = this;
-
+ 
             me.searchText = ko.observable(null);
             me.searchResults = ko.observableArray([]);
-
+ 
             me.initialize = function () {
                 $(document.body).on('keydown', '#filtroPersonal' , me.search);
                 $(document.body).on('click', '.participanteItem' , me.onParticipanteItemClick);
                 $(document.body).on('click', '#btnRegresar' , me.onRegresarButtonClick);
-
+ 
                 ko.applyBindings(ConsultaParticipantesViewModel, $("#filtroSection")[0]);
             };
-
+ 
             me.search = function (e) {
                 var inputValue = e.keyCode;
                 //si se presiona enter
@@ -162,7 +175,7 @@
                     });
                 }
             };
-
+ 
             me.onParticipanteItemClick = function (e) {
                 $item = $(e.target);
                 var dni = ko.dataFor($item[0]).pa_dni;
@@ -170,16 +183,16 @@
                     me.getParticipanteInfobyDni(dni);
                 }
             };
-
+ 
             me.onRegresarButtonClick = function () {
                 $("#filtroPersonal").val("");
                 me.searchResults.removeAll();
-
+ 
                 $("#filtroSection").show();
                 $("#detallesSection").hide();
                 $("#filtroPersonal")[0].focus();
             };
-
+ 
             me.getParticipanteInfobyDni = function (dni) {
                 $.ajax({
                     type: "GET",
@@ -196,7 +209,7 @@
                     }
                 });
             };
-
+ 
             me.mostrarDetalleParticipante = function (participanteRaw) {
                 var firstParticipante = participanteRaw[0];
                 //creamos el objeto incial
@@ -208,41 +221,41 @@
                     fotoUrl: $.trim(firstParticipante.pa_foto) == "" ? "fotos/no-avatar.png": firstParticipante.pa_foto,
                     aditionalInfoDetails:[]
                 };
-
+ 
                 for (var i = 0; i < participanteRaw.length; i++) {
                     var current = participanteRaw[i];
                     var fechaCurrent = new Date(current.FechaProgramacion);
                     fechaCurrent.setDate(fechaCurrent.getDate() + 1);
-
+ 
                     var currentParticipante = {
                         operador: current.Operador,
                         empresa: $.trim(current.RazonSocial) == "" ? "N/A" : current.RazonSocial,
-                        fechaCurso: fechaCurrent.getDate() + '/' + (fechaCurrent.getMonth() + 1) + '/' + (fechaCurrent.getFullYear()),
-                        fechaVigencia: fechaCurrent.getDate() + '/' + (fechaCurrent.getMonth() + 1) + '/' + (fechaCurrent.getFullYear() + 1),
+                        fechaCurso: (fechaCurrent.getDate() + 1) + '/' + (fechaCurrent.getMonth() + 1) + '/' + (fechaCurrent.getFullYear()),
+                        fechaVigencia: (fechaCurrent.getDate() + 1) + '/' + (fechaCurrent.getMonth() + 1) + '/' + (fechaCurrent.getFullYear() + 1),
                         activo: true
                     };
-
+ 
                     //verificamos dependiendo de las fechas si esta activo o inactivo
                     fechaCurrent.setMonth(fechaCurrent.getMonth() + 12);
                     currentParticipante.activo = new Date() < fechaCurrent;
                     //agregamos la informacion adicional al array aditionalInfo
                     mainParticipante.aditionalInfoDetails.push(currentParticipante);
                 }
-
+ 
                 $("#filtroSection").hide();
                 $("#detallesSection").show();
                 DetalleParticipanteViewModel.setSelectedParticipanteInfo(mainParticipante);
                 DetalleParticipanteViewModel.initialize();
-
+ 
             };
-
+ 
             return{
                 searchText: me.searchText,
                 searchResults: me.searchResults,
                 initialize: me.initialize
             };
         }();
-
+ 
         $(function () {
             $("#filtroPersonal")[0].focus();
             ConsultaParticipantesViewModel.initialize();

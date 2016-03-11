@@ -663,7 +663,6 @@
 
         me.initialize = function () {
             $(document.body).tooltip({selector: '[data-toggle=tooltip]'});
-            $('.hey').multiselect();
 
             $(document.body).on("keydown", ".paNota", me.soloNumeros);
             $(document.body).on("keydown", ".paNroOperacionTextBox", me.soloNumeros);
@@ -1204,7 +1203,6 @@
 
                 //examen
                 var examenFile = $(this).children('.tdExamen').find('.uploadExamenHidden').attr('data-url');
-                console.log(examenFile);
 
                 if (examenFile) {
                     // si es que recien se estan guardando...

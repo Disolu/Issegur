@@ -18,4 +18,11 @@ class Operador extends Eloquent
         return $operadores;
     }
 
+    public function obtenerNombrePorId($op_id){
+    	$operador = DB::table('Operador')->where('op_id','=',$op_id)->first();
+
+    	return $operador->op_nombre;
+
+    }
+
 }
