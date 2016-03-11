@@ -44,7 +44,6 @@ class Participante extends Eloquent
             ->orderBy('turno_hora_inicio', 'asc')
             ->get();
 
-            log::info($participantesView);
 
         return $participantesView;
     }
@@ -279,28 +278,52 @@ class Participante extends Eloquent
 
     }
 
+    function startsWith($haystack, $needle) {
+    // search backwards starting from haystack length characters from the end
+    return $needle === "" || strrpos($haystack, $needle, -strlen($haystack)) !== false;
+    }
+
     public function reporteParticipantesPorOperador($operadorId, $fechaDesde, $fechaHasta, $skip, $take, $sortField, $sortDirection)
     {
-        $matchingParticipantes = DB::table('ParticipantesMasterView')
-            ->where('OperadorId', $operadorId)
-            ->whereBetween('created_at', array($fechaDesde, $fechaHasta))
-            ->select('pa_dni','pa_nombres','pa_apellido_paterno','pa_apellido_materno','RazonSocial')
+        //we set the fields
+        if ($this->startsWith($sortField,'pa')) {
+            $sortField = 'Participante.'.$sortField;
+        }else{
+            $sortField = 'Empresa.'.$sortField;
+        }
+
+        $matchingParticipantes = DB::table('Participante')
+            ->leftJoin('ParticipanteOperadorRelacion','Participante.pa_id','=','ParticipanteOperadorRelacion.pa_id')
+            ->leftjoin('Operador','ParticipanteOperadorRelacion.op_id','=','Operador.op_id')
+            ->join('RegistroParticipante','Participante.pa_id','=','RegistroParticipante.pa_id')
+            ->join('Empresa','RegistroParticipante.emp_id','=','Empresa.emp_id')
+            ->where('Operador.op_id', $operadorId)
+            ->whereBetween('Participante.created_at', array($fechaDesde, $fechaHasta))
+            ->select(DB::raw("distinct Participante.pa_dni , Participante.pa_nombres , Participante.pa_apellido_paterno ,Participante.pa_apellido_materno , Empresa.emp_razon_social 'RazonSocial'"))
             ->skip($skip)->take($take)
             ->orderBy($sortField, $sortDirection)
             ->get();
+
+            //log::info($sortField.' '.$sortDirection);
 
         return $matchingParticipantes;
     }
 
     public function reporteParticipantesPorOperadorCount($operadorId, $fechaDesde, $fechaHasta)
     {
-        $matchingParticipantes = DB::table('ParticipantesMasterView')
-            ->where('OperadorId', $operadorId)
-            ->whereBetween('created_at', array($fechaDesde, $fechaHasta))
-            ->select('pa_dni','pa_nombres','pa_apellido_paterno','pa_apellido_materno','RazonSocial')
-            ->count();
+        $matchingParticipantes = DB::table('Participante')
+            ->leftJoin('ParticipanteOperadorRelacion','Participante.pa_id','=','ParticipanteOperadorRelacion.pa_id')
+            ->leftjoin('Operador','ParticipanteOperadorRelacion.op_id','=','Operador.op_id')
+            ->join('RegistroParticipante','Participante.pa_id','=','RegistroParticipante.pa_id')
+            ->join('Empresa','RegistroParticipante.emp_id','=','Empresa.emp_id')
+            ->where('Operador.op_id', $operadorId)
+            ->whereBetween('Participante.created_at', array($fechaDesde, $fechaHasta))
+            ->select(DB::raw('distinct Participante.pa_dni , Participante.pa_nombres , Participante.pa_apellido_paterno ,Participante.pa_apellido_materno'))
+            ->get();
 
-        return $matchingParticipantes;
+            //log::info($matchingParticipantes);
+
+        return count($matchingParticipantes);
     }
 
     public function obtenerParticipantesAReprogramar()

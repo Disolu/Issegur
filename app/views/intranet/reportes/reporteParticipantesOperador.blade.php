@@ -126,7 +126,7 @@
                         <th class="sortable pa-table-header center" data-sort="pa_dni"
                         style="width: 120px;">DNI <i class="fa fa-sort"></i></th>
                         <th class="sortable pa-table-header" data-sort="pa_apellido_paterno">Participante <i class="fa fa-sort"></i></th>
-                        <th class="sortable pa-table-header center" data-sort="RazonSocial">Empresa <i class="fa fa-sort"></i></th>
+                        <th class="sortable pa-table-header center" data-sort="emp_razon_social">Empresa <i class="fa fa-sort"></i></th>
                         </thead>
                         <tbody>
                         <!-- ko if: !loadingParticipantes() && participantes().length < 1 -->
