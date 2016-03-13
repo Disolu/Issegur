@@ -6,6 +6,10 @@
 		me.razonSocial = ko.observable(null);
 		me.empresas = ko.observableArray([]);
 		me.solicitantes = ko.observableArray([]);
+		me.solicitantesLength = ko.computed(function(){ return me.solicitantes().length; }, me);
+		me.hayAlgunEmailExtra = ko.observable(false);
+		me.hayAlgunTelefonoExtra = ko.observable(true);
+		me.currentEmpresa = ko.observable(null);
 
 		me.IsValid = function(){
 			var valid = false;
@@ -54,12 +58,12 @@
 
 		me.onBuscarButtonClick = function(data,event){
 			var radio = $(".searchOption.active").find("input[type='radio']")[0];
-
+			console.log(radio);
 			if (radio.id == "chkEmpresa") {
 				me.getEmpresaPorRazonSocial();
 			}
 			else{
-
+				me.getEmpresaPorRuc();
 			}
 			
 		}
@@ -85,21 +89,63 @@
 		me.getEmpresaPorRazonSocial = function(){
 			$.ajax({
                 type: "GET",
-                url: path + "/api/v1/obtenerEmpresasPorRazonSocial",
+                url: path + "/api/v1/obtenerEmpresaPorRazonSocial",
                 data: { razonSocial: me.razonSocial()},
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {                    
-                var empresa = data.matchingEmpresa;
-                var solicitantes = data.solicitantes;
-                me.setSolicitantesArray(solicitantes);
-                console.log(me.solicitantes());
+	                var empresa = data.matchingEmpresa;
+	                var solicitantes = data.solicitantes;
+	                var participantes = data.participantes;
+	                me.currentEmpresa(empresa);
+	                me.solicitantes.removeAll();
+	                me.setSolicitantesArray(solicitantes);
+	                me.setSolicitantesInformacionExtra(me.solicitantes());
+	                console.log(participantes);
             	},
                 error: function (data) {
                     console.log(data);
                     console.log("error ;(");
                 }
             });
+		}
+
+		me.getEmpresaPorRuc = function(){
+			$.ajax({
+                type: "GET",
+                url: path + "/api/v1/obtenerEmpresaPorRuc",
+                data: { ruc: me.ruc()},
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {                    
+	                var empresa = data.matchingEmpresa;
+	                var solicitantes = data.solicitantes;
+	                me.currentEmpresa(empresa);
+                	me.solicitantes.removeAll();
+                	me.setSolicitantesArray(solicitantes);
+                	me.setSolicitantesInformacionExtra(me.solicitantes());
+            	},
+                error: function (data) {
+                    console.log(data);
+                    console.log("error ;(");
+                }
+            });
+		}
+
+		me.setSolicitantesInformacionExtra = function(solicitantes){
+			me.hayAlgunTelefonoExtra(false);
+			me.hayAlgunEmailExtra(false);
+
+			for (var i = 1; i < solicitantes.length; i++) {
+				if(solicitantes[i] && solicitantes[i].soliEmail)
+				{
+					me.hayAlgunEmailExtra(true);
+				}
+				if (solicitantes[i] && solicitantes[i].soliTelefono) 
+				{
+					me.hayAlgunTelefonoExtra(true);
+				}
+			}
 		}
 
 		me.setSolicitantesArray = function(solicitantesArray){
@@ -174,6 +220,8 @@
 		return {
 			ruc: me.ruc,
 			razonSocial: me.razonSocial,
+			currentEmpresa: me.currentEmpresa,
+			solicitantesLength: me.solicitantesLength,
 			IsValid: me.IsValid,
 			initialize: me.initialize,
 			onBuscarButtonClick: me.onBuscarButtonClick

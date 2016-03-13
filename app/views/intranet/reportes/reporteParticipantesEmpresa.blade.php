@@ -21,7 +21,7 @@
             </div>
             <div class="col-md-3">
                 <div id="reporteTotalRegistros" class="pull-right" style="margin-top: 30px;">
-                    <h5>Total de registros: <strong></strong></h5>
+                    <h5>Total de Participantes: <strong></strong></h5>
                 </div>
             </div>
         </div>
@@ -49,24 +49,88 @@
             </div>
         </div>
 
-        <div class="row" style="margin-top:10px;">
+        <div class="row" style="margin-top:10px;margin-bottom: 10px;">
             <div class="col-md-12">
                 <input type="text" class="form-control" autocomplete="off"  
                                     id="razonSocialText" data-bind="value: razonSocial">
                 <input type="text" class="form-control soloNumeros" autocomplete="off" 
-                                    id="rucText" maxlength="11" style="display:none;">
+                                    id="rucText" data-bind="value: ruc" maxlength="11" style="display:none;">
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" data-bind="visible: currentEmpresa() != null">
             <div class="col-md-12">
-
+                    <div class="panel panel-primary">
+                        <div class="panel-heading center">
+                            <!--ko if: currentEmpresa() != null-->
+                            <!--ko text: currentEmpresa().emp_ruc + ' - ' + currentEmpresa().emp_razon_social--><!--/ko-->
+                            <!--/ko-->
+                        </div>
+                        <div class="panel-body">
+                        <!--ko if: solicitantes().length > 0-->
+                            <fieldset>
+                                <legend>Último Solicitante</legend>
+                                <p>
+                                    <b>Nombre: </b>
+                                    <span data-bind="text: solicitantes()[0].soliNombre"></span>
+                                </p>
+                                <p>
+                                    <b>Email:</b>
+                                    <span data-bind="text: solicitantes()[0].soliEmail"></span>
+                                </p>
+                                <p>
+                                    <b>Teléfono:</b>
+                                    <span data-bind="text: solicitantes()[0].soliTelefono"></span>
+                                </p>
+                            </fieldset>
+                            <!--ko if: solicitantes().length > 1-->
+                            <fieldset>
+                                <legend>Otros Datos</legend>
+                                <!--ko if: hayAlgunEmailExtra-->
+                                <p>
+                                    <b>Email:</b>
+                                <!--ko foreach: { data: solicitantes, as: 'sol' } -->
+                                <!--ko if: $index() > 0-->                                       
+                                    <!-- ko if: sol.soliEmail != null -->
+                                        <span data-bind="text: sol.soliEmail"></span>
+                                        <!--ko if: $index() != $parent.solicitantesLength() - 1-->
+                                            <span> &nbsp; </span>
+                                        <!--/ko-->                                            
+                                    <!--/ko-->
+                                <!--/ko-->
+                                <!--/ko-->
+                                </p>
+                                <!--/ko-->
+                                
+                                <!--ko if: hayAlgunTelefonoExtra-->
+                                <p>                                    
+                                    <b>Teléfono:</b>
+                                    <!--ko foreach: {data: solicitantes , as: 'sol'} -->
+                                    <!--ko if: $index() > 0-->
+                                    <!-- ko if: sol.soliTelefono != null -->
+                                        <span data-bind="text: sol.soliTelefono"></span>
+                                        <!--ko if: $index() != $parent.solicitantesLength() - 1-->
+                                                <span> &nbsp; </span>
+                                        <!--/ko-->
+                                    <!--/ko-->
+                                    <!--/ko-->
+                                    <!--/ko-->
+                                </p>  
+                                <!--/ko-->
+                            </fieldset>
+                            <!--/ko--> 
+                        <!--/ko--> 
+                        <!--ko ifnot: solicitantes().length > 0-->
+                        <p>No hay solicitantes para mostrar.</p>
+                        <!--/ko-->   
+                        </div>
+                    </div>
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" style="margin-top:10px;">
             <div class="col-md-12">
-      
+                
             </div>
         </div>
     </div>

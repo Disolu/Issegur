@@ -171,7 +171,9 @@ Route::group(array('before' => 'auth','prefix' => 'api/v1'),function() {
     Route::get('getReportParticipantesPorOperadorPagerDetails', 'ReporteController@GetReportParticipantesPorOperadorPagerDetails');    
 
     Route::get('obtenerEmpresasNombresAutocomplete','ReporteController@ObtenerEmpresasNombresAutocomplete');    
-    Route::get('obtenerEmpresasPorRazonSocial','ReporteController@ObtenerEmoresaPorRazonSocial');
+    Route::get('obtenerEmpresaPorRazonSocial','ReporteController@ObtenerEmpresaPorRazonSocial');
+    Route::get('obtenerEmpresaPorRuc','ReporteController@ObtenerEmpresaPorRuc');
+    //
     //Reprogramacion
     Route::get('obtenerParticipantesAReprogramar','IntranetController@ObtenerParticipantesAReprogramar');
     Route::get('reprogramarParticipante','IntranetController@ReprogramarParticipante');

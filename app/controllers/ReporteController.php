@@ -66,21 +66,48 @@ class ReporteController extends BaseController{
         )->setCallback(Input::get('callback'));  
     }
 
-    public function ObtenerEmoresaPorRazonSocial(){
+    public function ObtenerEmpresaPorRazonSocial(){
         //obtenemos la razon social
         $razonSocial = $_GET['razonSocial'];
 
+        //objetos
         $empresaObj = new Empresa();
         $solicitanteObj =  new RegistroSolicitante();
+        $participanteObj =  new Participante();
+
         $matchingEmpresa = $empresaObj->getEmpresabyRazonSocial($razonSocial);
         $solicitantes = $solicitanteObj->obtenerSolicitantesPorEmpresa($matchingEmpresa->emp_id);
+        $participantesIds = $participanteObj->obtenerParticipantesIdsPorEmpresa($matchingEmpresa->emp_id);
+        $participantes = $participanteObj->obtenerParticipantesPorIds($participantesIds);
 
         return Response::json(array(
             'matchingEmpresa' => $matchingEmpresa,
-            'solicitantes' => $solicitantes
+            'solicitantes' => $solicitantes,
+            'participantes' => $participantes
         ), 200
         )->setCallback(Input::get('callback'));  
 
+    }
+
+    public function ObtenerEmpresaPorRuc(){
+        //obtenemos la razon social
+        $ruc = $_GET['ruc'];
+
+        $empresaObj = new Empresa();
+        $solicitanteObj =  new RegistroSolicitante();
+        $participanteObj = new Participante();
+
+        $matchingEmpresa = $empresaObj->getEmpresabyRuc($ruc);
+        $solicitantes = $solicitanteObj->obtenerSolicitantesPorEmpresa($matchingEmpresa->emp_id);
+        $participantesIds = $participanteObj->obtenerParticipantesIdsPorEmpresa($matchingEmpresa->emp_id);
+        $participantes = $participanteObj->obtenerParticipantesPorIds($participantesIds);
+
+        return Response::json(array(
+            'matchingEmpresa' => $matchingEmpresa,
+            'solicitantes' => $solicitantes,
+            'participantes' => $participantes
+        ), 200
+        )->setCallback(Input::get('callback'));  
     }
 }
 

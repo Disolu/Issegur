@@ -17,6 +17,23 @@ class Participante extends Eloquent
         return $participante;
     }
 
+    public function obtenerParticipantesIdsPorEmpresa($empresaId){    
+        $participantesIds = DB::table('RegistroParticipante')->where('emp_id', $empresaId)
+                    ->select('pa_id')->distinct()->get();
+
+        return $participantesIds;
+    }
+
+    public function obtenerParticipantesPorIds($participantesIds){
+        $Ids = array();
+        foreach ($participantesIds as $parId) {
+            array_push($Ids, $parId->pa_id);
+        }
+        $participantes = DB::table('Participante')->whereIn('pa_id', $Ids)->get();
+
+        return $participantes;
+    }
+
     public function guardar($participante){
         $existingParticipante = Participante::where('pa_dni','=', $participante["dni"])->first();
 
@@ -144,24 +161,6 @@ class Participante extends Eloquent
 
         return $matchingParticipantes;
     }
-
-    /*
-    public function obtenerNumeroDeParticipantesPorRegistroId($registroId){
-        $matchingParticipantes = DB::table('ParticipantesMasterView')
-            ->where('RegistroId', $registroId)
-            ->count();
-
-        return $matchingParticipantes;
-    }
-
-    public function obtenerNumeroDeParticipantesPorDetalleOperacionId($detOperacionId){
-        $matchingParticipantes = DB::table('ParticipantesMasterView')
-            ->where('DetOperacionId', $detOperacionId)
-            ->count();
-
-        return $matchingParticipantes;
-    }
-    */
 
     public function obtenerInfoPorDNI($dni){
         $matchingParticipanteInfo = DB::table('ParticipantesMasterView')
@@ -321,7 +320,6 @@ class Participante extends Eloquent
             ->select(DB::raw('distinct Participante.pa_dni , Participante.pa_nombres , Participante.pa_apellido_paterno ,Participante.pa_apellido_materno'))
             ->get();
 
-            //log::info($matchingParticipantes);
 
         return count($matchingParticipantes);
     }

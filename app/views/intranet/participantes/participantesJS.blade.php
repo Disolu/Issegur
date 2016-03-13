@@ -1205,14 +1205,6 @@
                 var examenFile = $(this).children('.tdExamen').find('.uploadExamenHidden').attr('data-url');
 
                 if (examenFile) {
-                    // si es que recien se estan guardando...
-                    /*if(examenFile.indexOf("examenes/") == -1){
-                        examenUrl = "examenes/" + examenFile;    
-                    }
-                    else{
-                        examenUrl = examenFile; 
-                    } */               
-
                     var $examenForm = $(this).children('.tdExamen').find('.paExamenForm');
 
                     me.uploadExamenParticipante($examenForm);
@@ -1220,8 +1212,7 @@
                     //mostramos el icono de la camara y ocultamos el clip
                     $(this).children('.tdExamen').find('.examenClip').children('.examenClipIcon').removeClass('fa fa-paperclip');
                     $(this).children('.tdExamen').find('.paExamen').show();
-                }
-                
+                }                
                 
                 var parObj = {
                     id: $(this).attr('data-id'),
