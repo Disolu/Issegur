@@ -21,7 +21,7 @@
             </div>
             <div class="col-md-3">
                 <div id="reporteTotalRegistros" class="pull-right" style="margin-top: 30px;">
-                    <h5>Total de Participantes: <strong></strong></h5>
+                    <h5>Total de Participantes: <strong data-bind="text: participantes().length"></strong></h5>
                 </div>
             </div>
         </div>
@@ -128,9 +128,39 @@
             </div>
         </div>
 
-        <div class="row" style="margin-top:10px;">
+        <div class="row" style="margin-top:10px;" data-bind="visible: participantes().length != 0">
             <div class="col-md-12">
-                
+                <div id="participantesBody" class="table-responsive">
+                    <table class="table table-bordered table-hover">
+                        <thead>
+                            <th class="pa-table-header">N°</th>
+                            <th class="pa-table-header center">DNI</th>
+                            <th class="pa-table-header">Nombres</th>
+                            <th class="pa-table-header">Ape. Paterno</th>
+                            <th class="pa-table-header">Ape. Materno</th>
+                            <th class="pa-table-header">Nota</th>
+                        </thead>
+                        <tbody>
+                            <!-- ko if: participantes().length < 1 -->
+                            <tr>
+                                <td colspan="6">
+                                    No existen participantes registrados.
+                                </td>
+                            </tr>
+                            <!-- /ko -->
+                            <!--ko foreach: { data: participantes, as: 'paInfo' } -->
+                            <tr>
+                                <td data-bind="text: $index() + 1"></td>
+                                <td data-bind="text: paInfo.pa_dni"></td>
+                                <td data-bind="text: paInfo.pa_nombres.toUpperCase()"></td>
+                                <td data-bind="text: paInfo.pa_apellido_paterno.toUpperCase()"></td>
+                                <td data-bind="text: paInfo.pa_apellido_materno.toUpperCase()"></td>
+                                <td data-bind="text: paInfo.pa_nota"></td>
+                            </tr>
+                            <!-- /ko -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

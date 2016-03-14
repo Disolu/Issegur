@@ -1,0 +1,5 @@
+/*!CK:1978010405!*//*1457909030,*/
+
+if (self.CavalryLogger) { CavalryLogger.start_js(["vvqT4"]); }
+
+__d('MercuryYoutubeLinkParser',['MercuryConfig','MercuryShareAttachmentRenderLocations','URI'],function a(b,c,d,e,f,g){'use strict';if(c.__markCompiled)c.__markCompiled();var h='www.youtube.com',i='m.youtube.com',j='https://www.youtube.com/',k='/watch',l={_isValidYoutubeLink:function(m,n){var o=this._getYoutubeURI(n),p=o.getDomain(),q=o.getPath(),r=o.getQueryData();if(c('MercuryConfig').WWWMessengerYoutubePreviewGK)return ((p===h||p===i)&&this._isValidYoutubePath(q,r)&&(m===c('MercuryShareAttachmentRenderLocations').MESSENGER||m===c('MercuryShareAttachmentRenderLocations').CHAT));return false;},_getYoutubeURI:function(m){return new (c('URI'))(new (c('URI'))(m).getQueryData().u);},_isValidYoutubePath:function(m,n){return (m===k&&n.v!=null);},_getVideoEmbedURI:function(m,n){if(this._isValidYoutubeLink(m,n)){var o=this._getYoutubeURI(n);return new (c('URI'))(j).setPath('/embed/'+o.getQueryData().v).toString();}else return '';}};f.exports=l;},null);

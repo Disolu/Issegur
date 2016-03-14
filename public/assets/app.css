@@ -52,6 +52,7 @@
  
 .titulo_fotocheck {
     float: right;
+    /*margin-left: 15%;*/
     padding-top: 26px;
     padding-right: 20px;
     color: white;

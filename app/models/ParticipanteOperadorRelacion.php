@@ -9,7 +9,7 @@
 class ParticipanteOperadorRelacion extends Eloquent
 {
     protected $table = 'ParticipanteOperadorRelacion';
-    public $timestamps = false;
+    public $timestamps = true;
     protected $primaryKey = 'pa_id';
 
     public function registrarParticipanteOperadorRelacion($operadores, $participanteId, $registroId){

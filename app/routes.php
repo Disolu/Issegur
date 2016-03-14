@@ -149,8 +149,10 @@ Route::group(array('prefix' => 'api/v1'), function(){
     Route::get('buscarPersonal', 'ConsultaController@BuscarPersonal');
     Route::get('getParticipanteInfoByDNI', 'ConsultaController@GetParticipanteInfoByDNI');
 
+
     //Intranet Login
     Route::get('login', 'LoginController@ValidateUser');
+    Route::get('ransaLogin','LoginController@ValidateRansaUser');
 });
 
 //privado, requiere autentificacion

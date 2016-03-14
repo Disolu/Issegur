@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('UserTableSeeder');
         $this->call('TurnoTableSeeder');
         $this->call('OperadorTableSeeder');
+        $this->call('RansaUserTableSeeder');
 
         $this->command->info('All tables seeded!');
 	}

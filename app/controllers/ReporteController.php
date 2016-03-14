@@ -76,9 +76,16 @@ class ReporteController extends BaseController{
         $participanteObj =  new Participante();
 
         $matchingEmpresa = $empresaObj->getEmpresabyRazonSocial($razonSocial);
-        $solicitantes = $solicitanteObj->obtenerSolicitantesPorEmpresa($matchingEmpresa->emp_id);
-        $participantesIds = $participanteObj->obtenerParticipantesIdsPorEmpresa($matchingEmpresa->emp_id);
-        $participantes = $participanteObj->obtenerParticipantesPorIds($participantesIds);
+        if ($matchingEmpresa) {
+            $solicitantes = $solicitanteObj->obtenerSolicitantesPorEmpresa($matchingEmpresa->emp_id);
+            $participantesIds = $participanteObj->obtenerParticipantesIdsPorEmpresa($matchingEmpresa->emp_id);
+            $participantes = $participanteObj->obtenerParticipantesPorIds($participantesIds);
+        }
+        else{
+            $solicitantes = array();
+            $participantes = array();
+        }
+
 
         return Response::json(array(
             'matchingEmpresa' => $matchingEmpresa,
@@ -98,9 +105,16 @@ class ReporteController extends BaseController{
         $participanteObj = new Participante();
 
         $matchingEmpresa = $empresaObj->getEmpresabyRuc($ruc);
-        $solicitantes = $solicitanteObj->obtenerSolicitantesPorEmpresa($matchingEmpresa->emp_id);
-        $participantesIds = $participanteObj->obtenerParticipantesIdsPorEmpresa($matchingEmpresa->emp_id);
-        $participantes = $participanteObj->obtenerParticipantesPorIds($participantesIds);
+        if ($matchingEmpresa) {
+            $solicitantes = $solicitanteObj->obtenerSolicitantesPorEmpresa($matchingEmpresa->emp_id);
+            $participantesIds = $participanteObj->obtenerParticipantesIdsPorEmpresa($matchingEmpresa->emp_id);
+            $participantes = $participanteObj->obtenerParticipantesPorIds($participantesIds);
+        }
+        else{
+            $solicitantes = array();
+            $participantes = array();
+        }
+
 
         return Response::json(array(
             'matchingEmpresa' => $matchingEmpresa,

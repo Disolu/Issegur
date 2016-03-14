@@ -1,0 +1,5 @@
+/*!CK:3533467359!*//*1457323892,*/
+
+if (self.CavalryLogger) { CavalryLogger.start_js(["kR8+x"]); }
+
+__d('ChatThreadSecretModeSheet',['ArbiterMixin','ChatThreadSecretModeSheet.react','React','ReactDOM','mixin'],function a(b,c,d,e,f,g){var h,i;if(c.__markCompiled)c.__markCompiled();h=babelHelpers.inherits(j,c('mixin')(c('ArbiterMixin')));i=h&&h.prototype;function j(k,l,m){'use strict';i.constructor.call(this);this.$ChatThreadSecretModeSheet1=k;this.$ChatThreadSecretModeSheet2=l;this.$ChatThreadSecretModeSheet3=m;}j.prototype.render=function(){'use strict';c('ReactDOM').render(c('React').createElement(c('ChatThreadSecretModeSheet.react'),{turnOff:this.informClicked.bind(this)}),this.$ChatThreadSecretModeSheet2);};j.prototype.informClicked=function(){'use strict';this.inform('clicked',this.$ChatThreadSecretModeSheet1);};j.prototype.isPermanent=function(){'use strict';return true;};j.prototype.getType=function(){'use strict';return 'secret-mode';};j.prototype.open=function(){'use strict';this.$ChatThreadSecretModeSheet3.open(this);};j.prototype.close=function(){'use strict';this.$ChatThreadSecretModeSheet3.close(this);};f.exports=j;},null);

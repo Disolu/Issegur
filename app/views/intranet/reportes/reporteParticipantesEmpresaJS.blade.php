@@ -10,6 +10,7 @@
 		me.hayAlgunEmailExtra = ko.observable(false);
 		me.hayAlgunTelefonoExtra = ko.observable(true);
 		me.currentEmpresa = ko.observable(null);
+		me.participantes = ko.observableArray([]);
 
 		me.IsValid = function(){
 			var valid = false;
@@ -58,7 +59,7 @@
 
 		me.onBuscarButtonClick = function(data,event){
 			var radio = $(".searchOption.active").find("input[type='radio']")[0];
-			console.log(radio);
+
 			if (radio.id == "chkEmpresa") {
 				me.getEmpresaPorRazonSocial();
 			}
@@ -101,7 +102,8 @@
 	                me.solicitantes.removeAll();
 	                me.setSolicitantesArray(solicitantes);
 	                me.setSolicitantesInformacionExtra(me.solicitantes());
-	                console.log(participantes);
+	                me.participantes.removeAll();
+	                me.participantes(participantes.slice(0));
             	},
                 error: function (data) {
                     console.log(data);
@@ -120,10 +122,13 @@
                 success: function (data) {                    
 	                var empresa = data.matchingEmpresa;
 	                var solicitantes = data.solicitantes;
+	                var participantes = data.participantes;
 	                me.currentEmpresa(empresa);
                 	me.solicitantes.removeAll();
                 	me.setSolicitantesArray(solicitantes);
                 	me.setSolicitantesInformacionExtra(me.solicitantes());
+                	me.participantes.removeAll();
+	                me.participantes(participantes.slice(0));
             	},
                 error: function (data) {
                     console.log(data);

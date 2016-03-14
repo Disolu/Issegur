@@ -18,8 +18,6 @@ class ConsultaController extends BaseController{
         $participante = new Participante();
         $matchingParticipantes = $participante->obtenerPorDniNombreOApellido($searchText);
 
-        log::info($matchingParticipantes);
-
         return Response::json(array(
             'participantes' =>  $matchingParticipantes
         ), 200

@@ -29,7 +29,11 @@ class Participante extends Eloquent
         foreach ($participantesIds as $parId) {
             array_push($Ids, $parId->pa_id);
         }
-        $participantes = DB::table('Participante')->whereIn('pa_id', $Ids)->get();
+        $participantes = DB::table('Participante')
+                            ->whereIn('pa_id', $Ids)
+                            ->whereNotNull('pa_asistencia')
+                            ->orderBy('pa_apellido_paterno')
+                            ->get();
 
         return $participantes;
     }
@@ -122,6 +126,7 @@ class Participante extends Eloquent
     public function agregarOperadoresParticipantesView($participantesView){
 
             $operadorObj = new Operador();
+            $index = 0;
 
             foreach ($participantesView as $par) {
                 $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $par->pa_id)
@@ -135,11 +140,16 @@ class Participante extends Eloquent
                 else{
                     $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $par->pa_id)
                                                                         ->where('reg_id','=', 0)
-                                                                        ->first();
+                                                                        ->orderBy('created_at')
+                                                                        ->get();
 
-                    $par->OperadorId = $existingParticipanteOperador->op_id;
-                    $par->Operador = $operadorObj->obtenerNombrePorId($par->OperadorId);
-                }
+                    if (count($existingParticipanteOperador) >= $index + 1) {
+                        $par->OperadorId = $existingParticipanteOperador[$index]->op_id;
+                        $par->Operador = $operadorObj->obtenerNombrePorId($par->OperadorId);  
+                        $index++;                                                                      
+                    }                                                                                        
+                                                                                                                   
+                }                
                
             }
 

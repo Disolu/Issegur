@@ -33,6 +33,33 @@ class LoginController extends BaseController {
         )->setCallback(Input::get('callback'));
     }
 
+    public function ValidateRansaUser(){
+        $IsValid = false;
+
+        $user = $_GET['usuario'];
+        $pass = $_GET['password'];
+                
+        $user = RansaUsuario::where('ruser_username', $user)->first();
+
+        if ($user) {
+            if (Hash::check($pass, $user->ruser_password))
+            {
+                $IsValid = true;
+            }
+            else{
+                $IsValid = false;
+            }
+        }
+        else{
+            $IsValid = false;
+        }
+
+        return Response::json(array(
+            'resultado' =>  $IsValid
+        ), 200
+        )->setCallback(Input::get('callback'));
+    }
+
     public function Logout(){
         Auth::logout();
 
