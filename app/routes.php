@@ -153,6 +153,8 @@ Route::group(array('prefix' => 'api/v1'), function(){
     //Intranet Login
     Route::get('login', 'LoginController@ValidateUser');
     Route::get('ransaLogin','LoginController@ValidateRansaUser');
+    Route::get('ransaLogout','LoginController@LogoutRansaUser');
+    //
 });
 
 //privado, requiere autentificacion

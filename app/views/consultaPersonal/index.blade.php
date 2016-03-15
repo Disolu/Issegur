@@ -1,14 +1,14 @@
 @extends('master.siteConsulta')
 @section('main')
     <div id="consultaPersonal" class="consultaPersonalSection">
-        <div class="row">
+        <div class="row" id="headerSection">
             <div class="col-md-4 col-md-offset-4 center">
                 <i class="fa fa-users fa-3x"></i><h1 class="consultaHeader">Consulta de Personal</h1>
             </div>
             <div id="RansaSesion" class="col-md-2 col-md-offset-2" style="display: none;">
                 <img src="{{asset("assets/img/logo/ransa.png")}}" style="width: 100px"/> <br/>
-                <a id="btnRansaIniciarSesion" style="cursor: pointer;">Iniciar Sesión</a>
-                <a id="btnRansaCerrarSesion" style="cursor: pointer;display: none;">Cerrar Sesión</a>
+                <a id="btnRansaIniciarSesion" data-bind="visible: !isUsuarioAuth() || isUsuarioAuth() == ''" style="cursor: pointer;">Iniciar Sesión</a>
+                <a id="btnRansaCerrarSesion" data-bind="visible: isUsuarioAuth" style="cursor: pointer;">Cerrar Sesión</a>
             </div>
         </div>
         <div class="row" id="filtroSection">
@@ -56,9 +56,7 @@
                                 <span class="n_s">DNI</span><br />
                                 <span class="T_n" data-bind="text: dni()"></span><br />
                                 <span class="n_s">EMPRESA</span><br />
-                                <span class="T_e" data-bind="text: aditionalInfoArray()[aditionalInfoArray().length - 1].empresa"></span>
-                                <!--p class="name-header" data-bind="text: nombre() + ' ' + apellidoPaterno() + ' ' + apellidoMaterno()"></p>
-                                <h2 class="dni-header"><small data-bind="text: dni()"></small></h2-->
+                                <span class="T_e" data-bind="text: aditionalInfoArray()[aditionalInfoArray().length - 1].empresa"></span>                 
                             </div>
                         </div>
                         <div class="col-md-3">
@@ -103,22 +101,22 @@
                                         </td>
                                         <!--ko if: $parent.isUsuarioAuth -->
                                         <td class="center">
-                                        <!--ko if: $parent.fichaAsistencia != ''-->
+                                        <!--ko if: $parent.fichaAsistencia() != ''-->
                                             <a class="btn btn-default btn-xs" data-bind="attr: {'href' : $parent.fichaAsistencia }" target="blank">
                                                 <i class="fa fa-download"></i>
                                             </a>
                                          <!--/ko-->
-                                         <!--ko if: $parent.fichaAsistencia == ''-->
+                                         <!--ko if: $parent.fichaAsistencia() == ''-->
                                          N/E
                                          <!--/ko-->
                                         </td>
                                         <td class="center">
-                                        <!--ko if: $parent.examen != ''-->
+                                        <!--ko if: $parent.examen() != ''-->
                                             <a class="btn btn-default btn-xs" data-bind="attr: {'href' : $parent.examen }" target="blank">
                                                 <i class="fa fa-download"></i>
                                             </a>
                                         <!--/ko-->
-                                        <!--ko if: $parent.examen == ''-->
+                                        <!--ko if: $parent.examen() == ''-->
                                          N/E
                                          <!--/ko-->
                                         </td>
@@ -183,12 +181,13 @@
             me.nota = ko.observable(null);
             me.aditionalInfoArray = ko.observableArray([]);
             me.hasBeenInitialized = false;
-            me.isUsuarioAuth = ko.observable(false);
+            me.isUsuarioAuth = ko.observable({{Session::has('ransa_user')}});
 
  
             me.initialize = function () {
                 if (!me.hasBeenInitialized) {
                     ko.applyBindings(DetalleParticipanteViewModel, $("#detallesSection")[0]);
+                    ko.applyBindings(DetalleParticipanteViewModel, $("#headerSection")[0]);
                     me.hasBeenInitialized = true;
                 }
             };
@@ -292,14 +291,29 @@
             me.onIniciarSesionClick = function(){
                 $("#username").val('');
                 $("#password").val('');
-                
+
                 $("#RansaSesionDialog").modal("show");
             }
 
             me.onCerrarSesionClick = function(){
                 $("#btnRansaCerrarSesion").hide();
-                $("#btnRansaIniciarSesion").show();
-                DetalleParticipanteViewModel.isUsuarioAuth(false);
+                $("#btnRansaIniciarSesion").show();                
+
+                $.ajax({
+                    type: "GET",
+                    url: path + "/api/v1/ransaLogout",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        //algo aqui cuando se desloguea
+                        DetalleParticipanteViewModel.isUsuarioAuth(false);
+                        DetalleParticipanteViewModel.isUsuarioAuth.valueHasMutated();
+                    },
+                    error: function (data) {
+                        console.log('error');
+                        console.log(data);
+                    }
+                });
             }
 
             me.onRansaLogin = function(){

@@ -44,6 +44,7 @@ class LoginController extends BaseController {
         if ($user) {
             if (Hash::check($pass, $user->ruser_password))
             {
+                Session::put('ransa_user', $user);
                 $IsValid = true;
             }
             else{
@@ -56,6 +57,15 @@ class LoginController extends BaseController {
 
         return Response::json(array(
             'resultado' =>  $IsValid
+        ), 200
+        )->setCallback(Input::get('callback'));
+    }
+
+    public function LogoutRansaUser(){
+        Session::forget('ransa_user');
+
+        return Response::json(array(
+            'resultado' =>  true
         ), 200
         )->setCallback(Input::get('callback'));
     }
