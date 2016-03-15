@@ -1,5 +1,0 @@
-/*!CK:2078465675!*//*1457652390,*/
-
-if (self.CavalryLogger) { CavalryLogger.start_js(["NhwEa"]); }
-
-__d('ReactComposerProfileBadgeStore',['ReactComposerProfileBadgeActionType','ReactComposerStoreBase'],function a(b,c,d,e,f,g){var h,i;if(c.__markCompiled)c.__markCompiled();h=babelHelpers.inherits(j,c('ReactComposerStoreBase'));i=h&&h.prototype;function j(){'use strict';var k;i.constructor.call(this,function(){return {hasProfileBadge:false};},function(l){switch(l.type){case c('ReactComposerProfileBadgeActionType').SET_HAS_PROFILE_BADGE:k&&k.$ReactComposerProfileBadgeStore1(l);break;}});k=this;}j.prototype.hasProfileBadge=function(k){'use strict';return this.getComposerData(k).hasProfileBadge;};j.prototype.$ReactComposerProfileBadgeStore1=function(k){'use strict';var l=this.validateAction(k,['composerID','hasProfileBadge']),m=l[0],n=l[1],o=this.getComposerData(m);o.hasProfileBadge=n;this.emitChange(m);};f.exports=new j();},null);

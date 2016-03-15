@@ -1,5 +1,0 @@
-/*!CK:498904530!*//*1457310655,*/
-
-if (self.CavalryLogger) { CavalryLogger.start_js(["1beXi"]); }
-
-__d('P2PRequestSenderNUXChatThreadBanner.react',['fbt','P2PBannerType','P2PPaymentLoggerEventFlow','P2PSendMoneyNUXChatThreadBanner.react','React'],function a(b,c,d,e,f,g,h){'use strict';if(c.__markCompiled)c.__markCompiled();var i=c('React').PropTypes,j=c('React').createClass({displayName:'P2PRequestSenderNUXChatThreadBanner',propTypes:{threadID:i.string.isRequired},render:function(){return (c('React').createElement(c('P2PSendMoneyNUXChatThreadBanner.react'),{bannerType:c('P2PBannerType').REQUEST_SENDER_NUX,bodyText:h._("Pide ahora el dinero de la cena, el alquiler o cualquier otro gasto."),buttonText:h._("Empezar"),openRequestTab:true,loggerEventFlow:c('P2PPaymentLoggerEventFlow').UI_FLOW_REQUEST_SENDER_NUX_CHAT_THREAD_BANNER,threadID:this.props.threadID,titleText:h._("Ahora puedes pedir dinero")}));}});f.exports=j;},null);

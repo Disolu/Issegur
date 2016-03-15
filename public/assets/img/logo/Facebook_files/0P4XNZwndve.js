@@ -1,5 +1,0 @@
-/*!CK:2360023885!*//*1457137352,*/
-
-if (self.CavalryLogger) { CavalryLogger.start_js(["rvZC5"]); }
-
-__d('UFIShareNowMenu.react',['ContextualDialogArrow','ContextualLayerAsyncRelative','ContextualLayerAutoFlip','PopoverAsyncMenu.react','React','ShareNowController','UFIShareLink.react'],function a(b,c,d,e,f,g){if(c.__markCompiled)c.__markCompiled();var h=c('React').PropTypes,i=c('React').createClass({displayName:'UFIShareNowMenu',propTypes:{focusOnInit:h.bool,openOnInit:h.bool},_mountWithMenu:function(j){if(!j)return;var k=j.getPopoverMenu();c('ShareNowController').initMenu(k);if(this.props.focusOnInit)k.getTriggerElem().focus();if(this.props.openOnInit)k.getTriggerElem().click();},render:function(){var j=this.props,k=j.endpoint,l=j.endpointData,m=j.onShow,n=j.onHide;return (c('React').createElement(c('PopoverAsyncMenu.react'),{alignv:'baseline',endpoint:k,endpointData:l,onShow:m,onHide:n,layerBehaviors:[c('ContextualLayerAutoFlip'),c('ContextualDialogArrow'),c('ContextualLayerAsyncRelative')],ref:this._mountWithMenu},c('React').createElement(c('UFIShareLink.react'),{href:'#'})));}});f.exports=i;},null);
