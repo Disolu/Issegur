@@ -26,7 +26,16 @@ Route::get('intranet/reportes','IntranetController@InitializeReportes');
 Route::get('intranet/reportes/participantesPorOperador','IntranetController@InitializeRepParticipantesPorOperador');
 Route::get('intranet/reportes/participantesPorEmpresa','IntranetController@InitializeRepParticipantesPorEmpresa');
 Route::get('intranet/reprogramacion','IntranetController@ReprogramarParticipantes');
+Route::get('intranet/facturas','IntranetController@IntranetFacturas');
 Route::get('intranet/generarFichaExcel/{turno}/{fecha}','IntranetController@GenerarFichaExcel');
+
+Route::get('intranet/facturas/generar','FacturaController@generar');
+Route::get('intranet/facturas/ver/{id}','FacturaController@show');
+Route::get('intranet/facturas/consultar','FacturaController@consultar');
+Route::get('intranet/facturas/reporte','FacturaController@reporte');
+Route::get('intranet/facturas/configurar','FacturaController@configurar');
+
+
 
 
 //Consulta de Personal
@@ -123,7 +132,7 @@ Route::post("uploadExamenParticipante", function(){
     $file = Input::all();
     if ($file["examenData"] != null) {
         //guardamos la imagen en public/imgs con el nombre original
-        $file["examenData"]->move("examenes",$file["examenData"]->getClientOriginalName()); 
+        $file["examenData"]->move("examenes",$file["examenData"]->getClientOriginalName());
     }
 
     return Response::json(array(
@@ -154,11 +163,14 @@ Route::group(array('prefix' => 'api/v1'), function(){
     Route::get('login', 'LoginController@ValidateUser');
     Route::get('ransaLogin','LoginController@ValidateRansaUser');
     Route::get('ransaLogout','LoginController@LogoutRansaUser');
+
     //
+
+
 });
 
 //privado, requiere autentificacion
-Route::group(array('before' => 'auth','prefix' => 'api/v1'),function() {   
+Route::group(array('before' => 'auth','prefix' => 'api/v1'),function() {
     //Intranet
     //Calendario
     Route::get('obtenerParticipantesPorFechaYDia','IntranetController@ObtenerParticipantesPorFechaYDia');
@@ -172,15 +184,22 @@ Route::group(array('before' => 'auth','prefix' => 'api/v1'),function() {
     //Reportes
     Route::get('reporteParticipantesByOperador','ReporteController@ReporteParticipantesByOperador');
     Route::get('reporteParticipantesByOperadorDetalle','ReporteController@ReporteParticipantesByOperadorDetalle');
-    Route::get('getReportParticipantesPorOperadorPagerDetails', 'ReporteController@GetReportParticipantesPorOperadorPagerDetails');    
+    Route::get('getReportParticipantesPorOperadorPagerDetails', 'ReporteController@GetReportParticipantesPorOperadorPagerDetails');
 
-    Route::get('obtenerEmpresasNombresAutocomplete','ReporteController@ObtenerEmpresasNombresAutocomplete');    
+    Route::get('obtenerEmpresasNombresAutocomplete','ReporteController@ObtenerEmpresasNombresAutocomplete');
     Route::get('obtenerEmpresaPorRazonSocial','ReporteController@ObtenerEmpresaPorRazonSocial');
     Route::get('obtenerEmpresaPorRuc','ReporteController@ObtenerEmpresaPorRuc');
     //
     //Reprogramacion
     Route::get('obtenerParticipantesAReprogramar','IntranetController@ObtenerParticipantesAReprogramar');
     Route::get('reprogramarParticipante','IntranetController@ReprogramarParticipante');
+
+    Route::get('facturas/loadbyruc','FacturaController@loadbyruc');
+    Route::get('facturas/createedit','FacturaController@createedit');
+    Route::get('facturas/new','FacturaController@store');
+    Route::get('facturas/search','FacturaController@search');
+    Route::get('facturas/config','FacturaController@updateConfig');
+
 
 });
 

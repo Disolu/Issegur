@@ -18,38 +18,38 @@
     font-size: 14px;
     color: #4682b4 !important;
 }
- 
+
 .cont_datos {
     padding-top: 10px;
 }
- 
+
 .n_s {
     color: #0D3EA0;
     font-weight: bold;
 }
- 
+
 .T_n {
     font-weight: bold;
     font-size: 20px;
 }
- 
+
 .T_e {
     font-weight: bold;
     font-size: 20px;
     color: red
 }
- 
+
 .barra_azul {
     background-color: #0D3EA0;
     height: 100px;
     border-radius: 5px;
 }
- 
+
 .pic_fotocheck {
     padding-top: 20px;
     float: right;
 }
- 
+
 .titulo_fotocheck {
     float: right;
     /*margin-left: 15%;*/
@@ -58,7 +58,7 @@
     color: white;
     font-size: 30px;
 }
- 
+
 .legendEmpresa {
     width: 141px;
 }
@@ -103,7 +103,7 @@ td:first-child {
     font-size: 20px !important;
     font-weight: bold !important;
 }
- 
+
 input[type="text"][disabled] {
     color: dimgray !important;
 }
@@ -111,7 +111,7 @@ input[type="text"][disabled] {
     color: #a9a9a9;
 }
 /*------end-registro----------*/
- 
+
 /*-----intranet-----------*/
 .loginSection{
     /*position: relative;*/
@@ -129,12 +129,12 @@ input[type="text"][disabled] {
     height: auto;
 }
 .validation-error {color:#fff;text-shadow:0 1px 0 rgba(0,0,0,.5);border-radius:4px;font-size:12px;font-weight:bold;line-height:1.4em;text-align:center;text-align:left;padding:5px;background:#cf2424;border:1px solid #831919;box-shadow:inset 0 1px 0 rgba(255,255,255,.4),0 3px 7px rgba(0,0,0,.4);}
- 
+
 .navbar-inverse {
     background-color: #33332C !important;
     border-color: #33332C !important;
 }
- 
+
 .margin:before{
     margin-bottom:15px;
     content: "\00a0 ";
@@ -267,10 +267,10 @@ input[type="text"][disabled] {
 }
 .left-addon .fa   { left:  0px;}
 .right-addon .fa  { right: 0px;}
- 
+
 .left-addon input  { padding-left:  40px; }
 .right-addon input { padding-right: 30px; }
- 
+
 #filtroPersonal{
     border-radius: 40px !important;
 }
@@ -304,17 +304,17 @@ input[type="text"][disabled] {
 #btnRegresar{
     border-radius: 25px !important;
 }
- 
+
 /*Participantes*/
 #participantesBody{
     margin-top: 20px;
 }
- 
+
 .paAlmacen{
     font-size: 12px;
     height: 30px;
 }
- 
+
 #participantes{
     width: 90%
 }
@@ -322,12 +322,12 @@ input[type="text"][disabled] {
     background-image: linear-gradient(#f6f6f6, #e6e6e6);
     color:dimgray;
 }
- 
+
 .panel-hora-turno:first-child {
- 
+
     border-top:none; !important;
 }
- 
+
 .editableField{
     height: 32px;
     padding-right: 0;
@@ -361,3 +361,88 @@ input[type="text"][disabled] {
 .reportTitle{
     font-size: large;
 }
+
+
+
+
+/*---------------------- Facturas -----------------------------*/
+
+#facturacion-generar .btn{
+    max-width: 100%;
+    white-space: normal;
+}
+
+#facturacion-generar h2{
+    margin-top: 0px;
+}
+
+#facturacion-generar .fnumber{
+    margin-bottom: 10px;
+}
+
+#facturacion-generar .fnumber label{
+    border: 2px solid #ececec;
+    padding: 2px 10px;
+    margin:0px 5px;
+}
+
+#facturacion-generar .type label{
+    margin:0px 5px;
+}
+
+#facturacion-generar .input-line{
+    font-size: 14px;
+}
+
+#facturacion-generar .input-line input[type="text"]{
+    width: 80px;
+    max-width: 100%;
+    height: auto;
+    min-height: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+#facturacion-generar .input-line textarea{
+    width: 480px;
+    max-width: 100%;
+}
+
+#facturacion-generar .exoneracion span{
+    font-weight: bold;
+    display: none;
+}
+
+#facturacion-generar .exoneracion.toshow{
+    background: #FEFB64;
+}
+
+#facturacion-generar .exoneracion.toshow span{
+    display:inline-block;
+}
+
+
+.facturacion-container .table thead{
+    background: #033076;
+}
+
+.facturacion-container .table thead th{
+   color:#fff;
+   font-weight: normal;
+   text-transform: uppercase;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

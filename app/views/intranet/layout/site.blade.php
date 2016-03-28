@@ -2,7 +2,7 @@
 <html>
 <head><meta http-equiv="Content-Type" content="text/html; charset=gb18030">
     <!-- Meta, title, CSS, favicons, etc. -->
-    
+
     <title>Intranet | Instituto Superior de Seguridad (Issegur)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -34,7 +34,8 @@
                     {{--<li><a id="participantesLink" href="{{URL::to('intranet/participantes')}}">Participantes </a></li>--}}
                     <li><a href="#">Administración</a></li>
                     <li><a id="reportesLink" href="{{URL::to('intranet/reportes')}}">Reportes</a></li>
-                    <li><a id="reprogramacionLink" href="{{URL::to('intranet/reprogramacion')}}">Reprogramar</a></li>
+                    <li><a id="reprogramacionLink" href="{{URL::to('intranet/reprogramacion')}}">Reprogramar
+                    <li><a id="facturasLink" href="{{URL::to('intranet/facturas')}}">Facturacion</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
@@ -91,6 +92,9 @@
         }
         else if (currentUrl.indexOf("/reprogramacion") >= 0) {
             $("#reprogramacionLink").closest("li").addClass("active");
+        }
+        else if (currentUrl.indexOf("/facturas") >= 0) {
+            $("#facturasLink").closest("li").addClass("active");
         }
         else{
             $("#calendarioLink").closest("li").addClass("active");

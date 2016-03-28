@@ -17,7 +17,7 @@ class Participante extends Eloquent
         return $participante;
     }
 
-    public function obtenerParticipantesIdsPorEmpresa($empresaId){    
+    public function obtenerParticipantesIdsPorEmpresa($empresaId){
         $participantesIds = DB::table('RegistroParticipante')->where('emp_id', $empresaId)
                     ->select('pa_id')->distinct()->get();
 
@@ -145,12 +145,12 @@ class Participante extends Eloquent
 
                     if (count($existingParticipanteOperador) >= $index + 1) {
                         $par->OperadorId = $existingParticipanteOperador[$index]->op_id;
-                        $par->Operador = $operadorObj->obtenerNombrePorId($par->OperadorId);  
-                        $index++;                                                                      
-                    }                                                                                        
-                                                                                                                   
-                }                
-               
+                        $par->Operador = $operadorObj->obtenerNombrePorId($par->OperadorId);
+                        $index++;
+                    }
+
+                }
+
             }
 
             return $participantesView;
@@ -181,7 +181,7 @@ class Participante extends Eloquent
 
         return $matchingParticipanteInfo;
     }
-    
+
 
     public function puedeParticipanteRegistrarse($fecha, $turnoId, $nroParticipantes, $modalidad){
         $puedeRegistrarse = true;
@@ -243,16 +243,16 @@ class Participante extends Eloquent
             if($existingParticipanteOperador){
                 $existingParticipanteOperador->op_id = $participante["operador"];
                 $existingParticipanteOperador->save();
-            } 
+            }
             else{
                 $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $paId)
                                                                         ->where('reg_id','=', 0)
-                                                                        ->first(); 
+                                                                        ->first();
 
                 $existingParticipanteOperador->op_id = $participante["operador"];
                 $existingParticipanteOperador->save();
-            }                                                                       
-            
+            }
+
         }
 
         $existingParticipante->pa_dni = $participante["dni"];
@@ -260,7 +260,7 @@ class Participante extends Eloquent
         $existingParticipante->pa_apellido_paterno = $participante["apePaterno"];
         $existingParticipante->pa_apellido_materno = $participante["apeMaterno"];
         $existingParticipante->pa_asistencia = $participante["asistencia"] == ""? null : $participante["asistencia"];
-        
+
         if($participante["nota"]){
             $existingParticipante->pa_nota = $participante["nota"]?(float) $participante["nota"] : null;
         }
@@ -281,7 +281,7 @@ class Participante extends Eloquent
         if($participante["examen"]){
             if ((strlen($existingParticipante->pa_examen) == 0) || ((strlen($existingParticipante->pa_examen) > 0) && ($participante["examen"] != null))) {
                 $existingParticipante->pa_examen = $participante["examen"];
-            }            
+            }
         }
         $existingParticipante->save();
 
@@ -379,8 +379,8 @@ class Participante extends Eloquent
 
             if ($participanteRaw) {
                 if (strtotime($participanteRaw->fecha_programacion) < strtotime(date("Y-m-d"))) {
-                    return true;  
-                }  
+                    return true;
+                }
                 else{
                     return false;
                 }

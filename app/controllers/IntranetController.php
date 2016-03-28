@@ -69,6 +69,16 @@ class IntranetController extends BaseController{
         }
     }
 
+    public function IntranetFacturas(){
+        if (Auth::check())
+        {
+            return View::make('intranet.facturas.facturas');
+        }
+        else{
+            return View::make('intranet.auth.login');
+        }
+    }
+
     public function ObtenerParticipantesPorFechaYDia(){
         $participante = new Participante;
         //obtenemos los parametros
