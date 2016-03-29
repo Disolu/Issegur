@@ -135,46 +135,12 @@ class FacturaController extends BaseController{
 
     $facturas = $facturas->get();
 
-
-    $filename = tempnam(sys_get_temp_dir(), 'Reporte.csv');;
-    $handle = fopen($filename, 'w+');
-
-    fputcsv($handle, array('Fecha','Codigo','Com','Ruc','Empresa','Ventas no Grabadas','Ventas Grabadas','IGV','Total','Detalle','Fecha de Comprobante'));
-
-    foreach($facturas as $f) {
-      $row = array();
-      $row[] = $f->date;
-      $f->number = explode('-',$f->number);
-      $f->data = unserialize($f->data);
-
-      $row[] = (int)$f->number[0];
-      $row[] = (int)$f->number[1];
-      $row[] = $f->ruc;
-      $row[] = $f->empresa;
-      if($f->data['igv'] == 0){
-        $row[] = $f->data['stotal'];
-        $row[] = '';
-        $row[] = '';
-      }else{
-        $row[] = '';
-        $row[] = $f->data['stotal'];
-        $row[] = $f->data['igv'];
-
-      }
-
-      $row[] = $f->data['total'];
-      $row[] = '';
-      $row[] = $f->date;
-      fputcsv($handle, $row);
-    }
-
-    fclose($handle);
-
-    $headers = array(
-        'Content-Type' => 'text/csv',
-    );
-
-    return Response::download($filename, 'Reporte.csv', $headers);
+    return Excel::create('Reporte',
+        function($excel) use($facturas){
+          $excel->sheet('Reporte', function($sheet) use($facturas){
+              $sheet->loadView('excel.reporteFacturas')->with('facturas', $facturas);
+            });
+        })->export('xlsx');
   }
 
 
