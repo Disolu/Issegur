@@ -33,7 +33,9 @@ Route::get('intranet/facturas/generar','FacturaController@generar');
 Route::get('intranet/facturas/ver/{id}','FacturaController@show');
 Route::get('intranet/facturas/consultar','FacturaController@consultar');
 Route::get('intranet/facturas/reporte','FacturaController@reporte');
+Route::get('intranet/facturas/excel','FacturaController@excel');
 Route::get('intranet/facturas/configurar','FacturaController@configurar');
+Route::get('intranet/facturas/cancelar/{id}','FacturaController@cancelar');
 
 
 
@@ -198,6 +200,7 @@ Route::group(array('before' => 'auth','prefix' => 'api/v1'),function() {
     Route::get('facturas/createedit','FacturaController@createedit');
     Route::get('facturas/new','FacturaController@store');
     Route::get('facturas/search','FacturaController@search');
+    Route::get('facturas/report','FacturaController@report');
     Route::get('facturas/config','FacturaController@updateConfig');
 
 

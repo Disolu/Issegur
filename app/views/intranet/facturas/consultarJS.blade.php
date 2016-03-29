@@ -9,8 +9,8 @@
 
         me.search = function(){
             var data = {
-                ruc : ruc(),
-                empresa : empresa(),
+                ruc : me.ruc(),
+                empresa : me.empresa(),
             }
 
             $.ajax({

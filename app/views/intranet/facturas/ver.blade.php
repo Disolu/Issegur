@@ -121,7 +121,11 @@
                 </table>
             </div>
         </div>
-
+        <div class="row">
+            <div class="col-xs-12 text-right">
+                <a class="btn btn-default" href="{{URL::to('intranet/facturas/cancelar/'.$factura->id)}}">Anular</a>
+            </div>
+        </div>
     </div>
 
 

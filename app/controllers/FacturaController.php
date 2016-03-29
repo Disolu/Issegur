@@ -16,6 +16,23 @@ class FacturaController extends BaseController{
     }
   }
 
+  public function cancelar($id){
+    if (Auth::check())
+    {
+        $factura = Factura::find($id);
+        if($factura){
+          $factura->estado = 0;
+          $factura->save();
+        }
+        return Redirect::to('intranet/facturas');
+    }
+    else{
+        return View::make('intranet.auth.login');
+    }
+
+
+  }
+
   public function configurar(){
     if (Auth::check())
     {
@@ -57,6 +74,110 @@ class FacturaController extends BaseController{
         return View::make('intranet.auth.login');
     }
   }
+
+
+
+  public function report(){
+    $inidate = Input::get('inidate');
+    $enddate = Input::get('enddate');
+
+    $report = new stdClass();
+    $report->total = 0;
+    $report->anuladas = 0;
+    $report->valor = 0;
+
+    $facturas = Factura::where('userid','<>',0);
+    if($inidate){
+      $facturas = $facturas->where('date','>=',$inidate);
+    }
+
+    if($enddate){
+      $facturas = $facturas->where('date','<=',$enddate);
+    }
+
+    $facturas = $facturas->get();
+
+    foreach ($facturas as $f) {
+      if($f->estado == 1){
+        $report->total++;
+        $f->data = unserialize($f->data);
+        $report->valor += $f->data['total'];
+      }else{
+        $report->anuladas++;
+      }
+    }
+
+
+    return Response::json(array('report'=>$report), 200)
+        ->setCallback(Input::get('callback'));
+
+  }
+
+
+  public function excel(){
+
+    $inidate = Input::get('inidate');
+    $enddate = Input::get('enddate');
+
+    $report = new stdClass();
+    $report->total = 0;
+    $report->anuladas = 0;
+    $report->valor = 0;
+
+    $facturas = Factura::where('userid','<>',0);
+    if($inidate!='undefined'){
+      $facturas = $facturas->where('date','>=',$inidate);
+    }
+
+    if($inidate!='undefined'){
+      $facturas = $facturas->where('date','<=',$enddate);
+    }
+
+    $facturas = $facturas->get();
+
+
+    $filename = tempnam(sys_get_temp_dir(), 'Reporte.csv');;
+    $handle = fopen($filename, 'w+');
+
+    fputcsv($handle, array('Fecha','Codigo','Com','Ruc','Empresa','Ventas no Grabadas','Ventas Grabadas','IGV','Total','Detalle','Fecha de Comprobante'));
+
+    foreach($facturas as $f) {
+      $row = array();
+      $row[] = $f->date;
+      $f->number = explode('-',$f->number);
+      $f->data = unserialize($f->data);
+
+      $row[] = (int)$f->number[0];
+      $row[] = (int)$f->number[1];
+      $row[] = $f->ruc;
+      $row[] = $f->empresa;
+      if($f->data['igv'] == 0){
+        $row[] = $f->data['stotal'];
+        $row[] = '';
+        $row[] = '';
+      }else{
+        $row[] = '';
+        $row[] = $f->data['stotal'];
+        $row[] = $f->data['igv'];
+
+      }
+
+      $row[] = $f->data['total'];
+      $row[] = '';
+      $row[] = $f->date;
+      fputcsv($handle, $row);
+    }
+
+    fclose($handle);
+
+    $headers = array(
+        'Content-Type' => 'text/csv',
+    );
+
+    return Response::download($filename, 'Reporte.csv', $headers);
+  }
+
+
 
   public function loadbyruc(){
     $empresa = array();
