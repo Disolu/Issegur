@@ -246,7 +246,7 @@ class IntranetController extends BaseController{
                 /*registro de los operadores*/
                 $operador = $participante['almacen'];
 
-                $participanteOperadorObj->registrarParticipanteOperadorRelaction($operador,$savedParticipante->pa_id, $savedRegistro->reg_id);
+                $participanteOperadorObj->registrarParticipanteOperadorRelacion($operador,$savedParticipante->pa_id, $savedRegistro->reg_id);
             }
             else{
                 /*registro de pagos*/
@@ -275,7 +275,7 @@ class IntranetController extends BaseController{
                 /*registro de los operadores*/
                 $operador = $participante['almacen'];
 
-                $participanteOperadorObj->registrarParticipanteOperadorRelaction($operador,$savedParticipante->pa_id, $savedRegistro->reg_id);
+                $participanteOperadorObj->registrarParticipanteOperadorRelacion($operador,$savedParticipante->pa_id, $savedRegistro->reg_id);
             }
         }
         else{
