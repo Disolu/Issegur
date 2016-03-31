@@ -27,19 +27,36 @@
 
         me.type = ko.observable('1');
 
-        me.cant = ko.observable();
-        me.price = ko.observable();
+        var item = {};
+        item.cant = ko.observable('');
+        item.cant.subscribe(function(nV) {
+            me.calculate();
+        });
+        item.price = ko.observable('');
+        item.price.subscribe(function(nV) {
+            me.calculate();
+        });
+        item.ptotal = ko.observable('');
+        item.description = ko.observable('');
+
+        me.items = ko.observableArray([item]);
+
         me.stotal = ko.observable();
         me.igv = ko.observable();
         me.total = ko.observable();
-        me.description = ko.observable();
         me.letters = ko.observable();
 
 
         me.calculate = function(){
-            var cant = parseInt(me.cant());
-            var price = parseFloat(me.price());
-            var stotal = cant * price;
+            var items = me.items().slice(0);
+            var stotal = 0;
+            for(var i = 0; i < items.length; i++){
+                items[i].ptotal(items[i].cant() * items[i].price())
+                stotal += parseInt(items[i].ptotal());
+            }
+
+            me.items([]);
+            me.items(items);
             var igv = 0;
             me.stotal(stotal);
             if(me.type() == '1'){
@@ -52,17 +69,26 @@
             me.total(stotal+igv);
         }
 
-        me.price.subscribe(function(newValue) {
-            me.calculate();
-        });
-
         me.type.subscribe(function(newValue) {
             me.calculate();
         });
 
-        me.cant.subscribe(function(newValue) {
-            me.calculate();
-        });
+
+        me.addline = function(){
+            var item = {};
+            item.cant = ko.observable('');
+            item.cant.subscribe(function(nV) {
+                me.calculate();
+            });
+            item.price = ko.observable('');
+            item.price.subscribe(function(nV) {
+                me.calculate();
+            });
+            item.ptotal = ko.observable('');
+            item.description = ko.observable('');
+
+            me.items.push(item);
+        }
 
         me.initialize = function(){
             $(document.body).on("keydown", ".soloNumeros", me.soloNumeros);
@@ -87,27 +113,42 @@
 
 
         me.preview = function(){
+            var items = [];
+            var titems  = me.items().slice(0);
+            var citems = false;
+
+            for(var i = 0; i < titems.length; i++){
+                var titem = {
+                    cant : titems[i].cant(),
+                    price : titems[i].price(),
+                    ptotal : titems[i].ptotal(),
+                    description : titems[i].description()
+                }
+                items.push(titem);
+
+                if(titem.cant == '' || titem.price == '' || titem.description == ''){
+                    citems = true;
+                }
+            }
+
             var data = {
                 ruc : me.ruc(),
                 date : me.currentday,
                 address : me.address(),
                 empresa : me.empresa(),
-                cant : me.cant(),
-                price : me.price(),
-                stotal : me.stotal(),
                 igv : me.igv(),
                 total : me.total(),
-                description : me.description(),
+                stotal : me.stotal(),
                 letters : me.letters(),
-                id : me.emp_id()
+                id : me.emp_id(),
+                items : items
             }
+
             if(data.ruc == '' || !data.ruc ||
                 data.address == '' || !data.address ||
                 data.empresa == '' || !data.empresa ||
-                data.cant == '' || !data.cant ||
-                data.price == '' || !data.price ||
-                data.description == '' || !data.description ||
-                data.letters == '' || !data.letters
+                data.letters == '' || !data.letters ||
+                citems
             ){
                 $("#modalerror").modal();
             }else{
@@ -118,28 +159,39 @@
 
         me.print = function(){
 
+            var items = [];
+            var titems  = me.items().slice(0);
+
+            for(var i = 0; i < titems.length; i++){
+                var titem = {
+                    cant : titems[i].cant(),
+                    price : titems[i].price(),
+                    ptotal : titems[i].ptotal(),
+                    description : titems[i].description()
+                }
+                items.push(titem);
+            }
+
+
             var data = {
                 ruc : me.ruc(),
+                date : me.currentday,
                 address : me.address(),
                 empresa : me.empresa(),
-                cant : me.cant(),
-                price : me.price(),
-                stotal : me.stotal(),
                 igv : me.igv(),
                 total : me.total(),
-                description : me.description(),
+                stotal : me.stotal(),
                 letters : me.letters(),
-                id : me.emp_id()
+                id : me.emp_id(),
+                items : items
             }
 
             $.ajax({
-                type: "GET",
+                type: "POST",
                 url: path + "/api/v1/facturas/new",
                 data: data,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
                 success: function (data) {
-                    window.open(path+"/intranet/facturas/ver/"+data.facturas.id);
+                    window.open(path+"/intranet/facturas/ver/"+data.factura.id);
                     window.location = path+"/intranet/facturas";
                 },
                 error: function (data) {

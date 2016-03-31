@@ -103,12 +103,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr class="input-line">
-                            <td>S/. {{$factura->data['cant']}}</td>
-                            <td>{{$factura->data['description']}}</td>
-                            <td class="text-right">S/. {{$factura->data['price']}}</td>
-                            <td class="text-right">S/. {{$factura->data['stotal']}}</td>
-                        </tr>
+                        @foreach($factura->data['items'] as $item)
+                            <tr class="input-line">
+                                <td>S/. {{$item['cant']}}</td>
+                                <td>{{$item['description']}}</td>
+                                <td class="text-right">S/. {{$item['price']}}</td>
+                                <td class="text-right">S/. {{$item['ptotal']}}</td>
+                            </tr>
+                        @endforeach
                         <tr>
                             <td colspan="2" rowspan="3">{{$factura->letras}}</td>
                             <td class="text-right">Sub Total</td>

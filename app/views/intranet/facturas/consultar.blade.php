@@ -59,7 +59,7 @@
             </h4>
           </div>
           <div class="modal-body">
-              <!-- ko if: viewfactura -->
+                <!-- ko if: viewfactura -->
                     <div class="row clearfix">
                         <div class="col-xs-2">
                             <br>
@@ -105,20 +105,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="input-line">
-                                        <td>
-                                            S/. <span data-bind="text : viewfactura().data.cant"></span>
-                                        </td>
-                                        <td>
-                                            <span data-bind="text : viewfactura().data.description"></span>
-                                        </td>
-                                        <td class="text-right">
-                                            S/. <span data-bind="text : viewfactura().data.price"></span>
-                                        </td>
-                                        <td class="text-right">
-                                            S/. <span data-bind="text : viewfactura().data.stotal"></span>
-                                        </td>
-                                    </tr>
+                                    <!-- ko foreach: viewfacturaItems -->
+                                        <tr class="input-line">
+                                            <td>
+                                                S/. <span data-bind="text : cant"></span>
+                                            </td>
+                                            <td>
+                                                <span data-bind="text : description"></span>
+                                            </td>
+                                            <td class="text-right">
+                                                S/. <span data-bind="text : price"></span>
+                                            </td>
+                                            <td class="text-right">
+                                                S/. <span data-bind="text :ptotal"></span>
+                                            </td>
+                                        </tr>
+                                    <!-- /ko -->
                                     <tr>
                                         <td colspan="2" rowspan="3">
                                             <span data-bind="text : viewfactura().letras"></span>
@@ -146,13 +148,15 @@
                     </div>
                 <!-- /ko -->
           </div>
-          @if($user->rol_id == 1)
-            <!-- ko if: viewfactura().estado -->
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="click : anular">Anular</button>
-              </div>
-            <!-- /ko -->
-          @endif
+          <!-- ko if: viewfactura -->
+              @if($user->rol_id == 1)
+                <!-- ko if: viewfactura().estado -->
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" data-bind="click : anular">Anular</button>
+                  </div>
+                <!-- /ko -->
+              @endif
+          <!-- /ko -->
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
     </div>

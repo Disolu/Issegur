@@ -195,7 +195,7 @@ Route::group(array('before' => 'auth','prefix' => 'api/v1'),function() {
 
     Route::get('facturas/loadbyruc','FacturaController@loadbyruc');
     Route::get('facturas/createedit','FacturaController@createedit');
-    Route::get('facturas/new','FacturaController@store');
+    Route::post('facturas/new','FacturaController@store');
     Route::get('facturas/search','FacturaController@search');
     Route::get('facturas/report','FacturaController@report');
     Route::get('facturas/config','FacturaController@updateConfig');

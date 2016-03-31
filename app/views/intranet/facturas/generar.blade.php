@@ -64,20 +64,30 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <!-- ko foreach: items -->
                                 <tr class="input-line">
                                     <td>
-                                        <input type="text" name="cantidad[]" class="form-control soloNumeros" data-bind="value : cant">
+                                        <input type="text" class="form-control soloNumeros" data-bind="value : cant">
                                     </td>
                                     <td>
                                         <textarea class="form-control" data-bind="value : description"></textarea>
                                     </td>
                                     <td>
-                                        <input type="text" name="punit[]" class="form-control soloNumeros" data-bind="value : price">
+                                        <input type="text" class="form-control soloNumeros" data-bind="value : price">
                                     </td>
                                     <td>
-                                        <input type="text" name="ptotal[]" class="form-control" readonly data-bind="value: stotal">
+                                        <input type="text" class="form-control" readonly data-bind="value: ptotal">
                                     </td>
                                 </tr>
+                                <!-- /ko -->
+                                <tr class="input-line">
+                                    <td colspan="4">
+                                        <a data-bind="click:addline" href="#">
+                                            <i class="fa fa-plus"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+
                                 <tr class="input-line">
                                     <td colspan="2" class="exoneracion" data-bind="css: {toshow: type() == '1'} ">
                                         <span>Exonerado de IGV segun el D.L. 821</span>
@@ -212,20 +222,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    <!-- ko foreach: items -->
                                     <tr class="input-line">
                                         <td>
-                                            S/. <span data-bind="text : viewfactura().cant"></span>
+                                            S/. <span data-bind="text : cant"></span>
                                         </td>
                                         <td>
-                                            <span data-bind="text : viewfactura().description"></span>
+                                            <span data-bind="text : description"></span>
                                         </td>
                                         <td class="text-right">
-                                            S/. <span data-bind="text : viewfactura().price"></span>
+                                            S/. <span data-bind="text : price"></span>
                                         </td>
                                         <td class="text-right">
-                                            S/. <span data-bind="text : viewfactura().stotal"></span>
+                                            S/. <span data-bind="text : ptotal"></span>
                                         </td>
                                     </tr>
+                                    <!-- /ko -->
                                     <tr>
                                         <td colspan="2" rowspan="3">
                                             <span data-bind="text : viewfactura().letters"></span>

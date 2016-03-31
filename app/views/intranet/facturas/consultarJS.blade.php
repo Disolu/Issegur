@@ -7,6 +7,7 @@
         me.empresa = ko.observable();
         me.facturas = ko.observableArray();
         me.viewfactura = ko.observable();
+        me.viewfacturaItems = ko.observableArray();
         me.check = function(d,e){
             if(e.keyCode == 13) {
                 me.search();
@@ -46,6 +47,8 @@
 
         me.load = function(factura){
             me.viewfactura(factura);
+            me.viewfacturaItems([]);
+            me.viewfacturaItems(factura.data.items);
             $('#pmodal').modal();
         }
 
