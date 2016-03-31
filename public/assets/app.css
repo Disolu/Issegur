@@ -432,12 +432,50 @@ input[type="text"][disabled] {
    text-transform: uppercase;
 }
 
+.facturacion-container .anulado{
+    text-transform: uppercase;
+    color: red;
+}
+
 
 #facturacion-reporte .border{
     border: 1px solid;
     padding: 5px 10px;
 }
 
+
+.modal-dialog{
+    width: 800px;
+}
+.view-factura p{
+    font-size: 11px;
+    margin: 0px;
+}
+.view-factura .number{
+    border:2px solid #000;
+    border-radius: 10px;
+}
+
+.number .second,
+.view-factura .number .third{
+    padding: 5px 0px;
+}
+
+.view-factura .number .second{
+    background: rgb(3, 48, 118);
+    color:#fff;
+}
+.view-factura .table thead {
+    background: #033076;
+}
+.view-factura .table thead th {
+    color: #fff;
+    font-weight: normal;
+    text-transform: uppercase;
+}
+.view-factura .input-line{
+    height: 100px;
+}
 
 
 

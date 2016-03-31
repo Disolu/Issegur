@@ -4,11 +4,12 @@
     var GenerarFacturasViewModel = function () {
         var me = this;
         me.today = new Date();
-        me.currentday = me.today.getDate() + '/' + (me.today.getMonth() + 1)+ '/' + me.today.getFullYear();
+        me.currentday =  me.today.getDate() + '/' + (me.today.getMonth() + 1)+ '/' + me.today.getFullYear();
         me.ruc = ko.observable();
         me.address = ko.observable();
         me.empresa = ko.observable();
         me.emp_id = ko.observable();
+        me.viewfactura = ko.observable();
 
         me.cobj = {
             name: ko.observable(),
@@ -84,9 +85,40 @@
             $('#editcreate').modal();
         }
 
+
+        me.preview = function(){
+            var data = {
+                ruc : me.ruc(),
+                date : me.currentday,
+                address : me.address(),
+                empresa : me.empresa(),
+                cant : me.cant(),
+                price : me.price(),
+                stotal : me.stotal(),
+                igv : me.igv(),
+                total : me.total(),
+                description : me.description(),
+                letters : me.letters(),
+                id : me.emp_id()
+            }
+            if(data.ruc == '' || !data.ruc ||
+                data.address == '' || !data.address ||
+                data.empresa == '' || !data.empresa ||
+                data.cant == '' || !data.cant ||
+                data.price == '' || !data.price ||
+                data.description == '' || !data.description ||
+                data.letters == '' || !data.letters
+            ){
+                $("#modalerror").modal();
+            }else{
+                me.viewfactura(data);
+                $('#pmodal').modal();
+            }
+        }
+
         me.print = function(){
 
-            data = {
+            var data = {
                 ruc : me.ruc(),
                 address : me.address(),
                 empresa : me.empresa(),
@@ -100,34 +132,21 @@
                 id : me.emp_id()
             }
 
-            if(data.ruc == '' || !data.ruc ||
-                data.address == '' || !data.address ||
-                data.empresa == '' || !data.empresa ||
-                data.cant == '' || !data.cant ||
-                data.price == '' || !data.price ||
-                data.description == '' || !data.description ||
-                data.letters == '' || !data.letters
-            ){
-                $("#modalerror").modal();
-            }else{
-                $.ajax({
-                    type: "GET",
-                    url: path + "/api/v1/facturas/new",
-                    data: data,
-                    contentType: "application/json; charset=utf-8",
-                    dataType: "json",
-                    success: function (data) {
-                        if(data.factura){
-                            window.open(path+"/intranet/facturas/view/"+data.factura.id);
-                        }
-                    },
-                    error: function (data) {
-                        console.log(data);
-                        console.log("error :(");
-                    }
-                });
-            }
-
+            $.ajax({
+                type: "GET",
+                url: path + "/api/v1/facturas/new",
+                data: data,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    window.open(path+"/intranet/factura/ver/"+data.facturas.id);
+                    window.location = path+"/intranet/facturas";
+                },
+                error: function (data) {
+                    console.log(data);
+                    console.log("error :(");
+                }
+            });
         }
 
         me.createedit = function(){

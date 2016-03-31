@@ -24,7 +24,9 @@ class FacturaController extends BaseController{
           $factura->estado = 0;
           $factura->save();
         }
-        return Redirect::to('intranet/facturas');
+
+        return Response::json(array('success'=>true), 200)
+        ->setCallback(Input::get('callback'));
     }
     else{
         return View::make('intranet.auth.login');
@@ -57,7 +59,8 @@ class FacturaController extends BaseController{
   public function consultar(){
     if (Auth::check())
     {
-        return View::make('intranet.facturas.consultar');
+        $user = Auth::user();
+        return View::make('intranet.facturas.consultar',compact('user'));
     }
     else{
         return View::make('intranet.auth.login');
@@ -194,6 +197,7 @@ class FacturaController extends BaseController{
         $factura->data = unserialize($factura->data);
         $factura->date = date('d F Y',strtotime($factura->date));
         return View::make('intranet.facturas.ver',compact('factura'));
+
     }
     else{
         return View::make('intranet.auth.login');
@@ -208,8 +212,8 @@ class FacturaController extends BaseController{
       $facturas->where('ruc','LIKE','%'.Input::get('ruc').'%');
     }
 
-    if(Input::has('name')){
-      $facturas->where('empresa','LIKE','%'.Input::get('name').'%');
+    if(Input::has('empresa')){
+      $facturas->where('empresa','LIKE','%'.Input::get('empresa').'%');
     }
 
 

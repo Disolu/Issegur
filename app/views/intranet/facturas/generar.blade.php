@@ -111,7 +111,7 @@
                     <div class="col-xs-12">
                         <div class="actions text-right">
                             <a class="btn btn-default" href="{{URL::to('intranet/facturas')}}"> Cancelar</a>
-                            <button class="btn btn-default" data-bind="click: print">Imprimir</button>
+                            <button class="btn btn-default" data-bind="click: preview">Imprimir</button>
                         </div>
                     </div>
                 </div>
@@ -159,7 +159,107 @@
             </div>
         </div>
     </div>
-
+    <div id="pmodal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Factura</h4>
+          </div>
+          <div class="modal-body">
+              <!-- ko if: viewfactura -->
+                    <div class="row clearfix">
+                        <div class="col-xs-2">
+                            <br>
+                            <img src="{{asset('assets/img/logo/logo.png')}}" class="img-responsive">
+                        </div>
+                        <div class="col-xs-6 text-center">
+                            <h1>ISSEGUR</h1>
+                            <p>INSTITUTO SUPERIOR DE SEGURIDAD Y CIENCIAS APLICADAS</p>
+                            <p>Calle Los Tulipanes Mz N Lote 18</p>
+                            <p>Asociacion de Viv. san Francisco - Ate - Lima - Lima</p>
+                            <p>Telf: 349-5709 / Cel: 940-242-718</p>
+                        </div>
+                        <div class="col-xs-3">
+                            <br>
+                            <div class="number text-center">
+                                <div class="first">RUC: 20511097321</div>
+                                <div class="second">FACTURA</div>
+                                <div class="third">
+                                    <span data-bind="text : viewfactura().number"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row clearfix">
+                        <div class="col-xs-12">
+                            <div>Lima <span data-bind="text : viewfactura().date"></span></div>
+                            <div>Señores <span data-bind="text : viewfactura().empresa"></span></div>
+                            <div>Dirección <span data-bind="text : viewfactura().address"></span></div>
+                            <div>RUC <span data-bind="text : viewfactura().ruc"></span></div>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row clearfix">
+                        <div class="col-xs-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Cant</th>
+                                        <th class="text-center">Descripcion</th>
+                                        <th class="text-center">P. UNIT</th>
+                                        <th class="text-center">Importe</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="input-line">
+                                        <td>
+                                            S/. <span data-bind="text : viewfactura().cant"></span>
+                                        </td>
+                                        <td>
+                                            <span data-bind="text : viewfactura().description"></span>
+                                        </td>
+                                        <td class="text-right">
+                                            S/. <span data-bind="text : viewfactura().price"></span>
+                                        </td>
+                                        <td class="text-right">
+                                            S/. <span data-bind="text : viewfactura().stotal"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" rowspan="3">
+                                            <span data-bind="text : viewfactura().letters"></span>
+                                        </td>
+                                        <td class="text-right">Sub Total</td>
+                                        <td class="text-right">
+                                            S/. <span data-bind="text : viewfactura().stotal"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right">IGV 18%</td>
+                                        <td class="text-right">
+                                            S/. <span data-bind="text : viewfactura().igv"></span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-right">Total </td>
+                                        <td class="text-right">
+                                        S/. <span data-bind="text : viewfactura().total"></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                <!-- /ko -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Editar</button>
+            <button type="button" class="btn btn-primary" data-bind="click : print">Imprimir</button>
+          </div>
+        </div>
+      </div>
+    </div>
 @stop
 @section('scriptsSection')
     @include('intranet.facturas.generarJS')

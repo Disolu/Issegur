@@ -6,6 +6,12 @@
         me.ruc = ko.observable();
         me.empresa = ko.observable();
         me.facturas = ko.observableArray();
+        me.viewfactura = ko.observable();
+        me.check = function(d,e){
+            if(e.keyCode == 13) {
+                me.search();
+            }
+        }
 
         me.search = function(){
             var data = {
@@ -22,6 +28,7 @@
                 success: function (data) {
                     me.facturas.removeAll();
                     for(var i = 0 ; i < data.facturas.length; i++){
+                        data.facturas[i].pos = i;
                         me.facturas.push(data.facturas[i]);
                     }
                 },
@@ -35,6 +42,32 @@
         me.initialize = function(){
             $(document.body).on("keydown", ".soloNumeros", me.soloNumeros);
             ko.applyBindings(me);
+        }
+
+        me.load = function(factura){
+            me.viewfactura(factura);
+            $('#pmodal').modal();
+        }
+
+        me.anular = function(){
+            var factura = me.viewfactura();
+            $.ajax({
+                type: "GET",
+                url: path + "/api/v1/facturas/cancelar/"+factura.id,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    factura.estado = 0;
+                    var data = me.facturas().slice(0);
+                    me.facturas([]);
+                    me.facturas(data);
+                },
+                error: function (data) {
+                    console.log(data);
+                    console.log("error :(");
+                }
+            });
+
         }
 
 

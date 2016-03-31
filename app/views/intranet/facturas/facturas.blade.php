@@ -21,13 +21,15 @@
                         <a class="btn btn-block btn-default" href="{{URL::to('intranet/facturas/consultar')}}">Consultar Facturas</a>
                     </div>
                     <hr>
-                    <div class="text-center">
-                        <a class="btn btn-block btn-default" href="{{URL::to('intranet/facturas/reporte')}}">Reporte de Facturas</a>
-                    </div>
-                    <hr>
-                    <div class="text-center">
-                        <a class="btn btn-block btn-default" href="{{URL::to('intranet/facturas/configurar')}}">Configurar Facturas</a>
-                    </div>
+                    @if($user->rol_id == 1)
+                        <div class="text-center">
+                            <a class="btn btn-block btn-default" href="{{URL::to('intranet/facturas/reporte')}}">Reporte de Facturas</a>
+                        </div>
+                        <hr>
+                        <div class="text-center">
+                            <a class="btn btn-block btn-default" href="{{URL::to('intranet/facturas/configurar')}}">Configurar Facturas</a>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

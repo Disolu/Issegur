@@ -72,7 +72,8 @@ class IntranetController extends BaseController{
     public function IntranetFacturas(){
         if (Auth::check())
         {
-            return View::make('intranet.facturas.facturas');
+            $user = Auth::user();
+            return View::make('intranet.facturas.facturas',compact('user'));
         }
         else{
             return View::make('intranet.auth.login');
