@@ -18,6 +18,7 @@
   <?php
       $f->number = explode('-',$f->number);
       $f->data = unserialize($f->data);
+      $temp = array();
   ?>
     <tr>
       <td>{{$f->date}}</td>
@@ -35,12 +36,22 @@
         <td>{{$f->data['igv']}}</td>
       @endif
       <td>{{$f->data['total']}}</td>
-      <td></td>
-      <td>{{$f->date}}</td>
+
+      <td>
+        @if(isset($f->data['items']))
+          @foreach($f->data['items'] as $i)
+            <?php $temp[] = $i['voucher']?>
+          @endforeach
+        @endif
+        {{implode(' - ',$temp)}}
+      </td>
+      <td>
+        @if(isset($f->data['items']))
+          {{$f->data['items'][0]['date']}}
+        @endif
+      </td>
+
     </tr>
-
 @endforeach
-
-
 
 </html>

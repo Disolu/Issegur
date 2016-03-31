@@ -38,6 +38,8 @@
         });
         item.ptotal = ko.observable('');
         item.description = ko.observable('');
+        item.voucher = ko.observable('');
+        item.date = ko.observable('');
 
         me.items = ko.observableArray([item]);
 
@@ -86,7 +88,8 @@
             });
             item.ptotal = ko.observable('');
             item.description = ko.observable('');
-
+            item.voucher = ko.observable('');
+            item.date = ko.observable('');
             me.items.push(item);
         }
 
@@ -122,7 +125,9 @@
                     cant : titems[i].cant(),
                     price : titems[i].price(),
                     ptotal : titems[i].ptotal(),
-                    description : titems[i].description()
+                    description : titems[i].description(),
+                    voucher : titems[i].voucher(),
+                    date : titems[i].date()
                 }
                 items.push(titem);
 
@@ -167,7 +172,9 @@
                     cant : titems[i].cant(),
                     price : titems[i].price(),
                     ptotal : titems[i].ptotal(),
-                    description : titems[i].description()
+                    description : titems[i].description(),
+                    voucher : titems[i].voucher(),
+                    date : titems[i].date()
                 }
                 items.push(titem);
             }

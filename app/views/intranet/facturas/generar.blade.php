@@ -71,6 +71,17 @@
                                     </td>
                                     <td>
                                         <textarea class="form-control" data-bind="value : description"></textarea>
+                                        <br>
+                                        <div class="form-group">
+                                            <div class="row clearfix">
+                                                <div class="col-xs-4">
+                                                    <input type="text" data-bind="value : voucher" class="form-control" placeholder="N de Voucher">
+                                                </div>
+                                                <div class="col-xs-4">
+                                                    <input type="text" data-bind="value : date" class="form-control" placeholder="Fecha">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>
                                         <input type="text" class="form-control soloNumeros" data-bind="value : price">

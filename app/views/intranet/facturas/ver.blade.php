@@ -134,8 +134,9 @@
             </div>
         </div>
     </div>
-
-
+    <script type="text/javascript">
+        window.print();
+    </script>
 <!-- BEGIN: PAGE SCRIPTS -->
     <!-- knockout -->
     {{HTML::script('assets/js/knockout-3.3.0.js')}}

@@ -402,6 +402,10 @@ input[type="text"][disabled] {
     padding-top: 0px;
     padding-bottom: 0px;
 }
+#facturacion-generar .input-line .form-group input[type="text"]{
+    width: 100%;
+    min-height:30px;
+}
 
 #facturacion-generar .input-line textarea{
     width: 480px;

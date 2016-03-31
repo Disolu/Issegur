@@ -136,6 +136,8 @@ class FacturaController extends BaseController{
       $facturas = $facturas->where('date','<=',$enddate);
     }
 
+
+
     $facturas = $facturas->get();
 
     return Excel::create('Reporte',
