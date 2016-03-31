@@ -139,7 +139,7 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (data) {
-                    window.open(path+"/intranet/factura/ver/"+data.facturas.id);
+                    window.open(path+"/intranet/facturas/ver/"+data.facturas.id);
                     window.location = path+"/intranet/facturas";
                 },
                 error: function (data) {
