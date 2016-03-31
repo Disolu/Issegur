@@ -137,19 +137,17 @@ class Participante extends Eloquent
                     $par->OperadorId = $existingParticipanteOperador->op_id;
                     $par->Operador = $operadorObj->obtenerNombrePorId($par->OperadorId);
                 }
-                else{
+                 else{
                     $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $par->pa_id)
                                                                         ->where('reg_id','=', 0)
-                                                                        ->orderBy('created_at')
-                                                                        ->get();
+                                                                        ->orderBy('created_at','desc')
+                                                                        ->first();
 
-                    if (count($existingParticipanteOperador) >= $index + 1) {
-                        $par->OperadorId = $existingParticipanteOperador[$index]->op_id;
-                        $par->Operador = $operadorObj->obtenerNombrePorId($par->OperadorId);
-                        $index++;
-                    }
-
-                }
+                   
+                    $par->OperadorId = $existingParticipanteOperador->op_id;
+                    $par->Operador = $operadorObj->obtenerNombrePorId($par->OperadorId);  
+                                                                                 
+                }            
 
             }
 
