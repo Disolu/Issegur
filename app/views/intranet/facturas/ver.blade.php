@@ -105,7 +105,7 @@
                     <tbody>
                         @foreach($factura->data['items'] as $item)
                             <tr class="input-line">
-                                <td>S/. {{$item['cant']}}</td>
+                                <td>{{$item['cant']}}</td>
                                 <td>{{$item['description']}}</td>
                                 <td class="text-right">S/. {{$item['price']}}</td>
                                 <td class="text-right">S/. {{$item['ptotal']}}</td>

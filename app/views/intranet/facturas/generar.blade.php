@@ -225,7 +225,7 @@
                                     <!-- ko foreach: items -->
                                     <tr class="input-line">
                                         <td>
-                                            S/. <span data-bind="text : cant"></span>
+                                            <span data-bind="text : cant"></span>
                                         </td>
                                         <td>
                                             <span data-bind="text : description"></span>
