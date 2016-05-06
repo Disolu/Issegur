@@ -364,12 +364,9 @@
                             <div class="pull-left">
                                 <div class="validation-error" >El DNI :  <br/>
                                     <!-- ko foreach: { data: validationParticipante, as: 'val' } -->
-                                    <!--ko text: val.pa_dni--><!--/ko--> <br/>
+                                    <!--ko text: val.pa_dni--><!--/ko--> <br/> ya se encuentra programado para la fecha y turno: 
+                                    <!--ko text: val.fecha--><!--/ko-->&nbsp; <!--ko text: val.turno--><!--/ko-->                                    
                                     <!--/ko-->
-                                    <br/>
-
-                                    ya se encuentra programado, o fue calificado como "Ausente" el dia su capacitacion.
-
                                 </div>
                             </div>
                         </div>

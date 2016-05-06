@@ -209,6 +209,8 @@ class IntranetController extends BaseController{
             $resultado = false;
             $limite = new stdClass();
             $limite->pa_dni = $participante['dni'];
+            $limite->fecha = DateTime::createFromFormat('Y-m-d', $fecha)->format('d/m/Y');
+            $limite->turno = with(new Turno)->obtenerTurnoPorIdTodos($turnoId);
 
             array_push($vParticipante, $limite);
         }
