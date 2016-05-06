@@ -200,83 +200,96 @@ class IntranetController extends BaseController{
 
         //variable para almacenar resultado
         $validation = array();
+        $vParticipante = array();
         $resultado = true;
+
+        $participantePuedeRegistrarseTurno = $participanteObj->puedeRegistrarseNuevoTurno($participante['dni']);
+
+        if (!$participantePuedeRegistrarseTurno) {
+            $resultado = false;
+            $limite = new stdClass();
+            $limite->pa_dni = $participante['dni'];
+
+            array_push($vParticipante, $limite);
+        }
 
 
         if($participanteObj->puedeParticipanteRegistrarse($fecha, $turnoId, 1 , "M")){
-            //inicializamos los objetos del modelo
-            $participanteObj = new Participante;
-            $registroObj =  new Registro;
-            $empresaObj =  new Empresa;
-            $detalleOperacionObj = new DetalleNroOperacion;
-            $registroParticipanteObj =  new RegistroParticipante;
-            $participanteOperadorObj =  new ParticipanteOperadorRelacion;
-            //formatiamos la fecha
+            if ($resultado) {
+                //inicializamos los objetos del modelo
+                $participanteObj = new Participante;
+                $registroObj =  new Registro;
+                $empresaObj =  new Empresa;
+                $detalleOperacionObj = new DetalleNroOperacion;
+                $registroParticipanteObj =  new RegistroParticipante;
+                $participanteOperadorObj =  new ParticipanteOperadorRelacion;
+                //formatiamos la fecha
 
-            if($participante["tipoRegistro"] == "J"){
-                /*registro de empresa*/
-                $ruc = $participante['ruc'];
-                $razonSocial = $participante['razonSocial'];
+                if($participante["tipoRegistro"] == "J"){
+                    /*registro de empresa*/
+                    $ruc = $participante['ruc'];
+                    $razonSocial = $participante['razonSocial'];
 
-                $savedEmpresa = $empresaObj->registrarEmpresa($ruc, $razonSocial);
+                    $savedEmpresa = $empresaObj->registrarEmpresa($ruc, $razonSocial);
 
-                /*registro de pagos*/
-                $nroOperacion = $participante['nroOperacion'];
-                $montoPago = $participante['monto'];
+                    /*registro de pagos*/
+                    $nroOperacion = $participante['nroOperacion'];
+                    $montoPago = $participante['monto'];
 
-                $savedRegistro = $registroObj->inicializarRegistro("M"); //$archivo
+                    $savedRegistro = $registroObj->inicializarRegistro("M"); //$archivo
 
-                //$savedDetalleOperacion = $detalleOperacionObj->inicializarDetalleNroOperacion($nroOperacion,$montoPago, null);
+                    //$savedDetalleOperacion = $detalleOperacionObj->inicializarDetalleNroOperacion($nroOperacion,$montoPago, null);
 
-                //creamos al participante
-                $participanteRaw = array (
-                    "dni" =>   $participante['dni'],
-                    "nombres" =>  $participante['nombres'],
-                    "ape_paterno" => $participante['ape_paterno'],
-                    "ape_materno" => $participante['ape_materno'],
-                    "nroOperacion" => $nroOperacion,
-                    "fechaOperacion" => "",
-                    "montoPago" => $montoPago
-                );
-                //lo guardamos
-                $savedParticipante = $participanteObj->guardar($participanteRaw);
+                    //creamos al participante
+                    $participanteRaw = array (
+                        "dni" =>   $participante['dni'],
+                        "nombres" =>  $participante['nombres'],
+                        "ape_paterno" => $participante['ape_paterno'],
+                        "ape_materno" => $participante['ape_materno'],
+                        "nroOperacion" => $nroOperacion,
+                        "fechaOperacion" => "",
+                        "montoPago" => $montoPago
+                    );
+                    //lo guardamos
+                    $savedParticipante = $participanteObj->guardar($participanteRaw);
 
-                $registroParticipanteObj->guardarRegistroParticipante($savedRegistro->reg_id, $fecha,$turnoId,$savedParticipante->pa_id,$savedEmpresa->emp_id);
+                    $registroParticipanteObj->guardarRegistroParticipante($savedRegistro->reg_id, $fecha,$turnoId,$savedParticipante->pa_id,$savedEmpresa->emp_id);
 
-                /*registro de los operadores*/
-                $operador = $participante['almacen'];
+                    /*registro de los operadores*/
+                    $operador = $participante['almacen'];
 
-                $participanteOperadorObj->registrarParticipanteOperadorRelacion($operador,$savedParticipante->pa_id, $savedRegistro->reg_id);
-            }
-            else{
-                /*registro de pagos*/
-                $nroOperacion = $participante['nroOperacion'];
-                $montoPago = $participante['monto'];
+                    $participanteOperadorObj->registrarParticipanteOperadorRelacion($operador,$savedParticipante->pa_id, $savedRegistro->reg_id);
+                }
+                else{
+                    /*registro de pagos*/
+                    $nroOperacion = $participante['nroOperacion'];
+                    $montoPago = $participante['monto'];
 
-                $savedRegistro = $registroObj->inicializarRegistro("M");//$archivo
+                    $savedRegistro = $registroObj->inicializarRegistro("M");//$archivo
 
-                //$savedDetalleOperacion = $detalleOperacionObj->inicializarDetalleNroOperacion(, null);
-                /*registor del participante*/
-                //creamos al participante
-                $participanteRaw = array (
-                    "dni" =>   $participante['dni'],
-                    "nombres" =>  $participante['nombres'],
-                    "ape_paterno" => $participante['ape_paterno'],
-                    "ape_materno" => $participante['ape_materno'],
-                    "nroOperacion" => $nroOperacion,
-                    "fechaOperacion" => "",
-                    "montoPago" => $montoPago
-                );
-                //lo guardamos
-                $savedParticipante = $participanteObj->guardar($participanteRaw);
+                    //$savedDetalleOperacion = $detalleOperacionObj->inicializarDetalleNroOperacion(, null);
+                    /*registor del participante*/
+                    //creamos al participante
+                    $participanteRaw = array (
+                        "dni" =>   $participante['dni'],
+                        "nombres" =>  $participante['nombres'],
+                        "ape_paterno" => $participante['ape_paterno'],
+                        "ape_materno" => $participante['ape_materno'],
+                        "nroOperacion" => $nroOperacion,
+                        "fechaOperacion" => "",
+                        "montoPago" => $montoPago
+                    );
+                    //lo guardamos
+                    $savedParticipante = $participanteObj->guardar($participanteRaw);
 
-                $registroParticipanteObj->guardarRegistroParticipante($savedRegistro->reg_id, $fecha,$turnoId,$savedParticipante->pa_id);
+                    $registroParticipanteObj->guardarRegistroParticipante($savedRegistro->reg_id, $fecha,$turnoId,$savedParticipante->pa_id);
 
-                /*registro de los operadores*/
-                $operador = $participante['almacen'];
+                    /*registro de los operadores*/
+                    $operador = $participante['almacen'];
 
-                $participanteOperadorObj->registrarParticipanteOperadorRelacion($operador,$savedParticipante->pa_id, $savedRegistro->reg_id);
-            }
+                    $participanteOperadorObj->registrarParticipanteOperadorRelacion($operador,$savedParticipante->pa_id, $savedRegistro->reg_id);
+                }
+            }            
         }
         else{
             $turno = with(new Turno)->obtenerTurnoPorIdTodos($turnoId);
@@ -290,7 +303,8 @@ class IntranetController extends BaseController{
 
         return Response::json(array(
             'resultado' =>  $resultado,
-            'validation' => $validation
+            'validation' => $validation,
+            'validationParticipante' => $vParticipante
         ), 200
         )->setCallback(Input::get('callback'));
 

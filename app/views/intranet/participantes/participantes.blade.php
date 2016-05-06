@@ -360,6 +360,19 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="registroValidationsParticipantes" style="display:none;">
+                            <div class="pull-left">
+                                <div class="validation-error" >El DNI :  <br/>
+                                    <!-- ko foreach: { data: validationParticipante, as: 'val' } -->
+                                    <!--ko text: val.pa_dni--><!--/ko--> <br/>
+                                    <!--/ko-->
+                                    <br/>
+
+                                    ya se encuentra programado, o fue calificado como "Ausente" el dia su capacitacion.
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" id="confirm" data-bind="click: registrarParticipante">Guardar</button>

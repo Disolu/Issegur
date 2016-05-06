@@ -20,6 +20,7 @@
         me.operadoresSeleccionados = ko.observableArray([]);
         me.supressValidationMessages = ko.observable(true);
         me.validationRegistros = ko.observableArray([]);
+        me.validationParticipante = ko.observableArray([]);
         me.hasBeenInitialized = false;
 
         me.initialize = function () {
@@ -150,11 +151,23 @@
                             }
                             else{
                                 var validationArray = data.validation;
+                                var validationParticipante = data.validationParticipante;
                                 me.validationRegistros.removeAll();
-                                for (var i = 0; i < validationArray.length; i++) {
-                                    me.validationRegistros.push(validationArray[i]);
+                                me.validationParticipante.removeAll();
+
+                                if(validationArray.length > 0) {
+                                    for (var i = 0; i < validationArray.length; i++) {
+                                        me.validationRegistros.push(validationArray[i]);
+                                    }
+                                    $("#registroValidations").show();
                                 }
-                                $("#registroValidations").show();
+
+                                if(validationParticipante.length > 0){
+                                    for (var i = 0; i < validationParticipante.length; i++) {
+                                        me.validationParticipante.push(validationParticipante[i]);
+                                    }
+                                    $("#registroValidationsParticipantes").show();
+                                }
                             }
 
                         },
@@ -486,6 +499,7 @@
             consultarDNIButton: me.consultarDNIButton,
             registrarParticipante: me.registrarParticipante,
             validationRegistros: me.validationRegistros,
+            validationParticipante: me.validationParticipante,
             supressValidationMessages: me.supressValidationMessages
         };
 
