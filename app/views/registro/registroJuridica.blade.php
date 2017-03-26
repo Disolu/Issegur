@@ -10,11 +10,11 @@
 
         <!-- Begin: Content -->
         <section id="content">
-            <div class="admin-form theme-primary mw600" style="margin-top: 3%;" id="register">
+            <div class="admin-form theme-primary mw600" style="margin-top: 0%;" id="register">
 
                 <!-- Begin: Content Header -->
                 <div class="content-header">
-                    <h2>INSCRIPCION PARA EL CURSO DE INDUCCION DE SEGURIDAD EN ALMACENES</h2>
+                    <h2>FICHA DE INSCRIPCIÓN PARA EL CURSO DE INDUCCIÓN DE SEGURIDAD EN ALMACENES</h2>
                     <p class="lead">RANSA - TRAMARSA</p>
                 </div>
 
@@ -61,6 +61,7 @@
                                     </div>
                                 </fieldset>
                                 <!-- seccion Datos de Pago -->
+<!--
                                 <fieldset class="seccionForm">
                                 <legend class="legend legendDatosPago"> Datos de Pago</legend>
                                     <div class="row">
@@ -76,7 +77,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-3">
-                                            <a id="btnConozcaNroOperacion" role="button" style="width:235px;" data-toggle="modal" data-target="#nroOperacionModal" class="btn btn-system btn-block"><i class="fa fa-info-circle"></i> Ejemplo de N° Operacion</a>
+                                            <a id="btnConozcaNroOperacion" role="button" style="width:235px;" data-toggle="modal" data-target="#nroOperacionModal" class="btn btn-system btn-block"><i class="fa fa-info-circle"></i> Ejemplo de N° Operación</a>
                                         </div>
                                         <div class="modal fade" id="nroOperacionModal" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
                                             <div class="modal-dialog" role="document">
@@ -92,7 +93,9 @@
                                             </div>
                                         </div>
                                     </div>
+-->
                                     <!-- Input Formats -->
+<!--
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="section">
@@ -108,7 +111,7 @@
                                         <div class="col-md-6">
                                             <div class="section">
                                                 <label class="field prepend-icon">
-                                                    <input type="text"  id="dtpFechaOperacion" data-bind="value: fechaOperacion" class="gui-input datepicker" placeholder="Fecha en la que realizo su pago (voucher)">
+                                                    <input type="text"  id="dtpFechaOperacion" data-bind="value: fechaOperacion" class="gui-input datepicker" placeholder="Fecha en la que realizó su pago (voucher)">
                                                     <label for="website" class="field-icon">
                                                         <i class="fa fa-calendar-o"></i>
                                                     </label>
@@ -133,9 +136,10 @@
                                         {{--{{ Form::close() }}--}}
                                     </div>
                                 </fieldset>
+-->
                                 <div class="alert alert-danger alert-dismissable">
                                     <i class="fa fa-info-circle pr10" style="margin-bottom: 2px"></i>
-                                    <span style="font-size: 15px">Es importante llevar el voucher original para su ingreso al aula, como para solicitar su factura.</span>
+                                    <span style="font-size: 15px">LLEVAR EL VOUCHER ORIGINAL PARA INGRESAR AL AULA, COMO PARA SOLICITAR FACTURA</span>
                                 </div>
                                 <fieldset class="seccionForm">
                                     <legend class="legend legendDatosSolicitante"> Datos de la persona de contacto de la Empresa</legend>
@@ -352,7 +356,7 @@
                                                                     </div>
                                                                     <tr>
                                                                         <td colspan="4">
-                                                                            <button id="btnAgregarPa" data-bind="click: agregarParticipante" class="btn btn-primary"><i class="fa fa-plus"></i> Agregar participantes</button>
+                                                                            <button id="btnAgregarPa" data-bind="click: agregarParticipante" class="btn btn-primary"><i class="fa fa-plus"></i> Agregar participantes</button> Si no visualiza "guardar" presione simultáneamente la tecla CTRL y la tecla "-" (Menos).
                                                                         </td>
                                                                     </tr>
                                                                     </tbody>

@@ -17,7 +17,7 @@
 
                     <!-- Begin: Content Header -->
                     <div class="content-header">
-                        <h2>INSCRIPCION PARA EL CURSO DE INDUCCION DE SEGURIDAD EN ALMACENES</h2>
+                        <h2>INSCRIPCIÓN PARA EL CURSO DE INDUCCIÓN DE SEGURIDAD EN ALMACENES</h2>
                         <p class="lead">RANSA - TRAMARSA</p>
                     </div>
 
@@ -27,6 +27,7 @@
                             <div class="panel-body bg-light">
                                 <div id="registro">
                                     <!-- seccion Datos de Pago -->
+<!--
                                     <fieldset class="seccionForm">
                                     <legend class="legend legendDatosPago"> Datos de Pago</legend>
                                         <div class="row">
@@ -45,7 +46,7 @@
                                                 {{--<a id="btnConsultarNroOperacion" role="button" style="width:235px;" data-bind="click: consultarNroOperacionButton" class="btn btn-info"><i class="fa fa-search"></i> Validar N° Operacion</a>--}}
                                             {{--</div>--}}
                                             <div class="col-md-3">
-                                                <a id="btnConozcaNroOperacion" role="button" style="width:235px;" data-toggle="modal" data-target="#nroOperacionModal" class="btn btn-system btn-block"><i class="fa fa-info-circle"></i> Ejemplo de N° Operacion</a>
+                                                <a id="btnConozcaNroOperacion" role="button" style="width:235px;" data-toggle="modal" data-target="#nroOperacionModal" class="btn btn-system btn-block"><i class="fa fa-info-circle"></i> Ejemplo de N° Operación</a>
                                             </div>
                                             <div class="modal fade" id="nroOperacionModal" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
                                                 <div class="modal-dialog" role="document">
@@ -61,7 +62,9 @@
                                                 </div>
                                             </div>
                                         </div>
+-->
                                         <!-- Input Formats -->
+<!--
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div class="section">
@@ -102,10 +105,8 @@
                                             {{--{{ Form::close() }}--}}
                                         </div>
                                     </fieldset>
-                                    <div class="alert alert-danger alert-dismissable">
-                                        <i class="fa fa-info-circle pr10" style="margin-bottom: 2px"></i>
-                                        <span style="font-size: 15px">Es importante llevar el voucher original para su ingreso al aula, como para solicitar su factura.</span>
-                                    </div>
+-->
+
                                     <fieldset class="seccionForm">
                                         <legend class="legend legendDatosCurso"> Datos del Curso </legend>
                                         <div class="row">
@@ -148,6 +149,12 @@
                                             </div>
                                         </div>
                                     </fieldset>
+
+                                    <div class="alert alert-danger alert-dismissable">
+                                        <i class="fa fa-info-circle pr10" style="margin-bottom: 2px"></i>
+                                        <span style="font-size: 15px">Es importante llevar el voucher original para su ingreso al aula, como para solicitar su factura.</span>
+                                    </div>
+
                                     <fieldset class="seccionForm">
                                         <legend class="legend legendDatosParticipante">Datos del Participante</legend>
 

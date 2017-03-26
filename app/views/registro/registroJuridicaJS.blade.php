@@ -508,7 +508,7 @@
         me.nroOperacionSupplied = ko.computed(function() { return $.trim(me.nroOperacion()).length > 0; }, me);
         me.fechaOperacion = ko.observable("");
         me.fechaOperacionSupplied =  ko.computed(function() { return (me.fechaOperacion() != null && $.trim(me.fechaOperacion()).length > 0); }, me);
-        me.montoPago = ko.observable(null);
+        me.montoPago = ko.observable("");
         me.montoPagoSupplied = ko.computed(function(){ return $.trim(me.montoPago()).length > 0}, me);
         me.archivo = ko.observable("");
         me.archivoSupplied = ko.computed(function() { return $.trim(me.archivo()).length > 0; }, me);
@@ -543,7 +543,7 @@
             $(document.body).on('click','#eliminarGrupo', me.onDeleteGroupButtonClick);
             $(document.body).on('click',"#btnRegistrar", me.onSaveRegistroButtonClick);
 
-            var unavailableDates = ["8-10-2015", "9-10-2015"];
+            var unavailableDates = ["8-10-2015", "9-10-2015", "29-6-2016" , "28-7-2016" , "29-7-2016" , "30-8-2016" , "17-11-2016" , "18-11-2016" , "08-12-2016"];
 
             function unavailable(date) {
                 dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
@@ -926,7 +926,7 @@
 
             me.supressValidationMessages(false);
 
-            if(me.isRucValid() && me.rucSupplied() && me.razonSocialSupplied() && me.nroOperacionSupplied() && me.fechaOperacionSupplied() && me.montoPagoSupplied() && //me.archivoSupplied() &&
+            if(me.isRucValid() && me.rucSupplied() && me.razonSocialSupplied() /* && me.nroOperacionSupplied() && me.fechaOperacionSupplied() && me.montoPagoSupplied() && me.archivoSupplied()*/ &&
                     me.soliNombreSupplied() && me.soliApellidoSupplied() && me.soliTelefonoSupplied() && me.soliEmailSupplied() && me.isEmailValid() && me.gruposSupplied()){
                 options.valid();
             }

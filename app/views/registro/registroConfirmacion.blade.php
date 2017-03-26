@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!-- Meta, title, CSS, favicons, etc. -->
-    <meta charset="utf-8">
     <title>Confirmación de Registro | Instituto Superior de Seguridad (Issegur)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    
     <!-- Font CSS (Via CDN) -->
     {{--<script type="text/javascript">--}}
         {{--//<![CDATA[--}}
@@ -57,12 +56,12 @@
                         <hr class="alt short mv25">
 
                         <p class="lh25 text-muted fs15">
-                            Hemos enviado una confirmación de su registro al correo electrónico que indicó en el formulario.
-                            Actualmente su registro se encuentra <strong>CONFIRMADO</strong>. <span style="color:red">
-                            No se olvide de llevar su voucher original el dia de su capacitación.</span></p>
+                            Su registro se encuentra <strong>CONFIRMADO</strong>. <span style="color:red">
+                            No se olvide de llevar su voucher original el día de su capacitación.</span><br>
+Direccion: Av. JOSÉ DE LA RIVAGÜERO  550 URB. PANDO - SAN MIGUEL</p>
 
                         <p class="text-right mt20">
-                            <a href="http://institutodeseguridad.edu.pe"
+                            <a href="https://institutodeseguridad.edu.pe"
                                class="btn btn-primary btn-rounded ph40"
                                role="button">Volver a la página principal</a></p>
 

@@ -209,9 +209,12 @@ class IntranetController extends BaseController{
             $resultado = false;
             $limite = new stdClass();
             $limite->pa_dni = $participante['dni'];
-            $limite->fecha = DateTime::createFromFormat('Y-m-d', $fecha)->format('d/m/Y');
-            $limite->turno = with(new Turno)->obtenerTurnoPorIdTodos($turnoId);
-
+            
+            $matchingPar = $participanteObj->consultarDNI($participante['dni']);
+                                           $registroParticipante = RegistroParticipante::where('pa_id','=', $matchingPar[0]->pa_id) 
+                                                ->orderBy('fecha_programacion', 'desc')->first();
+            $limite->turno = with(new Turno)->obtenerTurnoPorIdTodos($registroParticipante->turno_id);
+            $limite->fecha = DateTime::createFromFormat('Y-m-d', $registroParticipante->fecha_programacion)->format('d/m/Y');
             array_push($vParticipante, $limite);
         }
 
@@ -314,7 +317,7 @@ class IntranetController extends BaseController{
 
     public function GenerarFichaExcel($turno, $fecha){
         $participante = new Participante;
-        $participantesPorTurno = $participante->obtenerParticipantesPorFechayTurno($fecha, $turno);
+        $participantesPorTurno = $participante->obtenerParticipantesParaFichaExcel($fecha, $turno);
         $fechaOriginal = DateTime::createFromFormat('Y-m-d', $fecha);
         $fechaFormat = $fechaOriginal->format('d/m/Y');
 

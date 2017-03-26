@@ -8,7 +8,7 @@
         me.fechaOperacionSupplied =  ko.computed(function() { return (me.fechaOperacion() != null && $.trim(me.fechaOperacion()).length > 0); }, me);
         me.archivo = ko.observable("");
         me.archivoSupplied = ko.computed(function() { return $.trim(me.archivo()).length > 0; }, me);
-        me.montoPago = ko.observable(null);
+        me.montoPago = ko.observable("");
         me.montoPagoSupplied = ko.computed(function(){ return $.trim(me.montoPago()).length > 0}, me);
         me.operadores = ko.observableArray([]);
 
@@ -50,7 +50,7 @@
             $(document.body).on('click',"#btnRegistrar", me.onSaveRegistroButtonClick);
             $(document.body).on('click',".checkboxOp", onOperadorChecked);
 
-            var unavailableDates = ["8-10-2015", "9-10-2015"];
+            var unavailableDates = ["8-10-2015", "9-10-2015" , "29-6-2016" , "28-7-2016" , "29-7-2016" , "30-8-2016" , "17-11-2016" , "18-11-2016" , "08-12-2016"];
 
             function unavailable(date) {
                 dmy = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear();
@@ -471,7 +471,7 @@
 
             me.supressValidationMessages(false);
 
-            if(me.validatePago() && me.validateCurso() && me.validateParticipante() && me.isEmailValid()) {//me.archivoSupplied()){
+            if(/*me.validatePago() &&*/ me.validateCurso() && me.validateParticipante() && me.isEmailValid()) {//me.archivoSupplied()){
                 options.valid();
             }
             else{

@@ -99,6 +99,20 @@ class Participante extends Eloquent
         return  $participantesView;
     }
 
+    public function obtenerParticipantesParaFichaExcel($fecha ,$turno){
+        $participantesView = DB::table('ParticipantesMasterView')           
+            ->where('FechaProgramacion', $fecha)
+            ->where('Turno', $turno) 
+            ->where('pa_asistencia', 1)
+            ->groupBy('pa_id')
+            ->orderBy('created_at','asc')
+            ->get();
+
+            $participantesView = $this->agregarOperadoresParticipantesView($participantesView);
+
+        return  $participantesView;
+    }
+
     public function obtenerParticipantesPorFechayTurnoYSearchText($fecha ,$turno, $searchText){
         $participantesView = DB::table('ParticipantesMasterView')
             /*->leftjoin('ParticipanteOperadorRelacion','ParticipantesMasterView.RegistroId','=','ParticipanteOperadorRelacion.reg_id')

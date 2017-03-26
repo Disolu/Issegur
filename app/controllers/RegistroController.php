@@ -188,7 +188,7 @@ class RegistroController extends BaseController {
             $nroOperacion = $registro['nroOperacion'];
             $fechaOperacion = $registro['fechaOperacion'];
             //formatemos la fechade operacion
-            $fechaOperacionFormatted = DateTime::createFromFormat('d/m/Y', $fechaOperacion)->format('Y-m-d');
+            $fechaOperacionFormatted = $fechaOperacion != '' ? DateTime::createFromFormat('d/m/Y', $fechaOperacion)->format('Y-m-d') : '';
             //$archivo = $registro['archivo'];
             $montoPago = $registro['montoPago'];
 
@@ -278,7 +278,7 @@ class RegistroController extends BaseController {
                 $nroOperacion = $registro['nroOperacion'];
                 $fechaOperacion = $registro['fechaOperacion'];
                 //formatemos la fechade operacion
-                $fechaOperacionFormatted = DateTime::createFromFormat('d/m/Y', $fechaOperacion)->format('Y-m-d');
+                $fechaOperacionFormatted = $fechaOperacion != '' ? DateTime::createFromFormat('d/m/Y', $fechaOperacion)->format('Y-m-d') : '';
                 //$archivo = $registro['archivo'];
                 $montoPago = $registro['montoPago'];
 

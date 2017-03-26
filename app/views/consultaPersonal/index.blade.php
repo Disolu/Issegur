@@ -41,7 +41,7 @@
             <div class="col-md-8 col-md-offset-2 marginSection ">
                 <div class="detallesContainer">
                     <div class="barra_azul">
-                        <img style="padding-left: 10px; padding-top: 10px; width: 78px;" src="http://institutodeseguridad.edu.pe/anuncios/logo_issegur.png">
+                        <img style="padding-left: 10px; padding-top: 10px; width: 78px;" src="https://institutodeseguridad.edu.pe/anuncios/logo_issegur.png">
                         <span
                         class="titulo_fotocheck">INSTITUTO SUPERIOR DE SEGURIDAD</span>                       
                     </div>
@@ -390,8 +390,8 @@
                     var currentParticipante = {
                         operador: current.Operador,
                         empresa: $.trim(current.RazonSocial) == "" ? "N/A" : current.RazonSocial,
-                        fechaCurso: (fechaCurrent.getDate() + 1) + '/' + (fechaCurrent.getMonth() + 1) + '/' + (fechaCurrent.getFullYear()),
-                        fechaVigencia: (fechaCurrent.getDate() + 1) + '/' + (fechaCurrent.getMonth() + 1) + '/' + (fechaCurrent.getFullYear() + 1),
+                        fechaCurso: (fechaCurrent.getDate()) + '/' + (fechaCurrent.getMonth() + 1) + '/' + (fechaCurrent.getFullYear()),
+                        fechaVigencia: (fechaCurrent.getDate()) + '/' + (fechaCurrent.getMonth() + 1) + '/' + (fechaCurrent.getFullYear() + 1),
                         activo: true
                     };
  

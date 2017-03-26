@@ -24,7 +24,7 @@
             </div>
             <div class="login-panel panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Iniciar Sesión</h3>
+                    <h3 class="panel-title">Iniciar Sesi&oacute;n</h3>
                 </div>
                 <div class="panel-body">
                     <form role="form">
