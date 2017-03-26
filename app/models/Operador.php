@@ -13,7 +13,7 @@ class Operador extends Eloquent
     public $timestamps = false;
 
     public function obtenerOperadores(){
-        $operadores = DB::table('Operador')->get();
+        $operadores = DB::table('Operador')->where('op_activo','=',true)->get();
 
         return $operadores;
     }

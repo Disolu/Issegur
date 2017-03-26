@@ -17,7 +17,7 @@ class Participante extends Eloquent
         return $participante;
     }
 
-    public function obtenerParticipantesIdsPorEmpresa($empresaId){    
+    public function obtenerParticipantesIdsPorEmpresa($empresaId){
         $participantesIds = DB::table('RegistroParticipante')->where('emp_id', $empresaId)
                     ->select('pa_id')->distinct()->get();
 
@@ -100,9 +100,9 @@ class Participante extends Eloquent
     }
 
     public function obtenerParticipantesParaFichaExcel($fecha ,$turno){
-        $participantesView = DB::table('ParticipantesMasterView')           
+        $participantesView = DB::table('ParticipantesMasterView')
             ->where('FechaProgramacion', $fecha)
-            ->where('Turno', $turno) 
+            ->where('Turno', $turno)
             ->where('pa_asistencia', 1)
             ->groupBy('pa_id')
             ->orderBy('created_at','asc')
@@ -144,25 +144,33 @@ class Participante extends Eloquent
             foreach ($participantesView as $par) {
                 $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $par->pa_id)
                                                                         ->where('reg_id','=', $par->RegistroId)
-                                                                        ->first();
+                                                                        ->select('op_id')
+                                                                        ->get();
 
-                if ($existingParticipanteOperador) {
-                    $par->OperadorId = $existingParticipanteOperador->op_id;
-                    $par->Operador = $operadorObj->obtenerNombrePorId($par->OperadorId);
+                if (count($existingParticipanteOperador) == 0) {
+                  $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $par->pa_id)
+                                                                      ->where('reg_id','=', 0)
+                                                                      ->select('op_id')
+                                                                      ->orderBy('created_at','desc')
+                                                                      ->get();
                 }
-                else{
-                    $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $par->pa_id)
-                                                                        ->where('reg_id','=', 0)
-                                                                        ->orderBy('created_at','desc')
-                                                                        ->first();
+                //casteamos a array el resultado
+                $existingParticipanteOperador = $existingParticipanteOperador->toArray();
+                //recorremos los Id's
+                $operadoresIds = array();
+                foreach ($existingParticipanteOperador as $existingOpe) {
+                    array_push($operadoresIds, $existingOpe['op_id']);
+                }
+                $par->OperadorId = join('-', $operadoresIds);
+                //recorremos los Id's para obtener los nombres
+                $operadoresNombres = array();
+                foreach ($operadoresIds as $opeId) {
+                    $nombreOperadorCompleto = $operadorObj->obtenerNombrePorId($opeId);
+                    $nombreOperadorFormat = substr($nombreOperadorCompleto, 0,3);
+                    array_push($operadoresNombres, $nombreOperadorFormat);
+                }
+                $par->Operador = join('-', $operadoresNombres);
 
-                   
-                    $par->OperadorId = $existingParticipanteOperador->op_id;
-                    $par->Operador = $operadorObj->obtenerNombrePorId($par->OperadorId);  
-                                                                                  
-                                                                                                                   
-                }                
-               
             }
 
             return $participantesView;
@@ -193,7 +201,7 @@ class Participante extends Eloquent
 
         return $matchingParticipanteInfo;
     }
-    
+
 
     public function puedeParticipanteRegistrarse($fecha, $turnoId, $nroParticipantes, $modalidad){
         $puedeRegistrarse = true;
@@ -223,79 +231,119 @@ class Participante extends Eloquent
 
     public function actualizarParticipante($participante){
 
-        $existingParticipante = Participante::where('pa_id','=', $participante["id"])->first();
-
-        if($participante["ruc"]){
-            $existingEmpresa = Empresa::where('emp_ruc','=', $participante["ruc"])->first();
-            if($existingEmpresa){
-                $existingEmpresa->emp_razon_social = $participante["razonSocial"];
-            }
-            else{
-                $existingEmpresa =  new Empresa();
-                $existingEmpresa->emp_ruc = $participante["ruc"];
-                $existingEmpresa->emp_razon_social = $participante["razonSocial"];
-            }
-            $existingEmpresa->save();
-
-            $registroId = $participante["registroId"];
-            $registroParticipante = RegistroParticipante::where('pa_id','=', $participante["id"])
-                                                ->where('reg_id','=',$registroId)
-                                                ->orderBy('reg_id', 'desc')->first();
-            $registroParticipante->emp_id = $existingEmpresa->emp_id;
-            $registroParticipante->save();
-        }
+        // $existingParticipante = Participante::where('pa_id','=', $participante["id"])->first();
+        //
+        // if($participante["ruc"]){
+        //     $existingEmpresa = Empresa::where('emp_ruc','=', $participante["ruc"])->first();
+        //     if($existingEmpresa){
+        //         $existingEmpresa->emp_razon_social = $participante["razonSocial"];
+        //     }
+        //     else{
+        //         $existingEmpresa =  new Empresa();
+        //         $existingEmpresa->emp_ruc = $participante["ruc"];
+        //         $existingEmpresa->emp_razon_social = $participante["razonSocial"];
+        //     }
+        //     $existingEmpresa->save();
+        //
+        //     $registroId = $participante["registroId"];
+        //     $registroParticipante = RegistroParticipante::where('pa_id','=', $participante["id"])
+        //                                         ->where('reg_id','=',$registroId)
+        //                                         ->orderBy('reg_id', 'desc')->first();
+        //     $registroParticipante->emp_id = $existingEmpresa->emp_id;
+        //     $registroParticipante->save();
+        // }
 
         if($participante["operador"]){
+            $operadoresIds = explode('-',$participante["operador"]);
+
             $paId = $participante["id"];
             $registroId = $participante["registroId"];
+
+            //primero revisamos si los operadores existentes se encuentran en el array de operadores nuevos
             $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $paId)
                                                                         ->where('reg_id','=', $registroId)
-                                                                        ->first();
+                                                                        ->select('op_id')
+                                                                        ->get();
+
             //si no existe ninguno, quiere decir q tiene reg_id = 0
-            if($existingParticipanteOperador){
-                $existingParticipanteOperador->op_id = $participante["operador"];
-                $existingParticipanteOperador->save();
-            } 
-            else{
-                $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $paId)
-                                                                        ->where('reg_id','=', 0)
-                                                                        ->first(); 
+            if(count($existingParticipanteOperador) == 0 ){
+              $existingParticipanteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $paId)
+                                                                      ->where('reg_id','=', 0)
+                                                                      ->select('op_id')
+                                                                      ->get();
+            }
 
-                $existingParticipanteOperador->op_id = $participante["operador"];
-                $existingParticipanteOperador->save();
-            }                                                                       
-            
+            //$existingParticipanteOperadorToArray  = $existingParticipanteOperador->toArray();
+            // Log::info($existingParticipanteOperador);
+            // Log::info($operadoresIds);
+            foreach ($operadoresIds as $opeId) {
+                $encontrado = false;
+                foreach ($existingParticipanteOperador as $existingOpeId) {
+                    if ($opeId == $existingOpeId->op_id) {
+                        $encontrado = true;
+                    }
+                }
+                if (!$encontrado) {
+                  $parOpe = new ParticipanteOperadorRelacion();
+                  $parOpe->pa_id = $paId;
+                  $parOpe->reg_id = $registroId;
+                  $parOpe->op_id = $opeId;
+                  $parOpe->save();
+                    //$existingOpeId->delete();
+                }
+            }
+
+            foreach ($existingParticipanteOperador as $existingOpeId) {
+                if (!in_array($existingOpeId->op_id, $operadoresIds)) {
+                    log::info($existingOpeId);
+                    log::info($existingOpeId->op_id);
+                      $toDeleteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $paId)
+                                                                                ->where('reg_id','=', $registroId)
+                                                                                ->where('op_id','=', $existingOpeId->op_id)
+                                                                                ->delete();
+
+                    //si no existe ninguno, quiere decir q tiene reg_id = 0
+                    if(count($toDeleteOperador) == 0 ){
+                      ParticipanteOperadorRelacion::where('pa_id','=', $paId)
+                                                                              ->where('reg_id','=', 0)
+                                                                              ->where('op_id','=', $existingOpeId->op_id)
+                                                                              ->delete();
+                    }
+                }
+            }
+
+
         }
 
-        $existingParticipante->pa_dni = $participante["dni"];
-        $existingParticipante->pa_nombres = $participante["nombres"];
-        $existingParticipante->pa_apellido_paterno = $participante["apePaterno"];
-        $existingParticipante->pa_apellido_materno = $participante["apeMaterno"];
-        $existingParticipante->pa_asistencia = $participante["asistencia"] == ""? null : $participante["asistencia"];
-        
-        if($participante["nota"]){
-            $existingParticipante->pa_nota = $participante["nota"]?(float) $participante["nota"] : null;
-        }
-        $existingParticipante->pa_aprobado = $existingParticipante->pa_nota? ($existingParticipante->pa_nota >= 11? 1 : 0 ): null;
-        $existingParticipante->detop_numero = $participante["nroOperacion"];
-        if($participante["fechaOperacion"]){
-            $existingParticipante->detop_fecha = DateTime::createFromFormat('d/m/Y', $participante["fechaOperacion"])->format('Y-m-d');
-        }
-        if($participante["montoOperacion"]){
-            $existingParticipante->detop_monto = $participante["montoOperacion"];
-        }
-        if($participante["foto"]){
-            $existingParticipante->pa_foto = $participante["foto"];
-        }
-        if($participante["ficha"]){
-            $existingParticipante->pa_ficha_asistencia = $participante["ficha"];
-        }
-        if($participante["examen"]){
-            if ((strlen($existingParticipante->pa_examen) == 0) || ((strlen($existingParticipante->pa_examen) > 0) && ($participante["examen"] != null))) {
-                $existingParticipante->pa_examen = $participante["examen"];
-            }            
-        }
-        $existingParticipante->save();
+        // $existingParticipante->pa_dni = $participante["dni"];
+        // $existingParticipante->pa_nombres = $participante["nombres"];
+        // $existingParticipante->pa_apellido_paterno = $participante["apePaterno"];
+        // $existingParticipante->pa_apellido_materno = $participante["apeMaterno"];
+        // $existingParticipante->pa_asistencia = $participante["asistencia"] == ""? null : $participante["asistencia"];
+        //
+        // if($participante["nota"]){
+        //     $existingParticipante->pa_nota = $participante["nota"]?(float) $participante["nota"] : null;
+        // }
+        // $existingParticipante->pa_aprobado = $existingParticipante->pa_nota? ($existingParticipante->pa_nota >= 11? 1 : 0 ): null;
+        // $existingParticipante->detop_numero = $participante["nroOperacion"];
+        // if($participante["fechaOperacion"]){
+        //     $existingParticipante->detop_fecha = DateTime::createFromFormat('d/m/Y', $participante["fechaOperacion"])->format('Y-m-d');
+        // }
+        // if($participante["montoOperacion"]){
+        //     $existingParticipante->detop_monto = $participante["montoOperacion"];
+        // }
+        // if($participante["foto"]){
+        //     $existingParticipante->pa_foto = $participante["foto"];
+        // }
+        // if($participante["ficha"]){
+        //     $existingParticipante->pa_ficha_asistencia = $participante["ficha"];
+        // }
+        // if($participante["examen"]){
+        //     if ((strlen($existingParticipante->pa_examen) == 0) || ((strlen($existingParticipante->pa_examen) > 0) && ($participante["examen"] != null))) {
+        //         $existingParticipante->pa_examen = $participante["examen"];
+        //     }
+        // }
+        // $existingParticipante->save();
 
     }
 
@@ -391,8 +439,8 @@ class Participante extends Eloquent
 
             if ($participanteRaw) {
                 if (strtotime($participanteRaw->fecha_programacion) < strtotime(date("Y-m-d"))) {
-                    return true;  
-                }  
+                    return true;
+                }
                 else{
                     return false;
                 }
@@ -409,6 +457,3 @@ class Participante extends Eloquent
     }
 
 }
-
-
-

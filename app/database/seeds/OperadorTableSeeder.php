@@ -16,6 +16,7 @@ class OperadorTableSeeder extends Seeder{
                 array('op_nombre' => 'Ransa'),
                 array('op_nombre' => 'Tramarsa'),
                 array('op_nombre' => 'Ransa-Tramarsa')
+                array('op_nombre' => 'SLI')
             ));
     }
 

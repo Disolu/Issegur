@@ -1,5 +1,6 @@
 @extends('intranet.layout.site')
 @section('stylesSection')
+    {{ HTML::style('assets/bootstrap-select/css/bootstrap-select.min.css') }}
     {{ HTML::style('assets/bootstrap-datepicker/css/datepicker.css') }}
 @stop
 @section('main')
@@ -94,7 +95,7 @@
                             </tr>
                             <!-- /ko -->
                             <!--ko foreach: { data: participantes, as: 'paInfo' } -->
-                            <tr class="participante" 
+                            <tr class="participante"
                                 data-bind="attr:{'data-id': paInfo.pa_id, 'data-ruc': paInfo.RUC, 'data-reg-id': paInfo.RegistroId}">
                                 <td data-bind="text: $index() + 1"></td>
                                 <td class="tdDni center">
@@ -124,12 +125,22 @@
                                 </td>
                                 @endif
                                 <td class="tdAlmacen">
-                                    <select class="form-control paAlmacen" data-bind="value: paInfo.OperadorId">
+                                    {{-- <select class="form-control paAlmacen" data-bind="value: paInfo.OperadorId">
                                         <option value="1">Ransa</option>
                                         <option value="2">Tramarsa</option>
                                         <option value="3">Ransa-Tramarsa</option>
-                                    </select>
-                                    <!-- text: paInfo.Operador --><!--/-->
+                                    </select> --}}
+                                    <div class="btn-group almacenesSeleccion">
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                          <!--ko text: paInfo.koOperadorText --><!--/ko-->
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                          {{-- <li><a href="#" tabIndex="-1" data-value="1"><input type="checkbox"/>&nbsp;Ransa</a></li>
+                                          <li><a href="#" tabIndex="-1" data-value="2"><input type="checkbox"/>&nbsp;Tramarsa</a></li>
+                                          <li><a href="#" tabIndex="-1" data-value="4"><input type="checkbox"/>&nbsp;SLI</a></li> --}}
+                                        </ul>
+                                    </div>
+
                                 </td>
                                 <td class="center tdAsistencia">
                                     <div class="btn-group" data-toggle="buttons">
@@ -181,7 +192,7 @@
                                     <button class="btn btn-default btn-xs paUploadExamen"><i class="fa fa-upload"></i></button>
                                     <a data-bind="visible: paInfo.pa_examen != '', attr:{'href':  '../' + paInfo.pa_examen}" target="_blank" class="btn btn-default btn-xs paExamen"><i class="fa fa-image"></i></a>
                                     <form class="paExamenForm">
-                                        <input type="file" 
+                                        <input type="file"
                                                class="uploadExamenHidden" name="examenData" style="display: none"/>
                                     </form>
                                 </td>
@@ -364,8 +375,8 @@
                             <div class="pull-left">
                                 <div class="validation-error" >El DNI :  <br/>
                                     <!-- ko foreach: { data: validationParticipante, as: 'val' } -->
-                                    <!--ko text: val.pa_dni--><!--/ko--> <br/> ya se encuentra programado para la fecha y turno: 
-                                    <!--ko text: val.fecha--><!--/ko-->&nbsp; <!--ko text: val.turno--><!--/ko-->                                    
+                                    <!--ko text: val.pa_dni--><!--/ko--> <br/> ya se encuentra programado para la fecha y turno:
+                                    <!--ko text: val.fecha--><!--/ko-->&nbsp; <!--ko text: val.turno--><!--/ko-->
                                     <!--/ko-->
                                 </div>
                             </div>
@@ -383,5 +394,6 @@
 @stop
 @section('scriptsSection')
     {{HTML::script('assets/bootstrap-datepicker/js/bootstrap-datepicker.js')}}
+    {{HTML::script('assets/bootstrap-select/js/bootstrap-select.min.js')}}
     @include('intranet.participantes.participantesJS')
 @stop

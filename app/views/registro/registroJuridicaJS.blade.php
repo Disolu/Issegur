@@ -29,7 +29,7 @@
             return clone;
         };
 
-        
+
 
         me.consultarDNIButton = function (data,event) {
             $button = $(event.target);
@@ -212,17 +212,15 @@
                     var currentText = currentTextRaw.substring(3,currentTextRaw.length);
 
                     if($(this).is(":checked")){
-                        me.selectedOperadoresIds.removeAll();
-                        me.selectedOperadoresText.removeAll();
+                        //me.selectedOperadoresIds.removeAll();
+                        //me.selectedOperadoresText.removeAll();
                         me.selectedOperadoresIds.push(currentId);
                         me.selectedOperadoresText.push(currentText);
                     }
-                    /*
-                     else{
-                     me.selectedOperadoresIds.remove(currentId);
-                     me.selectedOperadoresText.remove(currentText);
-                     }
-                     */
+                    else{
+                       me.selectedOperadoresIds.remove(currentId);
+                       me.selectedOperadoresText.remove(currentText);
+                    }
                 });
 
                 ko.applyBindings(CreateGrupoModalViewModal, $("#grupoDialog")[0]);
@@ -740,7 +738,7 @@
             for (var i = 0; i < me.operadores().length; i++) {
                 var operador = me.operadores()[i].op_nombre;
                 var operadorId = me.operadores()[i].op_id;
-                var operadoresContent = operadoresContent + "<div class='radio-custom radio-primary mb5'><input type='radio' name='operadoresGruopo' class='checkboxOp' id='chk" + operador + "' data-id='"+ operadorId +"'><label for='chk" +  operador + "'>"+ (operadorId == 3? "Almacenes " :"Almacén ") + operador +"</label></div>";
+                var operadoresContent = operadoresContent + "<div class='checkbox-custom checkbox-primary mb5'><input type='checkbox' name='operadoresGruopo' class='checkboxOp' id='chk" + operador + "' data-id='"+ operadorId +"'><label for='chk" +  operador + "'>"+ "Almacén " + operador +"</label></div>";
             }
             $divOperadores.html(operadoresContent);
         };

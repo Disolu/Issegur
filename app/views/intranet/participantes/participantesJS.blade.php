@@ -674,6 +674,7 @@
         me.fichaAsistenciaNombre = ko.observable(null);
         me.participantesSavedArray = [];
         me.guardardandoParticipantes = ko.observable(false);
+        me.operadores = ko.observableArray([]);
 
         me.initialize = function () {
             $(document.body).tooltip({selector: '[data-toggle=tooltip]'});
@@ -712,10 +713,12 @@
             $(document.body).on("keydown", ".paMontoOperacionTextbox", me.onUpdateMontoOperacionClick);
 
             $(document.body).on("click", "#btnGuardarParticipantes", me.onGuardarParticipantesClick);
-            $(document.body).on("click", "#btnGuardarParticipantesBottom", me.onGuardarParticipantesClick);            
+            $(document.body).on("click", "#btnGuardarParticipantesBottom", me.onGuardarParticipantesClick);
             $(document.body).on("click", "#btnRegresarACalendario", me.onRegresarClick);
             $(document.body).on("click", "#btnGenerarFicha", me.onGenerarFichaButtonClick);
             $(document.body).on("click", "#btnAgregarParticipantes", me.onAgregarParticipantesClick);
+
+            $(document.body).on("click", ".dropdown-menu a" , me.onAlmacenCheckboxClick);
 
 
             var fecha = Cookies.get('fecha');
@@ -728,6 +731,7 @@
                 me.currentTurno(turno);
                 me.currentFechaRaw(fechaRaw);
 
+                me.loadOperadores();
                 me.getParticipantesPorTurnoyFecha(me.currentFechaRaw(), me.currentTurno());
             }
             else {
@@ -771,6 +775,94 @@
             }
         };
 
+        me.onAlmacenCheckboxClick = function( event ) {
+            var options = [];
+
+            var participanteKO = ko.dataFor($( event.currentTarget ).parents('tr.participante')[0]);
+            var $target = $( event.currentTarget ),
+                 val = $target.attr( 'data-value' ),
+                 text = $target.text().replace("&nbsp;", "").trim().substring(0,3),
+                 $inp = $target.find( 'input' );
+
+
+            var operadoresSeleccionados = participanteKO.koOperadorText().split('-');
+            var operadoresIdsSeleccionados = participanteKO.koOperadorId().split('-');
+
+            if ( ( idx = operadoresIdsSeleccionados.indexOf( val ) ) > -1 ) {
+                if (operadoresIdsSeleccionados.length > 1) {
+                  operadoresSeleccionados.splice( idx, 1);
+                  operadoresIdsSeleccionados.splice( idx, 1 );
+                  setTimeout( function() { $inp.prop( 'checked', false ) }, 0);
+                }
+            } else {
+                operadoresSeleccionados.push( text );
+                operadoresIdsSeleccionados.push( val );
+                setTimeout( function() { $inp.prop( 'checked', true ) }, 0);
+            }
+
+            $( event.target ).blur();
+
+            participanteKO.koOperadorText(operadoresSeleccionados.join('-'));
+            participanteKO.koOperadorId(operadoresIdsSeleccionados.join('-'));
+
+            return false;
+        };
+
+        me.loadOperadores = function(rawOperadores){
+            if (rawOperadores) {
+                me.operadores.removeAll();
+                for(var i = 0; i < rawOperadores.length; i++){
+                    me.operadores.push(rawOperadores[i]);
+                }
+            }
+            else{
+                $.ajax({
+                    type: "GET",
+                    url: path + "/api/v1/getOperadores",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        me.loadOperadores(data.operadores);
+                    },
+                    error: function (data) {
+                        console.log('error');
+                        console.log(data);
+                    }
+                });
+            }
+        };
+
+        me.setearSelectCheckboxAlmacenes = function(participante){
+          var $filaParticipante = $("tr.participante[data-id='" + participante.pa_id + "']");
+          var $divOperadores = $filaParticipante.children('td.tdAlmacen').children('div.almacenesSeleccion').find('ul.dropdown-menu').eq(0);
+          var operadoresContent = "";
+          var operadoresGuardados = participante.OperadorId.split("-");
+
+
+          //recorremos la lista de operadores
+          for (var i = 0; i < me.operadores().length; i++) {
+              var operador = me.operadores()[i].op_nombre;
+              var operadorId = me.operadores()[i].op_id;
+              var checked = '';
+              var encontrado = false;
+              for (var j = 0; j < operadoresGuardados.length; j++) {
+                  if (operadoresGuardados[j] == operadorId) {
+                      encontrado = true;
+                      break;
+                  }
+              }
+              if (encontrado) {
+                checked = 'checked';
+              }
+
+              var operadoresContent = operadoresContent +
+                        '<li><a href="#" tabIndex="-1" data-value="' +  operadorId + '"><input type="checkbox" '+ checked + '/>&nbsp;' + operador  + '</a></li>';
+          }
+
+
+          $divOperadores.html(operadoresContent);
+        };
+
         me.getParticipantesPorTurnoyFecha = function (fecha, turno, searchText) {
             me.loadingParticipantes(true);
             if (!searchText) {
@@ -787,7 +879,12 @@
                     me.loadingParticipantes(false);
                     me.participantes.removeAll();
                     for (var i = 0; i < turnosRaw.length; i++) {
+                        //agregarmos observables para manejar los almacenes
+                        turnosRaw[i].koOperadorId = ko.observable(turnosRaw[i].OperadorId);
+                        turnosRaw[i].koOperadorText = ko.observable(turnosRaw[i].Operador);
+
                         me.participantes.push(turnosRaw[i]);
+                        me.setearSelectCheckboxAlmacenes(me.participantes()[i]);
                     }
                     me.fichaAsistenciaNombre(me.participantes()[0].pa_ficha_asistencia.replace("fichas/",""));
                 },
@@ -1182,6 +1279,9 @@
 
 
             $(".participante").each(function () {
+                //obtenemos el objeto participante bindeado a la fila
+                var participanteKO = ko.dataFor(this);
+
                 //asistencia
                 var asistenciaInfo = null;
                 var $activo = $(this).children('.tdAsistencia').find('.active');
@@ -1189,11 +1289,11 @@
                     asistenciaInfo = $activo.find('.textAsis').text()== "SI"? 1: 0;
                 }
                 //operador
-                var operadorSelectedId = null;
-                var $cboOperadores = $(this).children('.tdAlmacen').find(".paAlmacen");
-                if($cboOperadores.length > 0){
-                    var operadorSelectedId = $cboOperadores.val();
-                }
+                var operadorSelectedId = participanteKO.koOperadorId();
+                // var $cboOperadores = $(this).children('.tdAlmacen').find("ul.dropdown-menu");
+                // if($cboOperadores.length > 0){
+                //     var operadorSelectedId = $cboOperadores.val();
+                // }
 
                 //foto
                 var fotoInfo = null;
@@ -1226,8 +1326,8 @@
                     //mostramos el icono de la camara y ocultamos el clip
                     $(this).children('.tdExamen').find('.examenClip').children('.examenClipIcon').removeClass('fa fa-paperclip');
                     $(this).children('.tdExamen').find('.paExamen').show();
-                }                
-                
+                }
+
                 var parObj = {
                     id: $(this).attr('data-id'),
                     dni: $(this).children('.tdDni').find('.paDNI').text(),
@@ -1291,7 +1391,7 @@
                     }
                 });
             }
-            
+
         };
 
         me.uploadFichaAsistencia = function ($fichaAsistenciaForm) {
