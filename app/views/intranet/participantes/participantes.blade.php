@@ -78,6 +78,9 @@
                             @if (Auth::user()->rol_id == 3 || Auth::user()->rol_id == 1)
                                 <th class="pa-table-header center" style="width:75px;">Examen</th>
                             @endif
+                            @if (Auth::user()->rol_id == 3 || Auth::user()->rol_id == 1)
+                                <th class="pa-table-header center" style="width:75px;">SCTR</th>
+                            @endif
                             </thead>
                             <tbody>
                             <!-- ko if: !loadingParticipantes() && participantes().length < 1 -->
@@ -194,6 +197,20 @@
                                     <form class="paExamenForm">
                                         <input type="file"
                                                class="uploadExamenHidden" name="examenData" style="display: none"/>
+                                    </form>
+                                </td>
+                                @endif
+                                @if (Auth::user()->rol_id == 3 || Auth::user()->rol_id == 1)
+                                <td class="center tdSctr">
+                                    <span data-bind="attr:{'title': paInfo.pa_sctr.replace('sctr/','')}"
+                                          class="sctrClip" data-toggle="tooltip" data-placement="left" style="cursor: pointer">
+                                        <i class="sctrClipIcon"></i>
+                                    </span>
+                                    <button class="btn btn-default btn-xs paUploadSctr"><i class="fa fa-upload"></i></button>
+                                    <a data-bind="visible: paInfo.pa_sctr != '', attr:{'href':  '../' + paInfo.pa_sctr}" target="_blank" class="btn btn-default btn-xs paSctr"><i class="fa fa-image"></i></a>
+                                    <form class="paSctrForm">
+                                        <input type="file"
+                                               class="uploadSctrHidden" name="sctrData" style="display: none"/>
                                     </form>
                                 </td>
                                 @endif

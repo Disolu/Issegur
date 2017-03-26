@@ -138,11 +138,18 @@
 
             function onOperadorChecked(evt){
                 evt.stopPropagation();
-                var currentId = $(this).data("id");
+                var $this = $(evt.target);
+                var currentId = $this.data("id");
+                var currentTextRaw = $this[0].id;
+                var currentText = currentTextRaw.substring(3,currentTextRaw.length);
 
-                if($(this).is(":checked")){
-                    me.selectedOperadoresIds.removeAll();
+                if($this.is(":checked")){
                     me.selectedOperadoresIds.push(currentId);
+                    me.selectedOperadoresText.push(currentText);
+                }
+                else{
+                   me.selectedOperadoresIds.remove(currentId);
+                   me.selectedOperadoresText.remove(currentText);
                 }
             }
 
@@ -218,7 +225,7 @@
             for (var i = 0; i < me.operadores().length; i++) {
                 var operador = me.operadores()[i].op_nombre;
                 var operadorId = me.operadores()[i].op_id;
-                var operadoresContent = operadoresContent + "<div class='radio-custom radio-primary mb5'><input type='radio' name='operadoresGruopo' class='checkboxOp' id='chk" + operador + "' data-id='"+ operadorId +"'><label for='chk" +  operador + "'>"+ (operadorId == 3? "Almacenes " :"Almacén ") + operador +"</label></div>";
+                var operadoresContent = operadoresContent + "<div class='checkbox-custom checkbox-primary mb5'><input type='checkbox' name='operadoresGruopo' class='checkboxOp' id='chk" + operador + "' data-id='"+ operadorId +"'><label for='chk" +  operador + "'>"+ "Almacén " + operador +"</label></div>";
             }
             $divOperadores.html(operadoresContent);
         };

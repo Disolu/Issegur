@@ -140,6 +140,20 @@ Route::post("uploadExamenParticipante", function(){
     )->setCallback(Input::get('callback'));
 });
 
+//upload examen participante
+Route::post("uploadSctrParticipante", function(){
+    $file = Input::all();
+    if ($file["sctrData"] != null) {
+        //guardamos la imagen en public/imgs con el nombre original
+        $file["sctrData"]->move("sctr",$file["sctrData"]->getClientOriginalName());
+    }
+
+    return Response::json(array(
+        'resultado' =>  true
+    ), 200
+    )->setCallback(Input::get('callback'));
+});
+
 //api
 //publico, sin indentificacion
 Route::group(array('prefix' => 'api/v1'), function(){
@@ -202,6 +216,3 @@ Route::group(array('before' => 'auth','prefix' => 'api/v1'),function() {
     Route::get('facturas/cancelar/{id}','FacturaController@cancelar');
 
 });
-
-
-

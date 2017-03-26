@@ -18,7 +18,7 @@
                     <!-- Begin: Content Header -->
                     <div class="content-header">
                         <h2>INSCRIPCIÓN PARA EL CURSO DE INDUCCIÓN DE SEGURIDAD EN ALMACENES</h2>
-                        <p class="lead">RANSA - TRAMARSA</p>
+                        <p class="lead">RANSA - TRAMARSA - SLI</p>
                     </div>
 
                     <!-- Begin: Admin Form -->
@@ -273,4 +273,3 @@
 @section('scriptsContainer')
     @include('registro.registroNaturalJS')
 @stop
-

@@ -691,7 +691,9 @@
             $(document.body).on("click", ".paPhoto", me.onShowPreviewPhotoClick);
             $(document.body).on("change", ".uploadPhotoHidden", me.onSelectedPhotoFile);
             $(document.body).on("click", ".paUploadExamen", me.onUploadExamenClick);
+            $(document.body).on("click", ".paUploadSctr", me.onUploadSctrClick);
             $(document.body).on("change", ".uploadExamenHidden", me.onSelectedExamenFile);
+            $(document.body).on("change", ".uploadSctrHidden", me.onSelectedSctrFile);
             $(document.body).on("click", ".paAsis", me.onAsistenciaClick);
             $(document.body).on("dblclick", ".tdNroOperacion", me.onEditNroOperacionClick);
             $(document.body).on("keydown", ".paNroOperacionTextbox", me.onUpdateNroOperacionClick);
@@ -913,6 +915,11 @@
             $target.parents('td').find('.uploadExamenHidden').eq(0).trigger("click");
         };
 
+        me.onUploadSctrClick = function (e) {
+            var $target = $(e.target);
+            $target.parents('td').find('.uploadSctrHidden').eq(0).trigger("click");
+        };
+
         me.onSelectedExamenFile = function (e) {
             var $target = $(e.target);
             if ($target[0].files[0].name) {
@@ -923,6 +930,19 @@
                 $(e.target).parents('form').find('.uploadExamenHidden').attr('data-url', "../examenes/" + nombreArchivoArray[2]);
                 $(e.target).parents('td').find('.paExamen').attr('href',"../examenes/" + nombreArchivoArray[2]);
                 //$(e.target).parents('form').find('.uploadExamenHidden').attr('data-url', nombreArchivoArray[2]);
+            }
+        };
+
+        me.onSelectedSctrFile = function (e) {
+            var $target = $(e.target);
+            if ($target[0].files[0].name) {
+                var nombreArchivoArray = $target.val().split('\\');
+                $(e.target).parents('form').siblings('.sctrClip').show();
+                $(e.target).parents('form').siblings('.sctrClip').children('.sctrClipIcon').addClass('fa fa-paperclip');
+                $(e.target).parents('form').siblings('.sctrClip').attr('title', nombreArchivoArray[2]);
+                $(e.target).parents('form').find('.uploadSctrHidden').attr('data-url', "../sctr/" + nombreArchivoArray[2]);
+                $(e.target).parents('td').find('.paSctr').attr('href',"../sctr/" + nombreArchivoArray[2]);
+
             }
 
         };
@@ -1328,6 +1348,19 @@
                     $(this).children('.tdExamen').find('.paExamen').show();
                 }
 
+                //sctr
+                var sctrFile = $(this).children('.tdSctr').find('.uploadSctrHidden').attr('data-url');
+
+                if (sctrFile) {
+                    var $sctrForm = $(this).children('.tdSctr').find('.paSctrForm');
+
+                    me.uploadSctrParticipante($sctrForm);
+
+                    //mostramos el icono de la camara y ocultamos el clip
+                    $(this).children('.tdSctr').find('.sctrClip').children('.sctrClipIcon').removeClass('fa fa-paperclip');
+                    $(this).children('.tdSctr').find('.paSctr').show();
+                }
+
                 var parObj = {
                     id: $(this).attr('data-id'),
                     dni: $(this).children('.tdDni').find('.paDNI').text(),
@@ -1345,7 +1378,8 @@
                     montoOperacion: $(this).children('.tdMontoOperacion').children('.paMontoOperacion').text(),
                     foto: fotoInfo? fotoInfo : null,
                     ficha: fichaAsistenciaNombre ? fichaAsistenciaUrl : null,
-                    examen: examenFile? examenFile : null
+                    examen: examenFile? examenFile : null,
+                    sctr: sctrFile? sctrFile : null
                 };
 
                 participantesArray.push(parObj);
@@ -1423,6 +1457,28 @@
                     type: "POST",
                     async: false,
                     url: path + "/uploadExamenParticipante",
+                    data: formData,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function (data) {
+                        console.log(data);
+                    },
+                    error: function (data) {
+                        console.log(data);
+                        console.log("error ;(");
+                    }
+                });
+            }
+        };
+
+        me.uploadSctrParticipante = function ($sctrForm) {
+            var formData = new FormData($sctrForm[0]);
+            if(formData != null){
+                $.ajax({
+                    type: "POST",
+                    async: false,
+                    url: path + "/uploadSctrParticipante",
                     data: formData,
                     cache: false,
                     contentType: false,

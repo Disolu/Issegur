@@ -231,27 +231,27 @@ class Participante extends Eloquent
 
     public function actualizarParticipante($participante){
 
-        // $existingParticipante = Participante::where('pa_id','=', $participante["id"])->first();
-        //
-        // if($participante["ruc"]){
-        //     $existingEmpresa = Empresa::where('emp_ruc','=', $participante["ruc"])->first();
-        //     if($existingEmpresa){
-        //         $existingEmpresa->emp_razon_social = $participante["razonSocial"];
-        //     }
-        //     else{
-        //         $existingEmpresa =  new Empresa();
-        //         $existingEmpresa->emp_ruc = $participante["ruc"];
-        //         $existingEmpresa->emp_razon_social = $participante["razonSocial"];
-        //     }
-        //     $existingEmpresa->save();
-        //
-        //     $registroId = $participante["registroId"];
-        //     $registroParticipante = RegistroParticipante::where('pa_id','=', $participante["id"])
-        //                                         ->where('reg_id','=',$registroId)
-        //                                         ->orderBy('reg_id', 'desc')->first();
-        //     $registroParticipante->emp_id = $existingEmpresa->emp_id;
-        //     $registroParticipante->save();
-        // }
+        $existingParticipante = Participante::where('pa_id','=', $participante["id"])->first();
+
+        if($participante["ruc"]){
+            $existingEmpresa = Empresa::where('emp_ruc','=', $participante["ruc"])->first();
+            if($existingEmpresa){
+                $existingEmpresa->emp_razon_social = $participante["razonSocial"];
+            }
+            else{
+                $existingEmpresa =  new Empresa();
+                $existingEmpresa->emp_ruc = $participante["ruc"];
+                $existingEmpresa->emp_razon_social = $participante["razonSocial"];
+            }
+            $existingEmpresa->save();
+
+            $registroId = $participante["registroId"];
+            $registroParticipante = RegistroParticipante::where('pa_id','=', $participante["id"])
+                                                ->where('reg_id','=',$registroId)
+                                                ->orderBy('reg_id', 'desc')->first();
+            $registroParticipante->emp_id = $existingEmpresa->emp_id;
+            $registroParticipante->save();
+        }
 
         if($participante["operador"]){
             $operadoresIds = explode('-',$participante["operador"]);
@@ -315,35 +315,40 @@ class Participante extends Eloquent
 
         }
 
-        // $existingParticipante->pa_dni = $participante["dni"];
-        // $existingParticipante->pa_nombres = $participante["nombres"];
-        // $existingParticipante->pa_apellido_paterno = $participante["apePaterno"];
-        // $existingParticipante->pa_apellido_materno = $participante["apeMaterno"];
-        // $existingParticipante->pa_asistencia = $participante["asistencia"] == ""? null : $participante["asistencia"];
-        //
-        // if($participante["nota"]){
-        //     $existingParticipante->pa_nota = $participante["nota"]?(float) $participante["nota"] : null;
-        // }
-        // $existingParticipante->pa_aprobado = $existingParticipante->pa_nota? ($existingParticipante->pa_nota >= 11? 1 : 0 ): null;
-        // $existingParticipante->detop_numero = $participante["nroOperacion"];
-        // if($participante["fechaOperacion"]){
-        //     $existingParticipante->detop_fecha = DateTime::createFromFormat('d/m/Y', $participante["fechaOperacion"])->format('Y-m-d');
-        // }
-        // if($participante["montoOperacion"]){
-        //     $existingParticipante->detop_monto = $participante["montoOperacion"];
-        // }
-        // if($participante["foto"]){
-        //     $existingParticipante->pa_foto = $participante["foto"];
-        // }
-        // if($participante["ficha"]){
-        //     $existingParticipante->pa_ficha_asistencia = $participante["ficha"];
-        // }
-        // if($participante["examen"]){
-        //     if ((strlen($existingParticipante->pa_examen) == 0) || ((strlen($existingParticipante->pa_examen) > 0) && ($participante["examen"] != null))) {
-        //         $existingParticipante->pa_examen = $participante["examen"];
-        //     }
-        // }
-        // $existingParticipante->save();
+        $existingParticipante->pa_dni = $participante["dni"];
+        $existingParticipante->pa_nombres = $participante["nombres"];
+        $existingParticipante->pa_apellido_paterno = $participante["apePaterno"];
+        $existingParticipante->pa_apellido_materno = $participante["apeMaterno"];
+        $existingParticipante->pa_asistencia = $participante["asistencia"] == ""? null : $participante["asistencia"];
+
+        if($participante["nota"]){
+            $existingParticipante->pa_nota = $participante["nota"]?(float) $participante["nota"] : null;
+        }
+        $existingParticipante->pa_aprobado = $existingParticipante->pa_nota? ($existingParticipante->pa_nota >= 11? 1 : 0 ): null;
+        $existingParticipante->detop_numero = $participante["nroOperacion"];
+        if($participante["fechaOperacion"]){
+            $existingParticipante->detop_fecha = DateTime::createFromFormat('d/m/Y', $participante["fechaOperacion"])->format('Y-m-d');
+        }
+        if($participante["montoOperacion"]){
+            $existingParticipante->detop_monto = $participante["montoOperacion"];
+        }
+        if($participante["foto"]){
+            $existingParticipante->pa_foto = $participante["foto"];
+        }
+        if($participante["ficha"]){
+            $existingParticipante->pa_ficha_asistencia = $participante["ficha"];
+        }
+        if($participante["examen"]){
+            if ((strlen($existingParticipante->pa_examen) == 0) || ((strlen($existingParticipante->pa_examen) > 0) && ($participante["examen"] != null))) {
+                $existingParticipante->pa_examen = $participante["examen"];
+            }
+        }
+        if($participante["sctr"]){
+            if ((strlen($existingParticipante->pa_sctr) == 0) || ((strlen($existingParticipante->pa_sctr) > 0) && ($participante["sctr"] != null))) {
+                $existingParticipante->pa_sctr = $participante["sctr"];
+            }
+        }
+        $existingParticipante->save();
 
     }
 
