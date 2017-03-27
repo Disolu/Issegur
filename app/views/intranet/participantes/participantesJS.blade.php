@@ -65,7 +65,7 @@
 
             if(me.tipoRegistro() == "J"){
                 if ((me.ruc().length > 0) && (me.IsRucValid()) && (me.razonSocial().toString().length > 0) && (me.nroOperacion().toString().length > 0) &&
-                        (me.monto().toString().length > 0) && (me.operador().toString().length > 0) && (me.dni().toString().length > 0) && (me.IsDniValid()) && (me.nombres().length > 0) && (me.ape_paterno().length > 0) && (me.ape_materno().length > 0)) {
+                        (me.monto().toString().length > 0) && (me.operadoresSeleccionados().length > 0) && (me.dni().toString().length > 0) && (me.IsDniValid()) && (me.nombres().length > 0) && (me.ape_paterno().length > 0) && (me.ape_materno().length > 0)) {
                     options.valid();
                 }
                 else{
@@ -73,7 +73,7 @@
                 }
             }
             else{
-                if ((me.nroOperacion().toString().length > 0) && (me.monto().toString().length > 0) && (me.operador().toString().length > 0) && (me.dni().toString().length > 0) &&
+                if ((me.nroOperacion().toString().length > 0) && (me.monto().toString().length > 0) && (me.operadoresSeleccionados().length > 0) && (me.dni().toString().length > 0) &&
                         (me.IsDniValid()) && (me.nombres().length > 0) && (me.ape_paterno().length > 0) && (me.ape_materno().length > 0)) {
                     options.valid();
                 }
@@ -92,6 +92,7 @@
         };
 
         me.registrarParticipante = function () {
+          console.log(me.operadoresSeleccionados());
             me.validate({
                 valid: function () {
                     var participanteModel = {};
@@ -104,8 +105,8 @@
                             razonSocial: me.razonSocial(),
                             nroOperacion: me.nroOperacion(),
                             monto: me.monto(),
-                            //almacenes: me.parseObservableArray(me.operadoresSeleccionados()),
-                            almacen: me.operador(),
+                            almacenes: me.operadoresSeleccionados(),//me.parseObservableArray(me.operadoresSeleccionados()),
+                            //almacen: me.operador(),
                             dni: me.dni(),
                             nombres: me.nombres(),
                             ape_paterno: me.ape_paterno(),
@@ -120,8 +121,8 @@
                             turno: Cookies.get("turnoId"),
                             nroOperacion: me.nroOperacion(),
                             monto: me.monto(),
-                            //almacenes: me.operadoresSeleccionados(),
-                            almacen: me.operador(),
+                            almacenes: me.operadoresSeleccionados(),
+                            //almacen: me.operador(),
                             dni: me.dni(),
                             nombres: me.nombres(),
                             ape_paterno: me.ape_paterno(),
@@ -189,12 +190,13 @@
             var $input = $(e.target);
             var $target = $input.children("input[name='opAlmacenes']");
             if(!$input.hasClass('active')){
-                //me.operadoresSeleccionados.remove(parseInt($target[0].id));
-                me.operador($target[0].id);
+                me.operadoresSeleccionados.push(parseInt($target[0].id));
+                //me.operador($target[0].id);
             }
-            //else{
-            //me.operadoresSeleccionados.push(parseInt($target[0].id));
-            //}
+            else{
+              me.operadoresSeleccionados.remove(parseInt($target[0].id));
+
+            }
         };
 
         me.consultarRUCButton = function () {
@@ -444,7 +446,7 @@
             for (var i = 0; i < me.operadores().length; i++) {
                 var operador = me.operadores()[i].op_nombre;
                 var operadorId = me.operadores()[i].op_id;
-                var operadoresContent = operadoresContent + "<label class='btn btn-default regAlmacen'> <input type='radio' name='opAlmacenes' id='" + operadorId + "' autocomplete='off'>" + operador + "</label>";
+                var operadoresContent = operadoresContent + "<label class='btn btn-default regAlmacen'> <input type='checkbox' name='opAlmacenes' id='" + operadorId + "' autocomplete='off'>" + operador + "</label>";
 
             }
             $divOperadores.html(operadoresContent);

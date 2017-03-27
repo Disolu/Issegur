@@ -209,9 +209,9 @@ class IntranetController extends BaseController{
             $resultado = false;
             $limite = new stdClass();
             $limite->pa_dni = $participante['dni'];
-            
+
             $matchingPar = $participanteObj->consultarDNI($participante['dni']);
-                                           $registroParticipante = RegistroParticipante::where('pa_id','=', $matchingPar[0]->pa_id) 
+                                           $registroParticipante = RegistroParticipante::where('pa_id','=', $matchingPar[0]->pa_id)
                                                 ->orderBy('fecha_programacion', 'desc')->first();
             $limite->turno = with(new Turno)->obtenerTurnoPorIdTodos($registroParticipante->turno_id);
             $limite->fecha = DateTime::createFromFormat('Y-m-d', $registroParticipante->fecha_programacion)->format('d/m/Y');
@@ -261,9 +261,9 @@ class IntranetController extends BaseController{
                     $registroParticipanteObj->guardarRegistroParticipante($savedRegistro->reg_id, $fecha,$turnoId,$savedParticipante->pa_id,$savedEmpresa->emp_id);
 
                     /*registro de los operadores*/
-                    $operador = $participante['almacen'];
+                    $operadores = $participante['almacenes'];
 
-                    $participanteOperadorObj->registrarParticipanteOperadorRelacion($operador,$savedParticipante->pa_id, $savedRegistro->reg_id);
+                    $participanteOperadorObj->registrarParticipanteOperadorRelacion($operadores,$savedParticipante->pa_id, $savedRegistro->reg_id);
                 }
                 else{
                     /*registro de pagos*/
@@ -290,11 +290,11 @@ class IntranetController extends BaseController{
                     $registroParticipanteObj->guardarRegistroParticipante($savedRegistro->reg_id, $fecha,$turnoId,$savedParticipante->pa_id);
 
                     /*registro de los operadores*/
-                    $operador = $participante['almacen'];
+                    $operadores = $participante['almacenes'];
 
-                    $participanteOperadorObj->registrarParticipanteOperadorRelacion($operador,$savedParticipante->pa_id, $savedRegistro->reg_id);
+                    $participanteOperadorObj->registrarParticipanteOperadorRelacion($operadores,$savedParticipante->pa_id, $savedRegistro->reg_id);
                 }
-            }            
+            }
         }
         else{
             $turno = with(new Turno)->obtenerTurnoPorIdTodos($turnoId);
