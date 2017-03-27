@@ -768,7 +768,12 @@
                         me.loadingParticipantes(false);
                         me.participantes.removeAll();
                         for (var i = 0; i < turnosRaw.length; i++) {
+                            //agregarmos observables para manejar los almacenes
+                            turnosRaw[i].koOperadorId = ko.observable(turnosRaw[i].OperadorId);
+                            turnosRaw[i].koOperadorText = ko.observable(turnosRaw[i].Operador);
+
                             me.participantes.push(turnosRaw[i]);
+                            me.setearSelectCheckboxAlmacenes(me.participantes()[i]);
                         }
                     },
                     error: function (data) {
