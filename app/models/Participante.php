@@ -273,9 +273,6 @@ class Participante extends Eloquent
                                                                       ->get();
             }
 
-            //$existingParticipanteOperadorToArray  = $existingParticipanteOperador->toArray();
-            // Log::info($existingParticipanteOperador);
-            // Log::info($operadoresIds);
             foreach ($operadoresIds as $opeId) {
                 $encontrado = false;
                 foreach ($existingParticipanteOperador as $existingOpeId) {
@@ -289,14 +286,11 @@ class Participante extends Eloquent
                   $parOpe->reg_id = $registroId;
                   $parOpe->op_id = $opeId;
                   $parOpe->save();
-                    //$existingOpeId->delete();
                 }
             }
 
             foreach ($existingParticipanteOperador as $existingOpeId) {
                 if (!in_array($existingOpeId->op_id, $operadoresIds)) {
-                    log::info($existingOpeId);
-                    log::info($existingOpeId->op_id);
                       $toDeleteOperador = ParticipanteOperadorRelacion::where('pa_id','=', $paId)
                                                                                 ->where('reg_id','=', $registroId)
                                                                                 ->where('op_id','=', $existingOpeId->op_id)
