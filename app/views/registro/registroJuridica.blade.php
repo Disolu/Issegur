@@ -267,7 +267,7 @@
                                                         <div class="col-md-6">
                                                             <div class="section">
                                                                 <label for="dtpFechaProgramacion" class="field prepend-icon">
-                                                                    <input type="text"  id="dtpFechaProgramacion" class="gui-input datepicker"  data-bind="value: fechaProgramacion , event: {change : onFechaProgramacionChange}" placeholder="Fecha de programación de curso">
+                                                                    <input type="text" autocomplete="off" id="dtpFechaProgramacion" class="gui-input datepicker"  data-bind="value: fechaProgramacion , event: {change : onFechaProgramacionChange}" placeholder="Fecha de programación de curso">
                                                                     <label class="field-icon">
                                                                         <i class="fa fa-calendar-o"></i>
                                                                     </label>
