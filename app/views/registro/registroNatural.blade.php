@@ -196,7 +196,7 @@
                                                             <td>
                                                                 <div class="smart-widget sm-right smr-50">
                                                                     <label class="field">
-                                                                        <input type="text" data-bind="value: dni , event: { 'keyup': consultarDNI }" class="paData form-control gui-input padni" maxlength="8"/>
+                                                                        <input type="text" data-bind="value: dni , event: { 'keyup': consultarDNI }" class="paData form-control gui-input padni"/>
                                                                     </label>
                                                                     <button type="button" class="button btn-primary" data-bind="click: consultarDNIButton">
                                                                         <i class="fa fa-search"></i>

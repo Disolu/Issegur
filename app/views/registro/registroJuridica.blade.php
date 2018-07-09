@@ -328,7 +328,7 @@
                                                                             <td>
                                                                                 <div class="smart-widget sm-right smr-50">
                                                                                     <label class="field">
-                                                                                        <input type="text" data-bind="value: pa.dni , event: { 'keyup': pa.consultarDNI }" class="paData form-control gui-input padni" maxlength="8"/>
+                                                                                        <input type="text" data-bind="value: pa.dni , event: { 'keyup': pa.consultarDNI }" class="paData form-control gui-input padni"/>
                                                                                     </label>
                                                                                     <button type="button" class="button btn-primary" data-bind="click: pa.consultarDNIButton">
                                                                                         <i class="fa fa-search"></i>
