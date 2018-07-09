@@ -110,10 +110,25 @@
                                     <fieldset class="seccionForm">
                                         <legend class="legend legendDatosCurso"> Datos del Curso </legend>
                                         <div class="row">
+                                            <div class="form-group">
+                                                <div class="col-md-6">
+                                                    <div class="alert alert-default dark alert-dismissable">
+                                                        <i class="fa fa-cog pr10 hidden"></i>
+                                                        Elija el almacén al que desea ingresar <small><em>(puede elegir entre uno o más almacenes de acuerdo a su pago).</em></small></a>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 vcenter pl15">
+                                                    <div id="operadores" style="margin-bottom: 15px">
+                                                    </div>
+                                                    <span class="validation-error" data-bind="visible: !supressValidationMessages() && !isOperadorSupplied()">Seleccione un operador.</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
                                             <div class="col-md-6">
                                                 <div class="section">
                                                     <label for="dtpFechaProgramacion" class="field prepend-icon">
-                                                        <input type="text"  id="dtpFechaProgramacion" class="gui-input datepicker"  data-bind="value: fechaProgramacion , event: {change : onFechaProgramacionChange}" placeholder="Fecha de programación de curso">
+                                                        <input type="text" autocomplete="off" id="dtpFechaProgramacion" class="gui-input datepicker"  data-bind="value: fechaProgramacion , event: {change : onFechaProgramacionChange}" placeholder="Fecha de programación de curso">
                                                         <label class="field-icon">
                                                             <i class="fa fa-calendar-o"></i>
                                                         </label>
@@ -132,22 +147,7 @@
                                                     </label>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="form-group">
-                                                <div class="col-md-6">
-                                                    <div class="alert alert-default dark alert-dismissable">
-                                                        <i class="fa fa-cog pr10 hidden"></i>
-                                                        Elija el almacén al que desea ingresar <small><em>(puede elegir entre uno o más almacenes de acuerdo a su pago).</em></small></a>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-6 vcenter pl15">
-                                                    <div id="operadores" style="margin-bottom: 15px">
-                                                    </div>
-                                                    <span class="validation-error" data-bind="visible: !supressValidationMessages() && !isOperadorSupplied()">Seleccione un operador.</span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </div>                                        
                                     </fieldset>
 
                                     <div class="alert alert-danger alert-dismissable">

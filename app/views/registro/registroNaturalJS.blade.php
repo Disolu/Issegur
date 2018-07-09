@@ -16,6 +16,7 @@
         me.fechaProgramacion = ko.observable("");
         me.turnoId = ko.observable("");
         me.selectedOperadoresIds = ko.observableArray([]);
+        me.operadorUnico = ko.observable(false);
         me.isFechaProgramacionSupplied = ko.computed(function() { return (me.fechaProgramacion() != null && $.trim(me.fechaProgramacion()).length > 0); }, me);
         me.isTurnoSupplied = ko.computed(function() { return (me.turnoId() != null && me.turnoId() > 0) }, me);
         me.isOperadorSupplied = ko.computed(function() {return me.selectedOperadoresIds().length > 0}, me);
@@ -140,17 +141,31 @@
                 evt.stopPropagation();
                 var $this = $(evt.target);
                 var currentId = $this.data("id");
+                var currentUnico = $this.data("unique");
                 var currentTextRaw = $this[0].id;
                 var currentText = currentTextRaw.substring(3,currentTextRaw.length);
 
                 if($this.is(":checked")){
+                    if(currentUnico == 1){
+                        $(".checkboxOp").prop('checked', false);
+                        $(".checkboxOp").prop('disabled', true);
+                        $this.prop('checked', true);
+                        $this.prop('disabled', false);
+                        me.operadorUnico(true);
+                        me.selectedOperadoresIds.removeAll();
+                    }
                     me.selectedOperadoresIds.push(currentId);
-                    me.selectedOperadoresText.push(currentText);
                 }
                 else{
-                   me.selectedOperadoresIds.remove(currentId);
-                   me.selectedOperadoresText.remove(currentText);
+                    if(currentUnico == 1){
+                        me.operadorUnico(false);
+                        $(".checkboxOp").prop('checked', false);
+                        $(".checkboxOp").prop('disabled', false);
+                    }
+                    me.selectedOperadoresIds.remove(currentId);
                 }
+
+                me.onFechaProgramacionChange();
             }
 
             //load Operadores
@@ -225,7 +240,8 @@
             for (var i = 0; i < me.operadores().length; i++) {
                 var operador = me.operadores()[i].op_nombre;
                 var operadorId = me.operadores()[i].op_id;
-                var operadoresContent = operadoresContent + "<div class='checkbox-custom checkbox-primary mb5'><input type='checkbox' name='operadoresGruopo' class='checkboxOp' id='chk" + operador + "' data-id='"+ operadorId +"'><label for='chk" +  operador + "'>"+ "Almacén " + operador +"</label></div>";
+                var operadorUnico = me.operadores()[i].op_unico;
+                var operadoresContent = operadoresContent + "<div class='checkbox-custom checkbox-primary mb5'><input type='checkbox' name='operadoresGruopo' class='checkboxOp' id='chk" + operador + "' data-id='"+ operadorId +"' data-unique='" + operadorUnico +"'><label for='chk" +  operador + "'>"+ "Almacén " + operador +"</label></div>";
             }
             $divOperadores.html(operadoresContent);
         };
@@ -253,18 +269,23 @@
         //Curso
 
         me.onFechaProgramacionChange = function () {
-            var dateRaw = me.fechaProgramacion();//$("#dtpFechaProgramacion").datepicker('getDate');
+            var dateRaw = me.fechaProgramacion() || '';
             var date = dateRaw.split("/");
             var currentDate = new Date(date[2], date[1] - 1, date[0]);
-            if (dateRaw != null || $.trim(dateRaw) != "") {
+            var almacenUnico = null;
+            if (me.selectedOperadoresIds().length > 0 && dateRaw != null && $.trim(dateRaw) != '') {
                 var dia = $.datepicker.formatDate('DD', currentDate);
                 var optionsAsString = "<option value=''>Elija su horario</option>";
+                
+                if (me.selectedOperadoresIds().length == 1 && me.operadorUnico()){
+                    almacenUnico = me.selectedOperadoresIds()[0];                    
+                }
 
                 $.ajax({
                     type: "GET",
                     url: path + "/api/v1/consultarTurnosPorDia",
                     async: false,
-                    data: {nombreDia: dia , fecha: dateRaw},
+                    data: {nombreDia: dia , fecha: dateRaw, almacen: almacenUnico},
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {

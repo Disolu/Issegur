@@ -15,7 +15,8 @@ class CreateOperadoresTable extends Migration {
 		Schema::create('Operador', function(Blueprint $table)
 		{
             $table->increments('op_id');
-            $table->string('op_nombre','250');
+						$table->string('op_nombre','250');
+						$table->boolean('op_activo')->default(1);
 		});
 	}
 

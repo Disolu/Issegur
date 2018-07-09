@@ -5,7 +5,7 @@
 var GlobalParameters = new (function () {
     var me = this;
 
-    me.appPath = "http://localhost/Issegur/public";
+    me.appPath = "http://localhost:8080/Issegur/public";
     me.grupoIndex = 0;
     me.pageSize = 25;
     me.maxVisiblePages = 10;

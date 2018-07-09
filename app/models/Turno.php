@@ -32,6 +32,30 @@ class Turno extends Eloquent
         return $turnosFormatted;
     }
 
+    public function consultarTurnosPorDiayAlmacen($dia, $fecha, $operador){
+        $turnos = DB::table('Turno')
+        ->join('OperadorTurnoRelacion', 'Turno.turno_id', '=', 'OperadorTurnoRelacion.turno_id')
+        ->join('Operador', 'OperadorTurnoRelacion.op_id', '=', 'Operador.op_id')
+        ->where('Operador.op_id', $operador)
+        ->where('Turno.turno_dia', $dia)        
+        ->select(DB::raw('Turno.*'))
+        ->get();
+
+        $turnosFormatted = array();
+
+        foreach ($turnos as $turno) {    
+            if ($turno->turno_fecha_unica == NULL ) {
+                array_push($turnosFormatted, $turno);
+            }    
+            else if ($turno->turno_fecha_unica != NULL && $turno->turno_fecha_unica == $fecha) {
+                    array_push($turnosFormatted, $turno);
+            }
+        }
+
+
+        return $turnosFormatted;
+    }
+
     public function obtenerTurnoPorId($turnoId){
         $turno = DB::table('Turno')->where('turno_id', $turnoId)->where('turno_fecha_unica', null)->first();
 
