@@ -980,8 +980,8 @@
         me.onSelectedPhotoFile = function (e) {
             var $target = $(e.target);
             if ($target[0].files[0].name) {
-                $(e.target).siblings('.photoClip').children('.photoClipIcon').addClass('fa fa-paperclip');
-                $(e.target).siblings('.paPhoto').hide();
+                $(e.target).parent().siblings('.photoClip').children('.photoClipIcon').addClass('fa fa-paperclip');
+                $(e.target).parent().siblings('.paPhoto').hide();
             }
             $target.parents('td').attr('data-file', $target[0].files[0].name);
 
@@ -1329,11 +1329,14 @@
                 if(fotoFromLocal){
                     fotoInfo = "fotos/" + fotoFromLocal;
                     //subimos la foto si es que no hay una ya subida
-                    //var $fotoForm = $(this).children('.tdFoto').find('.photoForm');
-                    $(this).children('.tdFoto').find('.paImgPhoto').attr('src', jic.compress($(this).children('.tdFoto').find('.paImgPhoto')[0],50,'jpg').src);
-                    //me.uploadPhotoParticipante($fotoForm);
-                    var callback = function(response){ console.log(response); }
-                    jic.upload($(this).children('.tdFoto').find('.paImgPhoto')[0], path + "/uploadParticipanteFoto", "photoImg", fotoFromLocal, callback);
+                    var $fotoForm = $(this).children('.tdFoto').find('.photoForm');
+                    me.uploadPhotoParticipante($fotoForm);
+                    
+                    //var fotoComprimida = jic.compress($(this).children('.tdFoto').find('.paImgPhoto')[0],80,'jpg').src;
+                    //$(this).children('.tdFoto').find('.paImgPhoto').attr('src', fotoComprimida);
+                    //var callback = function(response){ console.log(response); }
+                    //jic.upload($(this).children('.tdFoto').find('.paImgPhoto')[0], path + "/uploadParticipanteFoto", "photoImg", fotoFromLocal, callback);
+                    
                     //mostramos el icono de la camara y ocultamos el clip
                     $(this).children('.tdFoto').find('.photoClip').children('.photoClipIcon').removeClass('fa fa-paperclip');
                     $(this).children('.tdFoto').find('.paPhoto').show();

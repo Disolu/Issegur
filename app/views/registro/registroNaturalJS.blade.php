@@ -241,7 +241,7 @@
                 var operador = me.operadores()[i].op_nombre;
                 var operadorId = me.operadores()[i].op_id;
                 var operadorUnico = me.operadores()[i].op_unico;
-                var operadoresContent = operadoresContent + "<div class='checkbox-custom checkbox-primary mb5'><input type='checkbox' name='operadoresGruopo' class='checkboxOp' id='chk" + operador + "' data-id='"+ operadorId +"' data-unique='" + operadorUnico +"'><label for='chk" +  operador + "'>"+ "Almacén " + operador +"</label></div>";
+                var operadoresContent = operadoresContent + "<div class='checkbox-custom checkbox-primary mb5'><input type='checkbox' name='operadoresGruopo' class='checkboxOp' id='chk" + operador + "' data-id='"+ operadorId +"' data-unique='" + operadorUnico +"'><label for='chk" +  operador + "'>"+ "" + operador +"</label></div>";
             }
             $divOperadores.html(operadoresContent);
         };

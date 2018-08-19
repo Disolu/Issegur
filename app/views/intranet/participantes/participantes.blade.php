@@ -54,7 +54,7 @@
                         <table class="table table-bordered table-hover">
                             <thead>
                             <th class="pa-table-header" style="width:35px;">N°</th>
-                            <th class="pa-table-header center" style="width:90px;">DNI</th>
+                            <th class="pa-table-header center" style="width:90px;">DNI/C.Extranjería</th>
                             <th class="pa-table-header" style="max-width:170px;">Nombres</th>
                             <th class="pa-table-header" style="max-width:120px;">Ape. Paterno</th>
                             <th class="pa-table-header" style="max-width:120px;">Ape. Materno</th>
@@ -103,7 +103,7 @@
                                 <td data-bind="text: $index() + 1"></td>
                                 <td class="tdDni center">
                                     <span class="paDNI" style="cursor:pointer;"><!--ko text: paInfo.pa_dni--><!--/ko--></span>
-                                    <input type="text" class="center paDNITextbox form-control input-sm editableField" style="display: none;  width: 100%;" maxlength="8"/>
+                                    <input type="text" class="center paDNITextbox form-control input-sm editableField" style="display: none;  width: 100%;"/>
                                 </td>
                                 <td class="tdNombres">
                                     <span class="paNombres" style="cursor:pointer;"><!--ko text: paInfo.pa_nombres.toUpperCase()--><!--/ko--></span>
@@ -179,9 +179,9 @@
                                     <span class="photoClip"><i class="photoClipIcon"></i></span>
                                     <img src="" class="paImgPhoto" name="photoImg" style="display: none"/>
                                     <button class="btn btn-default btn-xs paUploadPhoto" data-bind="disable: paInfo.pa_asistencia == 0"><i class="fa fa-upload"> </i></button>
-                                    {{--<form class="photoForm" style="display: none;">--}}
-                                    <input type="file" name="paPhotoData" class="uploadPhotoHidden" style="display: none" />
-                                    {{--</form>--}}
+                                    <form class="photoForm" style="display: none;">
+                                    <input type="file" name="photoImg" class="uploadPhotoHidden" />
+                                    </form>
 
                                     <button class="btn btn-default btn-xs paPhoto" data-bind="visible: paInfo.pa_foto != ''"><i class="fa fa-camera"> </i></button>
                                 </td>
@@ -358,7 +358,7 @@
                         <div id="participante">
                             <div class="form-group">
                                 <div id="dni" class="input-group">
-                                    <input type="text" class="form-control regDNI soloNumeros" data-bind="value: dni, event: { 'keyup': consultarDNI }" placeholder="DNI" maxlength="8">
+                                    <input type="text" class="form-control regDNI soloNumeros" data-bind="value: dni, event: { 'keyup': consultarDNI }" placeholder="DNI/C.Extrajería">
                                       <span class="input-group-btn">
                                         <button class="btn btn-default" data-bind="click: consultarDNIButton" type="button"><i class="fa fa-search"></i> Consultar DNI</button>
                                       </span>

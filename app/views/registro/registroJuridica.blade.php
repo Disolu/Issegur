@@ -14,8 +14,8 @@
 
                 <!-- Begin: Content Header -->
                 <div class="content-header">
-                    <h2>FICHA DE INSCRIPCIÓN PARA EL CURSO DE INDUCCIÓN DE SEGURIDAD EN ALMACENES</h2>
-                    <p class="lead">RANSA - TRAMARSA - SLI</p>
+                    <h2>FICHA DE INSCRIPCIÓN PARA EL CURSO E INGRESO A ALMACENES</h2>
+                    <p class="lead">RANSA - TRAMARSA - SLA - DEPSA - VOLVO</p>
                 </div>
 
                 <!-- Begin: Admin Form -->
