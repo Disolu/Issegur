@@ -20,12 +20,7 @@
         <div class="row" id="headerSection">
             <div class="col-md-4 col-md-offset-4 center">
                 <i class="fa fa-users fa-3x"></i><h1 class="consultaHeader">Consulta de Personal</h1>
-            </div>
-            <div id="RansaSesion" class="col-md-2 col-md-offset-2" style="display: none;">
-                <img src="{{asset("assets/img/logo/ransa.png")}}" style="width: 100px"/> <br/>
-                <a id="btnRansaIniciarSesion" data-bind="visible: !isUsuarioAuth() || isUsuarioAuth() == ''" style="cursor: pointer;">Iniciar Sesión</a>
-                <a id="btnRansaCerrarSesion" data-bind="visible: isUsuarioAuth" style="cursor: pointer;">Cerrar Sesión</a>
-            </div>
+            </div>            
         </div>
         <div class="row" id="filtroSection">
             <div class="col-md-8 col-md-offset-2 marginSection">
@@ -162,35 +157,6 @@
                 </div>
             </div>
         </div>
-
-        <div id="RansaSesionDialog" class="modal fade" tabindex="-1" role="dialog">
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Iniciar Sesion</h4>
-              </div>
-              <div class="modal-body">
-                <form>
-                  <div class="form-group">
-                    <label for="username">Usuario</label>
-                    <input type="email" class="form-control" id="username" placeholder="Usuario" autocomplete="off">
-                  </div>
-                  <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="Password">
-                    <label id="loginFailedMessage" class="validation-error" style="display:none;width:100%">Su usuario o password es incorrecto</label>
-                  </div>
-                </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                <button id="btnRansaLogin" type="button" class="btn btn-primary">Aceptar</button>
-              </div>
-            </div><!-- /.modal-content -->
-          </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-
     </div>
 @stop
 @section('scriptsSection')
@@ -275,7 +241,7 @@
                 //si se presiona enter
                 if(inputValue == 13){
                     me.loadingParticipantes(true);
-                    var operadorId = 6; //volvo
+                    var operadorId = 1; //volvo
                     $.ajax({
                         type: "GET",
                         url: path + "/api/v1/buscarPersonal/" + operadorId,
