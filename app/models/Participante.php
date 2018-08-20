@@ -192,6 +192,31 @@ class Participante extends Eloquent
         return $matchingParticipantes;
     }
 
+    public function obtenerPorDniNombreOApellidoYOperador($searchText, $operadorId){        
+        $matchingParticipantes = DB::table('Participante')
+            ->leftJoin('ParticipanteOperadorRelacion','Participante.pa_id','=','ParticipanteOperadorRelacion.pa_id')
+            ->leftjoin('Operador','ParticipanteOperadorRelacion.op_id','=','Operador.op_id')
+            ->join('RegistroParticipante','Participante.pa_id','=','RegistroParticipante.pa_id')
+            ->join('Empresa','RegistroParticipante.emp_id','=','Empresa.emp_id')
+            ->where('Operador.op_id', $operadorId)
+            ->where('Participante.pa_asistencia', 1)
+            ->where('Participante.pa_nota', '>', 11)
+            ->Where(function ($query) use($searchText){
+                $query->where('Participante.pa_dni','LIKE', '%'.$searchText.'%')
+                    ->OrWhere('Participante.pa_nombres','LIKE', '%'.$searchText.'%')
+                    ->OrWhere('Participante.pa_apellido_paterno','LIKE', '%'.$searchText.'%')
+                    ->OrWhere('Participante.pa_apellido_materno','LIKE', '%'.$searchText.'%');
+            })
+            ->select(
+                'Participante.pa_dni',
+                'Participante.pa_nombres',
+                'Participante.pa_apellido_paterno',
+                'Participante.pa_apellido_materno')
+            ->get();
+
+        return $matchingParticipantes;
+    }
+
     public function obtenerInfoPorDNI($dni){
         $matchingParticipanteInfo = DB::table('ParticipantesMasterView')
             ->where('pa_dni',$dni)

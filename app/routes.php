@@ -39,6 +39,7 @@ Route::get('intranet/facturas/configurar','FacturaController@configurar');
 
 //Consulta de Personal
 Route::get('consulta','ConsultaController@InitializeConsulta');
+Route::get('consulta/volvo','ConsultaController@InitializeConsultaVolvo');
 
 
 //upload voucher
@@ -169,6 +170,7 @@ Route::group(array('prefix' => 'api/v1'), function(){
 
     //ConsultaPersonal
     Route::get('buscarPersonal', 'ConsultaController@BuscarPersonal');
+    Route::get('buscarPersonal/{operadorId}', 'ConsultaController@BuscarPersonalPorOperador');
     Route::get('getParticipanteInfoByDNI', 'ConsultaController@GetParticipanteInfoByDNI');
 
 

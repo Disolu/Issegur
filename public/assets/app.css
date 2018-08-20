@@ -3,7 +3,7 @@
     display: block !important;
     margin-left: 1.7px !important;
     margin-right: 1.7px !important;
-    margin-bottom: 20px; !important;
+    margin-bottom: 20px !important;
     padding-top: 0.35em !important;
     padding-bottom: 0.625em !important;
     padding-left: 1.7em !important;
@@ -297,6 +297,12 @@ input[type="text"][disabled] {
 .center{
     text-align: center;
 }
+.left {
+    text-align: left;
+}
+.right {
+    text-align: right;
+}
 .turno-content-header{
     margin-top: -2px;
     font-size:18px;
@@ -324,8 +330,7 @@ input[type="text"][disabled] {
 }
 
 .panel-hora-turno:first-child {
-
-    border-top:none; !important;
+    border-top:none !important;
 }
 
 .editableField{

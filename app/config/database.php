@@ -58,7 +58,7 @@ return array(
 			'port' => '3306',
 			'database'  => 'Issegur',
 			'username'  => 'root',
-			'password'  => 'warcraft196',
+			'password'  => 'root',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_general_ci',
 			'prefix'    => '',

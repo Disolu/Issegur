@@ -12,11 +12,27 @@ class ConsultaController extends BaseController{
         return View::make('consultaPersonal.index');
     }
 
+    public function InitializeConsultaVolvo(){
+        return View::make('consultaPersonal.volvo');
+    }
+
     public function BuscarPersonal(){
         $searchText = $_GET['searchText'];
 
         $participante = new Participante();
         $matchingParticipantes = $participante->obtenerPorDniNombreOApellido($searchText);
+
+        return Response::json(array(
+            'participantes' =>  $matchingParticipantes
+        ), 200
+        )->setCallback(Input::get('callback'));
+    }
+
+    public function BuscarPersonalPorOperador($operadorId){
+        $searchText = $_GET['searchText'];
+
+        $participante = new Participante();
+        $matchingParticipantes = $participante->obtenerPorDniNombreOApellidoYOperador($searchText, $operadorId);
 
         return Response::json(array(
             'participantes' =>  $matchingParticipantes
